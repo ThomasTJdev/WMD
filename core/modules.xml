@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<data>
+    <module name="Bettercap">
+        <call>bettercap</call>
+        <modulename>bettercap_integration</modulename>
+        <type>sin</type>
+        <category>sniff</category>
+        <version>0.1</version>
+        <description>Bettercap integration for sniffing packets and bypass HSTS and HTTPS</description>
+    </module>
+    <module name="John the Ripper">
+        <call>john</call>
+        <modulename>john_integration</modulename>
+        <type>aut</type>
+        <category>cracking</category>
+        <version>0.1</version>
+        <description>As you know - kill the hash</description>
+    </module>
+	<module name="AP sniff">
+		<call>apsniff</call>
+		<modulename>aut_ap_sniff</modulename>
+		<version>0.1</version>
+		<type>aut</type>
+		<category>sniff</category>
+		<description>Create AP and sniff HTTPS and avoid HSTS + Beef</description>
+	</module>
+	<module name="Gdork SQLi">
+		<call>gdsqli</call>
+		<modulename>gdorksqli</modulename>
+		<version>0.1</version>
+		<type>sin</type>
+		<category>sql</category>
+		<description>Scrape net for urls and check if they are prone to SQL injection</description>
+	</module>
+	<module name="Spoofcheck email domain">
+		<call>mspoofcheck</call>
+		<modulename>spoofcheckemail</modulename>
+		<version>0.1</version>
+		<type>sin</type>
+		<category>mail</category>
+		<description>Check if a domain can be spoofed for e.g. emailing</description>
+	</module>
+	<module name="Lan scan">
+		<call>lanscan</call>
+		<modulename>lanscan</modulename>
+		<version>0.1</version>
+		<type>sin</type>
+		<category>scan</category>
+		<description>Scan local net - recon</description>
+	</module>
+	<module name="Bruteforce weblogin form">
+		<call>bfweb</call>
+		<modulename>bfweblogin</modulename>
+		<version>0.1</version>
+		<type>web</type>
+		<category>bruteforce</category>
+		<description>Bruteforce a weblogin form with word- and passlist</description>
+	</module>
+	<module name="BF ZIP">
+		<call>bfzip</call>
+		<modulename>bruteforcezip</modulename>
+		<version>0.1</version>
+		<type>zip</type>
+		<category>bruteforce</category>
+		<description>Bruteforce a ZIP file</description>
+	</module>
+	<module name="Routersploit">
+		<call>rsploit</call>
+		<modulename>gitroutersploit</modulename>
+		<version>0.1</version>
+		<type>framework</type>
+		<category>router</category>
+		<description>Framework for routers wiht exploits and getting creds. (Arthur: Reverse Shell Security)</description>
+	</module>
+	<module name="Exploitdb">
+		<call>exploitdb</call>
+		<modulename>gitexploitdb</modulename>
+		<version>0.1</version>
+		<type>search</type>
+		<category>exploit</category>
+		<description>Shell-style script to search exploit-db.com exploits. (Arthur: mattoufoutu)</description>
+	</module>
+	<module name="Admin Finder">
+		<call>adminfinder</call>
+		<modulename>gitadminfinder</modulename>
+		<version>0.1</version>
+		<type>loginpath</type>
+		<category>bruteforce</category>
+		<description>A Simple script to find admin-paths for webpages. (Arthur: Spaddex)</description>
+	</module>
+	<module name="Search hacktools">
+		<call>searchht</call>
+		<modulename>searchhacktools</modulename>
+		<version>0.1</version>
+		<type>search</type>
+		<category>tools</category>
+		<description>Searchengine for hackingtools</description>
+	</module>
+	<module name="dnsrecon">
+		<call>dnsrecon</call>
+		<modulename>dnsrecon</modulename>
+		<version>0.1</version>
+		<type>dns</type>
+		<category>recon</category>
+		<description>Multiple DNS recon abilities.</description>
+	</module>
+	<module name="dnsmap">
+		<call>dnsmap</call>
+		<modulename>dnsmap</modulename>
+		<version>0.1</version>
+		<type>dns</type>
+		<category>recon</category>
+		<description>DNS Network Mapper. Enumeration and bruteforcing.</description>
+	</module>
+	<module name="BF RAR">
+		<call>bfrar</call>
+		<modulename>bruteforcerar</modulename>
+		<version>0.1</version>
+		<type>rar</type>
+		<category>bruteforce</category>
+		<description>Bruteforce a RAR file</description>
+	</module>
+	<module name="Bruteforce SSH">
+		<call>bfssh</call>
+		<modulename>bruteforcessh</modulename>
+		<version>0.1</version>
+		<type>ssh</type>
+		<category>bruteforce</category>
+		<description>Bruteforce SSH login</description>
+	</module>
+	<module name="ARP monitor alert">
+		<call>arpmon</call>
+		<modulename>mon_arpmonitoralert</modulename>
+		<version>0.1</version>
+		<type>arp</type>
+		<category>monitor</category>
+		<description>Monitor ARP table and alert for changes</description>
+	</module>
+	<module name="IP monitor alert">
+		<call>ipmon</call>
+		<modulename>mon_ipmonitoralert</modulename>
+		<version>0.1</version>
+		<type>ip</type>
+		<category>monitor</category>
+		<description>Monitor IP's and alert for changes</description>
+	</module>
+	<module name="Identify hash">
+		<call>hashid</call>
+		<modulename>hash_identifyhash</modulename>
+		<version>0.1</version>
+		<type>hash</type>
+		<category>cracking</category>
+		<description>Identify a hash</description>
+	</module>
+	<module name="Change settings">
+		<call>settings</call>
+		<modulename>env_settings</modulename>
+		<version>0.1</version>
+		<type>settings</type>
+		<category>other</category>
+		<description>Change your environment settings, e.g. interface</description>
+	</module>
+	<module name="Create an Accesspoint">
+		<call>createap</call>
+		<modulename>wifi_createap</modulename>
+		<version>0.1</version>
+		<type>accesspoint</type>
+		<category>wifi</category>
+		<description>Create an Accesspoint</description>
+	</module>
+	<module name="Crack WPA 4-way handshake">
+		<call>crackwpa</call>
+		<modulename>crack_wpa</modulename>
+		<version>0.1</version>
+		<type>wpa</type>
+		<category>cracking</category>
+		<description>Gather WPA 4-way handshake from accesspoint and crack it</description>
+	</module>
+	<module name="Domain info groper">
+		<call>dig</call>
+		<modulename>dnsdig</modulename>
+		<version>0.1</version>
+		<type>dns</type>
+		<category>recon</category>
+		<description>Using dig command you can query DNS name servers for your DNS lookup related tasks</description>
+	</module>
+	<module name="Instagram bot">
+		<call>instabot</call>
+		<modulename>se_instabot</modulename>
+		<version>0.1</version>
+		<type>instagram</type>
+		<category>socialeng</category>
+		<description>Instagram bot for performing various activities (Arthur: LevPasha)</description>
+	</module>
+	<module name="WiFi utils">
+		<call>wifiutils</call>
+		<modulename>wifi_utils</modulename>
+		<version>0.1</version>
+		<type>wifi</type>
+		<category>wifi</category>
+		<description>Utilities for WiFi, e.g. deauth, WiFi's, clients, probes, etc.</description>
+	</module>
+	<module name="ARP spoof">
+		<call>arpspoof</call>
+		<modulename>spoof_arp</modulename>
+		<version>0.1</version>
+		<type>arp</type>
+		<category>spoof</category>
+		<description>Spoofing ARP</description>
+	</module>
+</data>
