@@ -7,15 +7,20 @@
 import argparse
 import os
 try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
     from core.colors import bc as bc
 except:
     import sys
     sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
     from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
 
 
+# START Log files, global variables, etc.
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', help='Path to file with hash', metavar='PATH.txt')
 parser.add_argument('-p', '--pwdlist', help='Path to pwdlist', metavar='PATH.txt')
@@ -23,6 +28,11 @@ parser.add_argument('-f', '--format', help='Format to use', metavar='E.g. Raw-MD
 parser.add_argument('-a', '--args', help='Arguments to use', metavar='E.g. Raw-MD5')
 parser.add_argument('-r', '--run', action='store_true', help='Start monitoring.')
 args, unknown = parser.parse_known_args()
+
+config = core.config()
+global john
+JOHN_SYM = (config['TOOLS']['JOHN_SYM'])
+# END Log files, global variables, etc.
 
 
 # OPTIONS
@@ -102,15 +112,15 @@ class options():
 def run():
     print('')
     if not sop.args:
-        os.system('john --wordlist=' + sop.list + ' --format=' + sop.format + ' ' + sop.file)
+        os.system(john + ' --wordlist=' + sop.list + ' --format=' + sop.format + ' ' + sop.file)
     else:
-        os.system('john --wordlist=' + sop.list + ' --format=' + sop.format + ' ' + sop.file + ' ' + sop.args)
+        os.system(john + ' --wordlist=' + sop.list + ' --format=' + sop.format + ' ' + sop.file + ' ' + sop.args)
     print('')
 
 
 def show():
     print('')
-    os.system('john --format=' + sop.format + ' --show ' + sop.file)
+    os.system(john + ' --format=' + sop.format + ' --show ' + sop.file)
     print('')
 
 
@@ -167,7 +177,9 @@ def main():
     print('                                               /_/   /_/                   ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalled('john')
+    comm.checkInstalled(JOHN_SYM)
+    global john
+    john = JOHN_SYM
     print('')
     global sop
     # The parameters to be passed to the module on init

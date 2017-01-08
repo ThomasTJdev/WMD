@@ -208,4 +208,12 @@
 		<category>spoof</category>
 		<description>Spoofing ARP</description>
 	</module>
+	<module name="Macchanger">
+		<call>macc</call>
+		<modulename>macchanger</modulename>
+		<version>0.1</version>
+		<type>mac</type>
+		<category>system</category>
+		<description>Change your MAC address</description>
+	</module>
 </data>

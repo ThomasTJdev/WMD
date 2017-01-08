@@ -31,6 +31,19 @@ parser.add_argument("-q", "--quite", action='store_true', help="Stay quite. No b
 args = parser.parse_args()
 
 
+def firstRun():
+    if not os.path.isdir('logs'):
+        print(bc.OKGREEN + '\t[+]' + bc.ENDC + ' Creating logs folder\n')
+        os.system('mkdir logs')
+    if not os.path.isdir('tmp'):
+        print(bc.OKGREEN + '\t[+]' + bc.ENDC + ' Creating tmp folder\n')
+        os.system('mkdir tmp')
+    if not os.path.isdir('tools'):
+        print(bc.OKGREEN + '\t[+]' + bc.ENDC + ' Creating tools folder\n')
+        os.system('mkdir tools')
+
+
+
 def currPath():
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
@@ -171,6 +184,7 @@ def sigint_handler(signum, frame):
 
 
 def main():
+    firstRun()
     if args.add:
         cmodules.addModule(args.add)
         print('\n\n')

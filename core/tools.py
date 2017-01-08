@@ -122,6 +122,12 @@ def clonegits(ACTION):
     checkStart(SYM, GIT, GITNAME, ACTION)
 
     # nmap
+    SYM = (config['TOOLS']['MACCHANGER_SYM'])
+    GIT = (config['TOOLS']['MACCHANGER_GIT'])
+    GITNAME = (config['TOOLS']['MACCHANGER_GITNAME'])
+    checkStart(SYM, GIT, GITNAME, ACTION)
+
+    # nmap
     SYM = (config['TOOLS']['NMAP_SYM'])
     GIT = (config['TOOLS']['NMAP_GIT'])
     GITNAME = (config['TOOLS']['NMAP_GITNAME'])

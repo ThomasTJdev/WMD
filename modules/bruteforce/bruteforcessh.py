@@ -33,8 +33,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'Bruteforce SSH login'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self, ip, port, userlist, passlist, timeout, logfile, proxyActive, proxyFile):
         self.ip = ip

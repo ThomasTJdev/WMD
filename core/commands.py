@@ -15,6 +15,7 @@ import psutil
 import netifaces
 import random
 import requests
+import string
 from bs4 import BeautifulSoup
 from core.colors import bc as bc
 from logging.config import fileConfig
@@ -26,6 +27,7 @@ logger = core.log()
 
 
 # VARIABLES START
+MACS = (config['FILES']['MACS'])
 PROXYLIST = (config['FILES']['PROXYLIST'])
 USERAGENTS = (config['FILES']['USERAGENTS'])
 # VARIABLES END
@@ -358,6 +360,42 @@ def getUserAgentHeader():
     ua = random.choice(uas)  # select a random user agent
     headers = {"Connection": "close", "User-Agent": ua}
     return headers
+
+
+def getMac():
+    addrs = netifaces.ifaddresses('eno1')
+    maca = addrs[netifaces.AF_LINK][0]['addr']
+    return maca
+
+
+def getNewMac(searchterm):
+    uas = []
+    with open(MACS, 'rb') as uaf:
+        for ua in uaf.readlines():
+            if ua and searchterm:
+                try:
+                    if searchterm.lower() in str(ua).lower():
+                        uas.append(ua.strip())
+                except:
+                    pass
+            elif ua and not searchterm:
+                uas.append(ua.strip())
+    if uas:
+        random.shuffle(uas)
+        maca = random.choice(uas)  # select a random user agent
+        maca = str(maca).strip('\'b')[:8]
+        macrnd = ("%02x:%02x:%02x" % (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+        maca += ':' + macrnd
+    else:
+        maca = 'None found'
+    return maca
+
+
+def findLineInFile(filename, searchterm):
+    with open(filename, 'r') as file:
+        for line in file.readlines():
+            if line and searchterm in line:
+                return line
 
 
 def changeLineInFile(filename, oldText, newText):

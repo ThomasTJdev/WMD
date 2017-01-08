@@ -7,17 +7,30 @@
 # LIBRARIES
 import os                   # Running bettercap
 from time import sleep      # Just counting down before launch
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+
 # END LIBRARIES
 
 # VARIABLES
-global sop                            # Main class for all options
-global bettercappath
-bettercappath = "/usr/bin/bettercap"  # Change accordingly
-global beefpath
-beefpath = '/usr/bin/beef'  # Change accordingly
+config = core.config()
+BETTERCAP_SYM = (config['TOOLS']['BETTERCAP_SYM'])
+BEEF_SYM = (config['TOOLS']['BEEF_SYM'])
+INTERFACE_NET = (config['NETWORK']['INTERFACE_NET'])
+INTERFACE_MON = (config['NETWORK']['INTERFACE_MON'])
+
+global bettercap
+global beef
 # END VARIABLES
 
 
@@ -31,8 +44,8 @@ class options():
     Description = "Python console for Bettercap"
     Category = 'sniff'
     Type = 'sin'
-    DateCreation = "13/11/2016"
-    LastModification = "13/11/2016"
+    DateCreation = "2017/01/01"
+    LastModification = "2017/01/01"
     License = "MIT"
 
     def __init__(self, interface, gateway, sniffer, proxy, target, sniff_log, beef):
@@ -54,13 +67,13 @@ class options():
             ""
             + "\n\t" + bc.OKBLUE + ("%-*s %-*s %-*s %s" % (12, "OPTION", 6, "RQ", 14, "VALUE", "DESCRIPTION")) + bc.ENDC
             + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "------", 6, "--", 14, "-----", "-----------"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "interface:", 6, "y", 14, self.interface, "Interfaces " + "ss"))
+            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "interface:", 6, "y", 14, self.interface, "Interfaces"))
             + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "gateway:", 6, "y", 14, self.gateway, "Gateway, e.g. 192.168.1.1"))
             + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "sniffer:", 6, "n", 14, self.sniffer, "Activate sniffer - why not? (y/n)"))
             + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "proxy:", 6, "n", 14, self.proxy, "Downgrade HTTPS to HTTP for sniffing (y/n)"))
             + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "target:", 6, "n", 14, self.target, "Target IPs. Separate with ',' or subnet xx\\24"))
             + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "invoke:", 6, "n", 14, self.sniff_log, "Logfile name"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "beed:", 6, "n", 14, self.beed, "Use beef"))
+            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "beef:", 6, "n", 14, self.beef, "Use beef"))
             + "\n"
             )
 
@@ -101,7 +114,7 @@ class options():
 # RUN BETTERCAP
 def run_bc():
     if sop.beef == 'y':
-        comm.runCommand3('beef', 'Start_beef')
+        comm.runCommand3(beef, 'Start_beef')
         local_ip = comm.getLocalIP(sop.interface_n)
         print('\t[!]  Check the beef window and insert path to "hook.js"')
         print('\t[!]  Press enter to select: "http://' + local_ip[0] + ':3000/hook.js"')
@@ -135,7 +148,7 @@ def run_bc():
     if sop.args_sniff:
         opt_com += sop.args_sniff
 
-    command = (bettercappath + ' ' + opt_com)
+    command = (bettercap + ' ' + opt_com)
 
     print(
         "\n"
@@ -174,11 +187,11 @@ def console():
         print('\n\n###########################################################')
         print('#  BETTERCAP')
         print('###########################################################\n')
-        os.system(bettercappath + ' --help')
+        os.system(bettercap + ' --help')
         print('\n\n###########################################################')
         print('#  BEEF')
         print('###########################################################\n')
-        os.system(beefpath + ' --help')
+        os.system(beef + ' --help')
         print('\n\n###########################################################\n\n')
     elif 'info' in userinput[:1]:
         info()
@@ -209,11 +222,15 @@ def main():
         return None
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalled(bettercappath)
-    comm.checkInstalledOpt(beefpath)
+    comm.checkInstalled(BETTERCAP_SYM)
+    global bettercap
+    bettercap = BETTERCAP_SYM
+    comm.checkInstalledOpt(BEEF_SYM)
+    global beef
+    beef = BEEF_SYM
     comm.checkNetConnectionV()
+    print('')
     global sop
-    local_ip = comm.getLocalIP('')
     gateway = comm.getGateway()
-    sop = options(local_ip[0], gateway, "y", "y", "", "", '')
+    sop = options(INTERFACE_NET, gateway, "y", "y", "", "", '')
     console()

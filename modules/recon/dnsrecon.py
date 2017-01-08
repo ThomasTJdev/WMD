@@ -5,14 +5,26 @@
 
 
 import os
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
+try:
+    import core.core as core
+    import core.modules as cmodules
+    import core.commands as comm
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.modules as cmodules
+    import core.commands as comm
+    from core.colors import bc as bc
 
 
 # START Log files, global variables, etc.
-
-
+config = core.config()
+global dnsrecon
+DNSRECON_SYM = (config['TOOLS']['DNSRECON_SYM'])
+DNSRECON_GITNAME = (config['TOOLS']['DNSRECON_GITNAME'])
+DNSRECON_GITRUN = (config['TOOLS']['DNSRECON_GITRUN'])
 # END Log files, global variables, etc.
 
 
@@ -27,8 +39,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'Multiple DNS recon abilities.'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self, domain, arguments):
         self.domain = domain
@@ -87,9 +99,9 @@ class options():
 def run():
     print('')
     if sop.args:
-        os.system('dnsrecon -d ' + sop.domain + ' ' + sop.arg)
+        os.system(dnsrecon + ' -d ' + sop.domain + ' ' + sop.arg)
     else:
-        os.system('dnsrecon -d ' + sop.domain)
+        os.system(dnsrecon + ' -d ' + sop.domain)
     print('')
 
 
@@ -172,7 +184,8 @@ def main():
     print('                                                   ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalled('dnsrecon')
+    global dnsrecon
+    dnsrecon = comm.checkInstalledFull(DNSRECON_SYM, DNSRECON_GITNAME, DNSRECON_GITRUN)
     print('')
     global sop
     # The parameters to be passed to the module on init

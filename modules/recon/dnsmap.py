@@ -23,7 +23,6 @@ except:
 config = core.config()
 logger = core.log()
 
-
 DNSMAP_SYM = (config['TOOLS']['DNSMAP_SYM'])
 # END Log files, global variables, etc.
 
@@ -39,8 +38,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'DNS Network Mapper. Enumeration and bruteforcing.'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self, domain, arguments):
         self.domain = domain

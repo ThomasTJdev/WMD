@@ -5,13 +5,26 @@
 
 
 import os
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 
 
 # START Log files, global variables, etc.
-gitPath = 'tools/routersploit'
+config = core.config()
+global routersploit
+ROUTERSPLOIT_SYM = (config['TOOLS']['ROUTERSPLOIT_SYM'])
+ROUTERSPLOIT_GITNAME = (config['TOOLS']['ROUTERSPLOIT_GITNAME'])
+ROUTERSPLOIT_GITRUN = (config['TOOLS']['ROUTERSPLOIT_GITRUN'])
 # END Log files, global variables, etc.
 
 
@@ -26,8 +39,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'Framework for routers wiht exploits and getting creds. (Arthur: Reverse Shell Security)'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self):
         self.show_all()
@@ -93,7 +106,7 @@ class options():
 
 
 def run():
-    os.system('python2 tools/routersploit/rsf.py')
+    os.system('python2 ' + routersploit)
 
 
 # CONSOLE
@@ -141,7 +154,9 @@ def main():
     print('            /_/                       ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalledGit(gitPath)
+    comm.checkInstalled('python2')
+    global routersploit
+    routersploit = comm.checkInstalledFull(ROUTERSPLOIT_SYM, ROUTERSPLOIT_GITNAME, ROUTERSPLOIT_GITRUN)
     print('')
     global sop
     sop = options()

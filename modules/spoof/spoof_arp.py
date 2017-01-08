@@ -20,6 +20,7 @@ except:
     from core.colors import bc as bc
 
 
+# START Log files, global variables, etc.
 # Parser
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--target', help='Target', metavar='IP') # Example. Use with "args.lanip"
@@ -31,8 +32,6 @@ args, unknown = parser.parse_known_args()
 config = core.config()
 logger = core.log()
 
-
-# START Log files, global variables, etc.
 ARPSPOOF_SYM = (config['TOOLS']['ARPSPOOF_SYM'])
 # END Log files, global variables, etc.
 

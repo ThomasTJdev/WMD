@@ -5,14 +5,26 @@
 
 
 import os
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 
 
 # START Log files, global variables, etc.
-
-
+config = core.config()
+global spoofcheck
+SPOOFCHECK_SYM = (config['TOOLS']['SPOOFCHECK_SYM'])
+SPOOFCHECK_GITNAME = (config['TOOLS']['SPOOFCHECK_GITNAME'])
+SPOOFCHECK_GITRUN = (config['TOOLS']['SPOOFCHECK_GITRUN'])
 # END Log files, global variables, etc.
 
 
@@ -27,8 +39,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'Check if a domain can be spoofed for e.g. emailing'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self, domain):
         self.domain = domain
@@ -84,7 +96,7 @@ class options():
 
 def run():
     print('\t[*] Running spoofcheck on domain.. please wait.\n\n')
-    command = 'spoofcheck ' + sop.domain
+    command = spoofcheck + ' ' + sop.domain
     os.system(command)
     print('\n')
 
@@ -142,7 +154,8 @@ def main():
     print('                                            /_/                     ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalled('spoofcheck')
+    global spoofcheck
+    spoofcheck = comm.checkInstalledFull(SPOOFCHECK_SYM, SPOOFCHECK_GITNAME, SPOOFCHECK_GITRUN)
     comm.checkNetConnectionV()
     print('')
     global sop

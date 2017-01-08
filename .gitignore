@@ -1,9 +1,11 @@
 **/__pycache__
 backup
-#logs/*
-#tmp/*
-tools/*
+!logs/.gitkeep
+logs/*
+!tmp/.gitkeep
+tmp/*
 !tools/.gitkeep
+tools/*
 test.py
 files/rockyou.txt
 files/pwd_000webhost.txt

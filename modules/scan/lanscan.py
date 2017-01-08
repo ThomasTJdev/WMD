@@ -4,17 +4,33 @@
 # Module for WMDframe
 
 
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
 import subprocess
 import shlex
 import os
 import random
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 
+
+# START Log files, global variables, etc.
 # Log files
 nmap_hostsonline = 'tmp/nmap_hostsonline'
 nmap_lanscan_results = 'logs/nmap_lanscan_results'
+
+config = core.config()
+global nmap
+NMAP_SYM = (config['TOOLS']['NMAP_SYM'])
+# END Log files, global variables, etc.
 
 
 # OPTIONS
@@ -97,7 +113,7 @@ def pingScan():
     # Online hosts
     local_ip = comm.getLocalIP('')
     lanNet = local_ip[0] + '/24'
-    call = ('nmap -sn -oG ' + nmap_hostsonline + ' ' + lanNet)
+    call = (nmap + ' -sn -oG ' + nmap_hostsonline + ' ' + lanNet)
     args = shlex.split(call)
     return subprocess.check_output(args)
 
@@ -166,7 +182,7 @@ def run():
     # Add scripts
     # --spoof-mac 0
     #
-    call = ('nmap --randomize-hosts -g 53 -oG ' + nmap_lanscan_results + call_opt + ' ' + sop.target)
+    call = (nmap + ' --randomize-hosts -g 53 -oG ' + nmap_lanscan_results + call_opt + ' ' + sop.target)
     print('\t[*]  Running: \n\t  -> ' + call)
     os.system(call)
     print('')
@@ -182,7 +198,7 @@ def fullScan():
 
 
 def runcom(arguments):
-    os.system('nmap ' + arguments)
+    os.system(nmap + ' ' + arguments)
 
 
 def predefinedCommands():
@@ -228,7 +244,7 @@ def console():
         print('\n\n###########################################################')
         print('#  NMAP HELP')
         print('###########################################################\n')
-        os.system('nmap -h')
+        os.system(nmap + ' -h')
         print('\n\n###########################################################\n\n')
     elif 'info' in userinput[:1]:
         info()
@@ -277,7 +293,9 @@ def main():
         print("Run the script again as root/sudo")
         return None
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalled('nmap')
+    comm.checkInstalled(NMAP_SYM)
+    global nmap
+    nmap = NMAP_SYM
     local_ip = comm.getLocalIP('')
     lanNet = local_ip[0] + '/24'
     global sop

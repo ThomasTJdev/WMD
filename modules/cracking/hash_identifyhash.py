@@ -6,20 +6,31 @@
 
 import argparse
 import subprocess
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 
 
+# START Log files, global variables, etc.
 parser = argparse.ArgumentParser()
 parser.add_argument('-hi', '--hashinput', help='Hash to identify', metavar='HASH')  # Example. Use with "args.lanip"
 parser.add_argument('-r', '--run', action='store_true', help='Start monitoring.')
 args, unknown = parser.parse_known_args()
 
-
-# START Log files, global variables, etc.
-global program
-
+config = core.config()
+global hashid
+HASHID_SYM = (config['TOOLS']['HASHID_SYM'])
+HASHID_GITNAME = (config['TOOLS']['HASHID_GITNAME'])
+HASHID_GITRUN = (config['TOOLS']['HASHID_GITRUN'])
 # END Log files, global variables, etc.
 
 
@@ -34,8 +45,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'Identify a hash'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self, hash):
         self.hash = hash
@@ -51,7 +62,7 @@ class options():
             ''
             + '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (9, 'OPTION', 5, 'RQ', 20, 'DESCRIPTION', 'VALUE')) + bc.ENDC
             + '\n\t' + ('%-*s %-*s %-*s %s' % (9, '------', 5, '--', 20, '-----------', '-----'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (9, 'hash:', 5, 'y', 20, 'Hash to identify', self.hash))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (9, 'hash', 5, 'y', 20, 'Hash to identify', self.hash))
             + '\n'
             )
 
@@ -91,7 +102,7 @@ class options():
 
 def run():
     print('')
-    call = program + ' -e -j -m ' + sop.hash
+    call = hashid + ' -e -j -m ' + sop.hash
     out = subprocess.check_output(call, shell=True)
     out = out.decode()
     out = out.strip().splitlines()
@@ -157,8 +168,9 @@ def main():
     print('\t/_/ /_/\__,_/____/_/ /_/___/_____/    ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    global program
-    program = comm.checkInstalledFull('hashid', 'hashID', 'hashid.py')
+    global hashid
+    hashid = comm.checkInstalledFull(HASHID_SYM, HASHID_GITNAME, HASHID_GITRUN)
+    print('')
     global sop
     # The parameters to be passed to the module on init
     if args.hashinput:

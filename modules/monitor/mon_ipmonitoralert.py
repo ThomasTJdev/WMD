@@ -11,21 +11,32 @@ import re
 import subprocess
 from datetime import datetime
 from time import sleep
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 
 
+# START Log files, global variables, etc.
 parser = argparse.ArgumentParser()
 parser.add_argument('-ip', '--lanip', help='IP\'s to monitor', metavar='IP')
 parser.add_argument('-ig', '--ignore', help='IP\'s to ignore', metavar='IP')
 parser.add_argument('-r', '--run', action='store_true', help='Start monitoring.')
 args, unknown = parser.parse_known_args()
 
-
-# START Log files, global variables, etc.
-
-
+config = core.config()
+global nmap
+NMAP_SYM = (config['TOOLS']['NMAP_SYM'])
+NMAP_GITNAME = (config['TOOLS']['NMAP_GITNAME'])
+NMAP_GITRUN = (config['TOOLS']['NMAP_GITRUN'])
 # END Log files, global variables, etc.
 
 
@@ -40,8 +51,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'Monitor IP\'s and alert for changes'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self, lanIP, time, ignore):
         self.lanIP = lanIP
@@ -115,7 +126,7 @@ def run():
         out = ''
         counter += 1
         hosts_now = ''
-        call = 'nmap -T5 -sP ' + ignore + sop.lanIP
+        call = nmap + ' -T5 -sP ' + ignore + sop.lanIP
         hosts = subprocess.check_output(call, shell=True)
         hosts = hosts.decode()
         hosts_now = hosts.strip().splitlines()
@@ -158,7 +169,7 @@ def hosts():
         ignore = ''
     print('')
     print('\t[*]  Please while scanning ' + sop.lanIP + '\n')
-    call = 'nmap -T5 -sP ' + ignore + sop.lanIP
+    call = nmap + ' -T5 -sP ' + ignore + sop.lanIP
     arptable = subprocess.check_output(call, shell=True)
     arptable = arptable.decode()
     arptable = arptable.strip().splitlines()
@@ -247,7 +258,8 @@ def main():
     print('  /___/_/      /_/ /_/ /_/\____/_/ /_/   ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalled('arp')
+    global nmap
+    nmap = comm.checkInstalledFull(NMAP_SYM, NMAP_GITNAME, NMAP_GITRUN)
     localIP = comm.getLocalIP('')
     print(bc.OKGREEN + '\t[+]  Local IP: ' + localIP[0] + bc.ENDC)
     print('')

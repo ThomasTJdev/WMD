@@ -47,6 +47,7 @@ sniff         |  Bettercap                     | sin        |  bettercap     |  
 socialeng     |  Instagram bot                 | instagram  |  instabot      |  Instagram bot for performing various activities (Arthur: LevPasha)
 spoof         |  ARP spoof                     | arp        |  arpspoof      |  Spoofing ARP
 sql           |  Gdork SQLi                    | sin        |  gdsqli        |  Scrape net for urls and check if they are prone to SQL injection
+system        |  Macchanger                    | mac        |  macc          |  Change your MAC address
 tools         |  Search hacktools              | search     |  searchht      |  Searchengine for hackingtools
 wifi          |  Create an Accesspoint         | accesspoint|  createap      |  Create an Accesspoint
 wifi          |  WiFi utils                    | wifi       |  wifiutils     |  Utilities for WiFi, e.g. deauth, WiFi's, clients, probes, etc.
@@ -141,6 +142,8 @@ Run `python3 wmd.py -a modulePathName.py`
 
 #### Internal code
 * cleanup getLocalIP (local_ip) in functions
+* Comment before and after imports for visual improvement
+* When using sym/gitrun to run external program, change variable from lower to CAPITAL
 
 #### Modules
 * browser_autopwn2 - msfconsole -x "use auxiliary/server/browser_autopwn2"

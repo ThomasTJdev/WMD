@@ -5,13 +5,26 @@
 
 
 import os
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 
 
 # START Log files, global variables, etc.
-gitPath = 'tools/Admin-Finder'
+config = core.config()
+global adminfinder
+ADMINFINDER_SYM = (config['TOOLS']['ADMINFINDER_SYM'])
+ADMINFINDER_GITNAME = (config['TOOLS']['ADMINFINDER_GITNAME'])
+ADMINFINDER_GITRUN = (config['TOOLS']['ADMINFINDER_GITRUN'])
 # END Log files, global variables, etc.
 
 
@@ -26,8 +39,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'A Simple script to find admin-paths for webpages. (Arthur: Spaddex)'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self):
         self.show_all()
@@ -75,7 +88,7 @@ class options():
 
 
 def run():
-    os.system('python3 tools/Admin-Finder/AdminFinder.py')
+    os.system('python3 ' + adminfinder)
 
 
 # CONSOLE
@@ -110,7 +123,8 @@ def main():
     print('                                 /____/            ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalledGit(gitPath)
+    global adminfinder
+    adminfinder = comm.checkInstalledFull(ADMINFINDER_SYM, ADMINFINDER_GITNAME, ADMINFINDER_GITRUN)
     print('')
     global sop
     sop = options()

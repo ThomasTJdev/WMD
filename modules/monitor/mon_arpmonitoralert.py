@@ -7,20 +7,31 @@ import argparse
 import subprocess
 from datetime import datetime
 from time import sleep
-from core.colors import bc as bc
-import core.modules as cmodules
-import core.commands as comm
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
 
 
+# START Log files, global variables, etc.
 parser = argparse.ArgumentParser()
 parser.add_argument('-hwa', '--hwaddress', help='Router IP.', metavar='HWA')
 parser.add_argument('-r', '--run', action='store_true', help='Start monitoring.')
 args, unknown = parser.parse_known_args()
 
-
-# START Log files, global variables, etc.
-
-
+config = core.config()
+global arpprogram
+ARP_SYM = (config['TOOLS']['ARP_SYM'])
+ARP_GITNAME = (config['TOOLS']['ARP_GITNAME'])
+ARP_GITRUN = (config['TOOLS']['ARP_GITRUN'])
 # END Log files, global variables, etc.
 
 
@@ -35,8 +46,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'Monitor ARP table and alert for changes'
-    Datecreation = '01/01/2017'
-    Lastmodified = '01/01/2017'
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
 
     def __init__(self, hwa, time):
         self.hwa = hwa
@@ -102,7 +113,7 @@ def run():
     counter = 0
     while True:
         counter += 1
-        call = 'arp -v'
+        call = arpprogram + ' -v'
         arptable = subprocess.check_output(call, shell=True)
         arptable = arptable.decode()
         arptable = arptable.strip().splitlines()
@@ -146,7 +157,7 @@ def run():
 
 def hosts():
     print('')
-    call = 'arp -v'
+    call = arpprogram + ' -v'
     arptable = subprocess.check_output(call, shell=True)
     arptable = arptable.decode()
     arptable = arptable.strip().splitlines()
@@ -216,7 +227,8 @@ def main():
     print('  /_/  |_/_/ |_/_/      /_/ /_/ /_/\____/_/ /_/   ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalled('arp')
+    global arpprogram
+    arpprogram = comm.checkInstalledFull(ARP_SYM, ARP_GITNAME, ARP_GITRUN)
     print('')
     global sop
     # The parameters to be passed to the module on init

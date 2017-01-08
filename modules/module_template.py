@@ -22,7 +22,7 @@ except:
 # Parser
 parser = argparse.ArgumentParser()
 # parser.add_argument('-ip', '--lanip', help='IP to monitor', metavar='IP') # Example. Use with "args.lanip"
-parser.add_argument('-r', '--run', action='store_true', help='Start monitoring.')
+parser.add_argument('-r', '--run', action='store_true', help='Start monitoring')
 args, unknown = parser.parse_known_args()
 
 # Core

