@@ -1,5 +1,7 @@
 **/__pycache__
 backup
+working
+knowledge
 !logs/.gitkeep
 logs/*
 !tmp/.gitkeep

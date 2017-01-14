@@ -46,8 +46,8 @@ class options():
     Version = '0.1'
     License = 'MIT'
     Description = 'Showing structure of modules'
-    Datecreation = '2017/01/01'
-    Lastmodified = '2017/01/01'
+    Datecreation = '2017/02/01'
+    Lastmodified = '2017/02/01'
 
     def __init__(self, req_var1, req_var2):
         self.req_var1 = req_var1

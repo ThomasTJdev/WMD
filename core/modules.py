@@ -145,7 +145,7 @@ def showModules():
     print('\n')
     print('%-*s %s%s' % (5, '', bc.FAIL, '## MODULES ##'))
     print('')
-    print('%-*s%s %-*s %-*s %-*s %-*s %s %s' % (5, '', bc.FAIL, 15, 'CAT:', 15, 'CALL:', 30, 'NAME:', 12, 'TYPE:', 'DESCRIPTION:', bc.ENDC))
+    print('%-*s%s %-*s %-*s %-*s %-*s %s %s' % (5, '', bc.FAIL, 15, 'CAT:', 12, 'TYPE:', 15, 'CALL:', 30, 'NAME:', 'DESCRIPTION:', bc.ENDC))
     default_data = {}
     for child in root.findall('module'):
         name = child.get('name')
@@ -161,7 +161,8 @@ def showModules():
         if b != type:
             print('%-*s %-*s' % (5, '', 40, '---------------------------------------------------------------------------------------------------------------------------------'))
             type = b
-        print('%-*s %-*s %s%-*s %s%-*s %-*s %s %s' % (5, '', 15, b, bc.BOLD, 15, d, bc.ENDC, 30, a, 12, c, e, bc.ENDC))
+        #print('%-*s %-*s %s%-*s %s%-*s %-*s %s %s' % (5, '', 15, b, bc.BOLD, 15, d, bc.ENDC, 30, a, 12, c, e, bc.ENDC))
+        print('%-*s %-*s %-*s %s%-*s %s%-*s %s %s' % (5, '', 15, b, 12, c, bc.BOLD, 15, d, bc.ENDC, 30, a, e, bc.ENDC))
     print('\n')
 
 

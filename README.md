@@ -15,7 +15,7 @@ Your environment settings is in core/config.ini. Please adjust them before runni
 
 ## Web menu
 
-Run the command "www" from the console to activate a Flask server showing the modules in your browser. Acces it from: 127.0.0.1:5000.
+Run the command "www" from the console to activate a Flask server showing the modules in your browser. Access it from: 127.0.0.1:5000.
 
 **Screenshot:**
 ![WMD WWW](screenshots/www.png)
@@ -136,6 +136,8 @@ Run `python3 wmd.py -a modulePathName.py`
 * Change checkInstalled to checkInstalledFull for compability
 * Check that there are enough credit to arthurs of tools, repos, etc.
 * Split updatetools into local tools vs git
+* When adding modules strip <> to ensuring XML format
+* Change behavior of install and update tools
 
 #### core/tools.py
 * Do a run through config.ini and extract names for the updatecommand instead of DRY in two functions
@@ -146,7 +148,6 @@ Run `python3 wmd.py -a modulePathName.py`
 * When using sym/gitrun to run external program, change variable from lower to CAPITAL
 
 #### Modules
-* browser_autopwn2 - msfconsole -x "use auxiliary/server/browser_autopwn2"
 * sqlmap
 * http sniff pwd
 * monitor network auto

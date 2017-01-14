@@ -38,7 +38,7 @@ class options():
     Type = 'framework'  # sin = single action/program, aut = multiple programs combined for attack
     Version = '0.1'
     License = 'MIT'
-    Description = 'Framework for routers wiht exploits and getting creds. (Arthur: Reverse Shell Security)'
+    Description = 'Framework for routers with exploits and getting creds. (Arthur: Reverse Shell Security)'
     Datecreation = '2017/01/01'
     Lastmodified = '2017/01/01'
 

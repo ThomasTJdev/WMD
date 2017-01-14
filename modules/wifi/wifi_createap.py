@@ -26,7 +26,7 @@ config.read('core/config.ini')
 
 
 # VARIABLES
-CREATEAP = (config['TOOLS']['CREATEAP_SYM'])
+CREATEAP_SYM = (config['TOOLS']['CREATEAP_SYM'])
 INTERFACE_NET = (config['NETWORK']['INTERFACE_NET'])
 INTERFACE_MON = (config['NETWORK']['INTERFACE_MON'])
 # END VARIABLES
@@ -115,10 +115,11 @@ class options():
 # RUN BETTERCAP
 def run():
     # Start the AP
-    command = (CREATEAP + ' ' + sop.int_mon + ' ' + sop.int_net + ' ' + sop.name)
+    command = (CREATEAP_SYM + ' ' + sop.int_mon + ' ' + sop.int_net + ' ' + sop.name)
 
-    if.sop_gateway:
-        command + ' -g ' + sop.gateway
+    if sop.gateway:
+        command += ' -g ' + sop.gateway
+
     if sop.mode:
         command += ' -m ' + sop.mode
 
@@ -140,7 +141,7 @@ def run():
     if sop.daemon == 'y':
         os.system(command)
     else:
-        comm.runCommand(command, 'Create_AP')
+        comm.runCommand2(command, 'Create_AP')
 # END
 
 
@@ -223,7 +224,7 @@ def main():
         return None
     print('\n')
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    comm.checkInstalled(CREATEAP)
+    comm.checkInstalled(CREATEAP_SYM)
     comm.checkNetConnectionV()
     print('\n')
     gateway = comm.getGateway()
