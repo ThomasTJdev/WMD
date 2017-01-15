@@ -21,36 +21,38 @@ Run the command "www" from the console to activate a Flask server showing the mo
 ![WMD WWW](screenshots/www.png)
 
 ## Modules
+CAT:            | TYPE:        | CALL:           | NAME:                          | DESCRIPTION: 
+---------------------------------------------------------------------------------------------------------------------------------
+bruteforce      | loginpath    | adminfinder     | Admin Finder                   | A Simple script to find admin-paths for webpages. (Arthur: Spaddex) 
+bruteforce      | rar          | bfrar           | BF RAR                         | Bruteforce a RAR file 
+bruteforce      | ssh          | bfssh           | Bruteforce SSH                 | Bruteforce SSH login 
+bruteforce      | web          | bfweb           | Bruteforce weblogin form       | Bruteforce a weblogin form with word- and passlist 
+bruteforce      | zip          | bfzip           | BF ZIP                         | Bruteforce a ZIP file 
+cracking        | aut          | john            | John the Ripper                | As you know - kill the hash 
+cracking        | hash         | hashid          | Identify hash                  | Identify a hash 
+cracking        | wpa          | crackwpa        | Crack WPA 4-way handshake      | Gather WPA 4-way handshake from accesspoint and crack it 
+exploit         | browser      | browserpwn      | Browser Autopwn2               | This module will automatically serve browser exploits (Arthur: sinn3r[at]metasploit.com) 
+exploit         | search       | exploitdb       | Exploitdb                      | Shell-style script to search exploit-db.com exploits. (Arthur: mattoufoutu) 
+mail            | sin          | mspoofcheck     | Spoofcheck email domain        | Check if a domain can be spoofed for e.g. emailing 
+monitor         | arp          | arpmon          | ARP monitor alert              | Monitor ARP table and alert for changes 
+monitor         | ip           | ipmon           | IP monitor alert               | Monitor IP's and alert for changes 
+other           | settings     | settings        | Change settings                | Change your environment settings, e.g. interface 
+recon           | dns          | dig             | Domain info groper             | Using dig command you can query DNS name servers for your DNS lookup related tasks 
+recon           | dns          | dnsmap          | dnsmap                         | DNS Network Mapper. Enumeration and bruteforcing. 
+recon           | dns          | dnsrecon        | dnsrecon                       | Multiple DNS recon abilities. 
+router          | framework    | rsploit         | Routersploit                   | Framework for routers with exploits and getting creds. (Arthur: Reverse Shell Security) 
+scan            | sin          | lanscan         | Lan scan                       | Scan local net - recon 
+sniff           | aut          | apsniff         | AP sniff                       | Create AP and sniff HTTPS and avoid HSTS + Beef 
+sniff           | http         | sniffhttp       | Sniff HTTP                     | Sniff HTTP packages. Extract username and passwords from traffic. 
+sniff           | sin          | bettercap       | Bettercap                      | Bettercap integration for sniffing packets and bypass HSTS and HTTPS 
+socialeng       | instagram    | instabot        | Instagram bot                  | Instagram bot for performing various activities (Arthur: LevPasha) 
+spoof           | arp          | arpspoof        | ARP spoof                      | Spoofing ARP 
+sql             | sin          | gdsqli          | Gdork SQLi                     | Scrape net for urls and check if they are prone to SQL injection 
+system          | mac          | macc            | Macchanger                     | Change your MAC address 
+tools           | search       | searchht        | Search hacktools               | Searchengine for hackingtools 
+wifi            | accesspoint  | createap        | Create an Accesspoint          | Create an Accesspoint 
+wifi            | wifi         | wifiutils       | WiFi utils                     | Utilities for WiFi, e.g. deauth, WiFi's, clients, probes, etc. 
 
-CATEGORY      | NAME                           | TYPE       | CALL           | DESCRIPTION
-------------- | ------------------------------ | ---------- | -------------- | --------------------------------------------------
-bruteforce    |  Admin Finder                  | loginpath  |  adminfinder   |  A Simple script to find admin-paths for webpages. (Arthur: Spaddex)
-bruteforce    |  BF RAR                        | rar        |  bfrar         |  Bruteforce a RAR file
-bruteforce    |  Bruteforce SSH                | ssh        |  bfssh         |  Bruteforce SSH login
-bruteforce    |  Bruteforce weblogin form      | web        |  bfweb         |  Bruteforce a weblogin form with word- and passlist
-bruteforce    |  BF ZIP                        | zip        |  bfzip         |  Bruteforce a ZIP file
-cracking      |  John the Ripper               | aut        |  john          |  As you know - kill the hash
-cracking      |  Identify hash                 | hash       |  hashid        |  Identify a hash
-cracking      |  Crack WPA 4-way handshake     | wpa        |  crackwpa      |  Gather WPA 4-way handshake from accesspoint and crack it
-exploit       |  Exploitdb                     | search     |  exploitdb     |  Shell-style script to search exploit-db.com exploits. (Arthur: mattoufoutu)
-mail          |  Spoofcheck email domain       | sin        |  mspoofcheck   |  Check if a domain can be spoofed for e.g. emailing
-monitor       |  ARP monitor alert             | arp        |  arpmon        |  Monitor ARP table and alert for changes
-monitor       |  IP monitor alert              | ip         |  ipmon         |  Monitor IP's and alert for changes
-other         |  Change settings               | settings   |  settings      |  Change your environment settings, e.g. interface
-recon         |  Domain info groper            | dns        |  dig           |  Using dig command you can query DNS name servers for your DNS lookup related tasks
-recon         |  dnsmap                        | dns        |  dnsmap        |  DNS Network Mapper. Enumeration and bruteforcing.
-recon         |  dnsrecon                      | dns        |  dnsrecon      |  Multiple DNS recon abilities.
-router        |  Routersploit                  | framework  |  rsploit       |  Framework for routers wiht exploits and getting creds. (Arthur: Reverse Shell Security)
-scan          |  Lan scan                      | sin        |  lanscan       |  Scan local net - recon
-sniff         |  AP sniff                      | aut        |  apsniff       |  Create AP and sniff HTTPS and avoid HSTS + Beef
-sniff         |  Bettercap                     | sin        |  bettercap     |  Bettercap integration for sniffing packets and bypass HSTS and HTTPS
-socialeng     |  Instagram bot                 | instagram  |  instabot      |  Instagram bot for performing various activities (Arthur: LevPasha)
-spoof         |  ARP spoof                     | arp        |  arpspoof      |  Spoofing ARP
-sql           |  Gdork SQLi                    | sin        |  gdsqli        |  Scrape net for urls and check if they are prone to SQL injection
-system        |  Macchanger                    | mac        |  macc          |  Change your MAC address
-tools         |  Search hacktools              | search     |  searchht      |  Searchengine for hackingtools
-wifi          |  Create an Accesspoint         | accesspoint|  createap      |  Create an Accesspoint
-wifi          |  WiFi utils                    | wifi       |  wifiutils     |  Utilities for WiFi, e.g. deauth, WiFi's, clients, probes, etc.
 
 
 ## Run
@@ -129,7 +131,7 @@ Run `python3 wmd.py -a modulePathName.py`
 * Threading on all BF
 * Try/except on imports on modules for running with os.system
 * Add run command with : in modules
-* Create extractor for github markdown
+* ~~Create extractor for github markdown~~ <-- Manual implemented in modules.py. Uncomment lines when needed.
 * Add info about 'set para value' in modules (missing?!)
 * Regenerate modules.xml (loop through modules)
 * Design modules with core import and parser for design
@@ -138,6 +140,8 @@ Run `python3 wmd.py -a modulePathName.py`
 * Split updatetools into local tools vs git
 * When adding modules strip <> to ensuring XML format
 * Change behavior of install and update tools
+* Add invoke option inside all modules
+* All modules - change options to Options
 
 #### core/tools.py
 * Do a run through config.ini and extract names for the updatecommand instead of DRY in two functions
@@ -149,10 +153,11 @@ Run `python3 wmd.py -a modulePathName.py`
 
 #### Modules
 * sqlmap
-* http sniff pwd
+* ~~http sniff pwd~~ <-- Done
 * monitor network auto
 * xsser
 * target attack website or ip
 * system information
 * dns fake
 * grep, sed, awk
+* scapy on all network activity

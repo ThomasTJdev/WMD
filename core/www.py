@@ -16,12 +16,14 @@ fwDATE = (config['FRAMEWORK']['DATE'])
 
 
 def startWWW():
+    """Start the webserver."""
     modulesXML = cmodulesXML()
     modules = showModules(modulesXML)
     wmdflask.main(modules, fwVERSION)
 
 
 def showModules(root):
+    """Get the modules and make them HTML ready."""
     html = ''
 
     # Get data from modules.xml

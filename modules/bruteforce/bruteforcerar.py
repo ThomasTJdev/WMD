@@ -18,7 +18,7 @@ import core.commands as comm
 
 
 # OPTIONS
-class options():
+class Options():
     Author = 'Thomas TJ (TTJ)'
     Name = 'BF RAR'
     Call = 'bfrar'
@@ -70,16 +70,16 @@ class options():
     # Show all info
     def show_all(self):
         cmodules.showModuleData(
-            options.Author,
-            options.Name,
-            options.Call,
-            options.Category,
-            options.Type,
-            options.Version,
-            options.Description,
-            options.License,
-            options.Datecreation,
-            options.Lastmodified
+            Options.Author,
+            Options.Name,
+            Options.Call,
+            Options.Category,
+            Options.Type,
+            Options.Version,
+            Options.Description,
+            Options.License,
+            Options.Datecreation,
+            Options.Lastmodified
             )
         self.show_commands()
         self.show_opt()
@@ -130,7 +130,7 @@ def console():
             setattr(sop, useroption, uservalue)
             print('\n      ' + useroption + '\t> ' + uservalue + "\n")
     elif 'invoke' in userinput[:1]:
-        comm.invokeModule(options.Call)
+        comm.invokeModule(Options.Call)
         return None
     elif 'back' in userinput[:1] or 'exit' in userinput[:1]:
         return None
@@ -150,5 +150,5 @@ def main():
     print('')
     print('\n')
     global sop
-    sop = options('', 'files/pwd_john.txt', '8')
+    sop = Options('', 'files/pwd_john.txt', '8')
     console()

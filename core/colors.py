@@ -6,6 +6,8 @@
 
 # COLORFUL TEXT
 class bc:
+    """Colors to use all over WMDframe."""
+
     BRED        = '\033[41m'  # BACKGROUND RED
     BGREEN      = '\033[42m'  # BACKGROUND GREEN
     BYELLOW     = '\033[43m'  # BACKGROUND YELLOW

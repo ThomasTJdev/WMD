@@ -10,6 +10,7 @@ from logging.config import fileConfig
 
 
 def config():
+    """Load the config file."""
     config = configparser.ConfigParser()
     try:
         config.read('core/config.ini')
@@ -19,8 +20,9 @@ def config():
 
 
 def log():
+    """Load the logging config file."""
     try:
         fileConfig('core/config_logging.ini')
     except:
-        fileConfig('config_logging.ini')        
+        fileConfig('config_logging.ini')
     return logging.getLogger()

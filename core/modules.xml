@@ -224,4 +224,20 @@
 		<category>exploit</category>
 		<description>This module will automatically serve browser exploits (Arthur: sinn3r[at]metasploit.com)</description>
 	</module>
+	<module name="Sniff HTTP">
+		<call>sniffhttp</call>
+		<modulename>sniff_http</modulename>
+		<version>0.1</version>
+		<type>http</type>
+		<category>sniff</category>
+		<description>Sniff HTTP packages. Extract username and passwords from traffic.</description>
+	</module>
+	<module name="Webpage phishing">
+		<call>webphis</call>
+		<modulename>webpage_phishing</modulename>
+		<version>0.1</version>
+		<type>webpage</type>
+		<category>phishing</category>
+		<description>Run a local flask server with phishing pages.</description>
+	</module>
 </data>

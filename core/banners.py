@@ -97,6 +97,7 @@ banner3 = """
 
 
 def loadBanner():
+    """Load a random banner."""
     os.system('clear')
 
     randomBanner = random.randint(1, 3)

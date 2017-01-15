@@ -18,11 +18,13 @@ INSTALL_COMM = (config['ENVIRONMENT']['INSTALL_COMM'])
 
 
 def checkStart(SYM, GIT, GITNAME, ACTION):
+    """Start function to check weather a program is installed."""
     print('\t[*] Checking if ' + bc.BOLD + GITNAME + bc.ENDC + ' exists on system')
     checkSym(SYM, GIT, GITNAME, ACTION)
 
 
 def checkSym(SYM, GIT, GITNAME, ACTION):
+    """Check if executable is found on system."""
     if shutil.which(SYM) is None or not SYM:
         if GITNAME:
             print(bc.WARN + '\t[-] No symlink found for ' + SYM + '. Checking for git in tools/' + bc.ENDC)
@@ -41,6 +43,7 @@ def checkSym(SYM, GIT, GITNAME, ACTION):
 
 
 def checkGit(SYM, GIT, GITNAME, ACTION):
+    """Check if executable is found in git folder."""
     if not os.path.isdir('tools/' + GITNAME):
         print('\t[-] No repo found for ' + GITNAME)
         print(bc.OKGREEN + '\t[+]' + bc.ENDC + ' Cloning repo to tools\n')
@@ -54,7 +57,7 @@ def checkGit(SYM, GIT, GITNAME, ACTION):
 
 
 def clonegits(ACTION):
-
+    """Clone git repos."""
     # Admin-Finder
     SYM = (config['TOOLS']['ADMINFINDER_SYM'])
     GIT = (config['TOOLS']['ADMINFINDER_GIT'])

@@ -4,8 +4,6 @@
 #
 
 
-import configparser
-import logging
 import os
 import subprocess
 import shlex
@@ -15,10 +13,8 @@ import psutil
 import netifaces
 import random
 import requests
-import string
 from bs4 import BeautifulSoup
 from core.colors import bc as bc
-from logging.config import fileConfig
 import core.core as core
 
 
@@ -34,26 +30,30 @@ USERAGENTS = (config['FILES']['USERAGENTS'])
 
 
 def invokeModule(call):
+    """Open module in new xterm window."""
     logger.debug('Invoking module')
     subprocess.Popen(['xterm', '-T', 'Module: ' + call, '-bg', 'black', '-fg', 'white', '-geometry', '120x30+1280+0', '-e', 'python', 'wmd.py', '-m', call, '-q'])
 
 
-def runCommand(call, moduleName):
-    call = ('xterm -hold -T ' + moduleName + ' -bg black -fg white -geometry 120x30+1280+0 -e ' + call)
+def runCommand(call, module_name):
+    """Run command in new xterm window placed up right."""
+    call = ('xterm -hold -T ' + module_name + ' -bg black -fg white -geometry 120x30+1280+0 -e ' + call)
     args = shlex.split(call)
     logger.debug('Running os.system command: ' + call)
     subprocess.Popen(args)
 
 
-def runCommand2(call, moduleName):
-    call = ('xterm -hold -T ' + moduleName + ' -bg black -fg white -geometry 120x30+1280+1000 -e ' + call)
+def runCommand2(call, module_name):
+    """Run command in new xterm window placed down right."""
+    call = ('xterm -hold -T ' + module_name + ' -bg black -fg white -geometry 120x30+1280+1000 -e ' + call)
     args = shlex.split(call)
     logger.debug('Running os.system command: ' + call)
     subprocess.Popen(args)
 
 
-def runCommand3(call, moduleName):
-    call = ('xterm -hold -T ' + moduleName + ' -bg black -fg white -geometry 120x30+0+0 -e ' + call)
+def runCommand3(call, module_name):
+    """Run command in new xterm window placed up left."""
+    call = ('xterm -hold -T ' + module_name + ' -bg black -fg white -geometry 120x30+0+0 -e ' + call)
     args = shlex.split(call)
     logger.debug('Running os.system command: ' + call)
     print(str(args))
@@ -61,6 +61,18 @@ def runCommand3(call, moduleName):
 
 
 def checkInstalledFull(sym, gitname, gitrun):
+    """Check weather a program is installed on system or in GIT folder.
+
+    This function first checks weather the program is installed as an
+    executable on system. If it's not, the function will check the specified
+    git folder to find the executable.
+
+    If none of the above returns a positive result, "ERROR" will be returned.
+    If the aboe returns a positive result, the path to the executable will be returned.
+
+    Call to function should be formatted like this:
+    program = checkInstalledFull('hashid', 'hashID', 'hashid.py') <-- Symlink, Git_Folder_Name, File_To_Run_In_Git_Folder
+    """
     print('\t[*]  Checking ' + sym)
     if shutil.which(sym) is None:
         print(bc.FAIL + '\t[-]  ERR! ' + sym + ' not found as executable! Checking tools/ folder' + bc.ENDC)
@@ -76,6 +88,7 @@ def checkInstalledFull(sym, gitname, gitrun):
 
 
 def checkInstalledFullOpt(sym, gitname, gitrun):
+    """See the function checkInstalledFull(). This function just prints "optional"."""
     print('\t[*]  Checking ' + sym)
     if shutil.which(sym) is None:
         print(bc.WARN + '\t[-]  WARN! ' + sym + ' not found as executable! Checking tools/ folder.  Optional!' + bc.ENDC)
@@ -91,6 +104,7 @@ def checkInstalledFullOpt(sym, gitname, gitrun):
 
 
 def checkInstalled(program):
+    """Check if a program is installed as an executable."""
     print('\t[*]  Checking ' + program)
     if shutil.which(program) is None:
         print(bc.FAIL + '\t[-]  ERR! ' + program + ' not found as executable! Manual edit this moduel with the path or run the installtools from the main menu.' + bc.ENDC)
@@ -102,6 +116,7 @@ def checkInstalled(program):
 
 # Silent check
 def checkInstalledS(program):
+    """Check if a program is installed as an executable. Silent check."""
     if shutil.which(program) is None:
         print(bc.FAIL + '\t[-]  ERR! ' + program + ' not found as executable! Manual edit this moduel with the path or run the installtools from the main menu.' + bc.ENDC)
         return 'ERROR'
@@ -111,6 +126,7 @@ def checkInstalledS(program):
 
 
 def checkInstalledOpt(program):
+    """Check if a program is installed as an executable. Optional check."""
     print('\t[*]  Checking ' + program)
     if shutil.which(program) is None:
         print(bc.WARN + '\t[-]  WARN! ' + program + ' not found as executable! Optional..' + bc.ENDC)
@@ -121,6 +137,7 @@ def checkInstalledOpt(program):
 
 
 def checkInstalledGit(program):
+    """Check if a gitfolder exists."""
     print('\t[*]  Checking ' + program)
     if not os.path.isdir(program):
         print(bc.FAIL + '\t[-]  ERR! ' + program + ' not found! Manual edit this scripts with path or install.' + bc.ENDC)
@@ -131,6 +148,7 @@ def checkInstalledGit(program):
 
 
 def checkNetConnectionV():
+    """Check if there's a working network connection. Verbose."""
     # Header request for net connectivity
     print(bc.ENDC + "\t[*]  Checking network connection" + bc.ENDC)
     conn = http.client.HTTPConnection("www.microsoft.com", 80)
@@ -144,6 +162,7 @@ def checkNetConnectionV():
 
 
 def checkNetConnection():
+    """Check if there's a working network connection. Silent."""
     # Header request for net connectivity
     conn = http.client.HTTPConnection("www.microsoft.com", 80)
     try:
@@ -156,6 +175,7 @@ def checkNetConnection():
 
 
 def checkNetVPNV():
+    """Check if there's a working VPN connection. Verbose."""
     # Checking for VPN interfaces
     INTERFACE_VPN = (config['NETWORK']['INTERFACE_VPN'])
     print(bc.ENDC + '\t[*]  Checking if VPN connection is active' + bc.ENDC)
@@ -169,6 +189,7 @@ def checkNetVPNV():
 
 
 def checkTorV():
+    """Check if there's a working TOR connection. Verbose."""
     # Check if current connections goes through Tor
     print(bc.ENDC + '\t[*]  Checking if TOR connection is active' + bc.ENDC)
     publicIP = getPublicIP()
@@ -190,6 +211,7 @@ def checkTorV():
 
 
 def getInterfaces():
+    """Get all network interfaces."""
     interfaces = subprocess.getoutput("netstat -i | awk '{print $1}'")
     interfaces = str(interfaces)
     interfaces = interfaces.replace("\n", ",")
@@ -204,6 +226,7 @@ def getInterfaces():
 
 
 def getPublicIP():
+    """Get users public IP. Silent."""
     try:
         url = 'http://ipinfo.io/ip'
         try:
@@ -221,6 +244,7 @@ def getPublicIP():
 
 
 def getPublicIPV():
+    """Get users public IP. Verbose."""
     try:
         url = 'http://ipinfo.io/ip'
         try:
@@ -239,7 +263,11 @@ def getPublicIPV():
 
 
 def getLocalIP(interface):
-    # Pass interface if known, else just ''. For accessing IP use: local_ip[0]
+    """Get users local ip.
+
+    Pass interface if known, else just parse empty ''.
+    For accessing IP use: local_ip[0]
+    """
     ip = ''
     try:
         ip = netifaces.ifaddresses(interface)[2][0]['addr']
@@ -259,7 +287,7 @@ def getLocalIP(interface):
 
 
 def getLocalIP_interface():
-    # Pass interface if known, else just ''. For accessing IP use: local_ip[0]
+    """Get local IP with interface from CONFIG (config.ini). Silent."""
     INTERFACE_NET = (config['NETWORK']['INTERFACE_NET'])
     try:
         ip = netifaces.ifaddresses(INTERFACE_NET)[2][0]['addr']
@@ -270,7 +298,7 @@ def getLocalIP_interface():
 
 
 def getLocalIP_interfaceV():
-    # Pass interface if known, else just ''. For accessing IP use: local_ip[0]
+    """Print local IP with interface from CONFIG (config.ini). Verbose."""
     INTERFACE_NET = (config['NETWORK']['INTERFACE_NET'])
     try:
         ip = netifaces.ifaddresses(INTERFACE_NET)[2][0]['addr']
@@ -282,14 +310,19 @@ def getLocalIP_interfaceV():
 
 
 def getGateway():
+    """Get gateway address."""
     gws = netifaces.gateways()
     gateway = gws['default'][netifaces.AF_INET]
     logger.debug('Returning gateway')
     return gateway[0]
 
 
-def getRandomProxy(connType):
-    # connType = HTTP or HTTPS
+def getRandomProxy(conn_type):
+    """Get random proxy from list.
+
+    conn_type should be set to either HTTP or HTTPS.
+    Proxylist is defined in CONFIG (config.ini).
+    """
     uas = []
     with open(PROXYLIST, 'r') as uaf:
         for ua in uaf.readlines():
@@ -298,7 +331,7 @@ def getRandomProxy(connType):
     random.shuffle(uas)
     proxy = random.choice(uas)
     proxy = proxy.strip('\n')
-    proxy = {connType.lower(): proxy}
+    proxy = {conn_type.lower(): proxy}
     try:
         r1 = requests.get('https://www.google.com', proxies=proxy, timeout=5)
         # r2 = BeautifulSoup(r1.text, 'html.parser')
@@ -317,12 +350,16 @@ def getRandomProxy(connType):
     except:
         print('\tError' + str(proxy))
 
-    getRandomProxy(connType)
+    getRandomProxy(conn_type)
 
 
-def getRandomProxyUserlist(connType, uproxyfile):
-    # connType = HTTP or HTTPS
-    # uproxyfile = file containing proxies in this format url:port
+def getRandomProxyUserlist(conn_type, uproxyfile):
+    """Get random proxy from list.
+
+    conn_type should be set to either HTTP or HTTPS.
+    Proxylist is defined with: uproxyfile
+    The list (uproxyfile) shall contain the proxies in the format url:port.
+    """
     uas = []
     with open(uproxyfile, 'r') as uaf:
         for ua in uaf.readlines():
@@ -331,7 +368,7 @@ def getRandomProxyUserlist(connType, uproxyfile):
     random.shuffle(uas)
     proxy = random.choice(uas)
     proxy = proxy.strip('\n')
-    proxy = {connType.lower(): proxy}
+    proxy = {conn_type.lower(): proxy}
     try:
         r1 = requests.get('https://www.google.com', proxies=proxy, timeout=5)
         # r2 = BeautifulSoup(r1.text, 'html.parser')
@@ -347,10 +384,11 @@ def getRandomProxyUserlist(connType, uproxyfile):
     except:
         print('\tError' + str(proxy))
 
-    getRandomProxy(connType, uproxyfile)
+    getRandomProxy(conn_type, uproxyfile)
 
 
 def getUserAgentHeader():
+    """Get random user agent."""
     uas = []
     with open(USERAGENTS, 'rb') as uaf:
         for ua in uaf.readlines():
@@ -363,12 +401,14 @@ def getUserAgentHeader():
 
 
 def getMac():
+    """Get MAC address."""
     addrs = netifaces.ifaddresses('eno1')
     maca = addrs[netifaces.AF_LINK][0]['addr']
     return maca
 
 
 def getNewMac(searchterm):
+    """Find a new MAC address based on user search criteria."""
     uas = []
     with open(MACS, 'rb') as uaf:
         for ua in uaf.readlines():
@@ -392,19 +432,30 @@ def getNewMac(searchterm):
 
 
 def findLineInFile(filename, searchterm):
+    """Find specific line in file.
+
+    filename = The name of the file.
+    searchterm = What the line needs to include.
+    """
     with open(filename, 'r') as file:
         for line in file.readlines():
             if line and searchterm in line:
                 return line
 
 
-def changeLineInFile(filename, oldText, newText):
+def changeLineInFile(filename, old_text, new_text):
+    """Change specific line in file if line match.
+
+    filename = The name of the file.
+    old_text = The current line in file (to be replaced).
+    new_text = The new line (replace with).
+    """
     filenameTmp = (filename + '.tmp')
     orgText = None
     with open(filename, 'r') as input_file, open(filenameTmp, 'w') as output_file:
         for line in input_file:
-            if line.strip() == str(oldText):
-                output_file.write(str(newText) + '\n')
+            if line.strip() == str(old_text):
+                output_file.write(str(new_text) + '\n')
                 orgText = line.strip()
             else:
                 output_file.write(line)
@@ -412,14 +463,18 @@ def changeLineInFile(filename, oldText, newText):
     return orgText
 
 
-# Changes line in file based on the first in newText
-def changeLineInFileFirstWord(filename, newText):
+def changeLineInFileFirstWord(filename, new_text):
+    """Change specific line in file if first word match.
+
+    filename = The name of the file.
+    new_text = The new line (replace with).
+    """
     filenameTmp = (filename + '.tmp')
     orgText = None
     with open(filename, 'r') as input_file, open(filenameTmp, 'w') as output_file:
         for line in input_file:
-            if line.strip().startswith(str(newText.split()[:1]).strip('[]\'')):
-                output_file.write(str(newText) + '\n')
+            if line.strip().startswith(str(new_text.split()[:1]).strip('[]\'')):
+                output_file.write(str(new_text) + '\n')
                 orgText = line.strip()
             else:
                 output_file.write(line)

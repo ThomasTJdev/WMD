@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 #
 # MIT - (c) 2016 ThomasTJ (TTJ)
+#
 # Module for WMDframe
+# Monitor ARP table and alert when duplicates are found.
+
 
 import argparse
 import subprocess
