@@ -221,6 +221,7 @@ def main():
         sleep(1.5)
     if args.www:
         banner()
+        print('\tVisit http://0.0.0.0:5000')
         cwww.startWWW()
         return None
     if not args.quite:

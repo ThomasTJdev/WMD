@@ -22,7 +22,7 @@ Run the command "www" from the console to activate a Flask server showing the mo
 
 ## Modules
 CAT:            | TYPE:        | CALL:           | NAME:                          | DESCRIPTION: 
----------------------------------------------------------------------------------------------------------------------------------
+----------------|--------------|-----------------|--------------------------------|----------------------------------------------
 bruteforce      | loginpath    | adminfinder     | Admin Finder                   | A Simple script to find admin-paths for webpages. (Arthur: Spaddex) 
 bruteforce      | rar          | bfrar           | BF RAR                         | Bruteforce a RAR file 
 bruteforce      | ssh          | bfssh           | Bruteforce SSH                 | Bruteforce SSH login 
