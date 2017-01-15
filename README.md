@@ -37,6 +37,8 @@ mail            | sin          | mspoofcheck     | Spoofcheck email domain      
 monitor         | arp          | arpmon          | ARP monitor alert              | Monitor ARP table and alert for changes 
 monitor         | ip           | ipmon           | IP monitor alert               | Monitor IP's and alert for changes 
 other           | settings     | settings        | Change settings                | Change your environment settings, e.g. interface 
+phishing        | ap           | etphis          | Ewil Twin phishing             | Create a Evil Twin and redirect user to fake password page. 
+phishing        | webpage      | webphis         | Webpage phishing               | Run a local flask server with phishing pages. 
 recon           | dns          | dig             | Domain info groper             | Using dig command you can query DNS name servers for your DNS lookup related tasks 
 recon           | dns          | dnsmap          | dnsmap                         | DNS Network Mapper. Enumeration and bruteforcing. 
 recon           | dns          | dnsrecon        | dnsrecon                       | Multiple DNS recon abilities. 

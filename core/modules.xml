@@ -240,4 +240,12 @@
 		<category>phishing</category>
 		<description>Run a local flask server with phishing pages.</description>
 	</module>
+	<module name="Ewil Twin phishing">
+		<call>etphis</call>
+		<modulename>et_phishing</modulename>
+		<version>0.1</version>
+		<type>ap</type>
+		<category>phishing</category>
+		<description>Create a Evil Twin and redirect user to fake password page.</description>
+	</module>
 </data>

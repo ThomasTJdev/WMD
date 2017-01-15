@@ -141,8 +141,8 @@ def wifi():
 
 def clients():
     print('')
-    i_bssid = sop.bssid
-    i_channel = sop.channel
+    i_bssid = ''
+    i_channel = ''
     print('\n\t[!]  Insert the BSSID and channel for target')
     while not i_bssid:
         i_bssid = input('     -> ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'insert BSSID:' + bc.ENDC + ' ')
@@ -157,9 +157,9 @@ def clients():
 
 def clientslog():
     print('')
-    i_bssid = sop.bssid
-    i_channel = sop.channel
-    i_logfile = sop.logfile
+    i_bssid = ''
+    i_channel = ''
+    i_logfile = ''
     if i_logfile:
         print('\t[*]  Using logfile:' + str(i_logfile))
     print('\n\t[!]  Insert the BSSID and channel for target')
@@ -178,8 +178,8 @@ def clientslog():
 
 def deauth():
     print('')
-    i_bssid = sop.bssid
-    i_client = sop.client
+    i_bssid = ''
+    i_client = ''
     print('\n\t[!]  Insert the BSSID and channel for target')
     while not i_bssid:
         i_bssid = input('     -> ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'insert BSSID:' + bc.ENDC + ' ')

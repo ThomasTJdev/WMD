@@ -195,7 +195,8 @@ def run():
 def info():
     """Show the modules info - optional."""
     print("""
-        Module for use in WMDframe.""")
+        Module for use in WMDframe.
+        """)
 
     if parser.format_help():
         print('\n\t' + bc.OKBLUE + 'COMMANDLINE ARGUMENTS:' + bc.ENDC)
@@ -207,7 +208,7 @@ def info():
 # CONSOLE
 def console():
     """The main console for the module."""
-    value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'tmpmod:' + bc.ENDC + ' ')
+    value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'webphis:' + bc.ENDC + ' ')
     userinput = value.split()
     if 'so' in userinput[:1]:
         sop.show_opt()
@@ -265,4 +266,4 @@ if args.run:
 
 
 # For testing uncomment "main()" and run module with "python3 modulename.py"
-main()
+# main()

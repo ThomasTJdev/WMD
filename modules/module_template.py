@@ -257,9 +257,9 @@ def main():
     print('\n')
     # If module require root:
     # if os.getuid() != 0:
-    #    print('r00tness is needed due to XXX!')
-    #    print('Run the script again as root/sudo')
-    #    return None
+    #     print('r00tness is needed due to XXX!')
+    #     print('Run the script again as root/sudo')
+    #     return None
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
     # comm.checkNetConnectionV()
     # print('')
