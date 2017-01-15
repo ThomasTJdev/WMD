@@ -32,6 +32,7 @@ args = parser.parse_args()
 
 
 def firstRun():
+    """Create required folders if they do not exists."""
     if not os.path.isdir('logs'):
         print(bc.OKGREEN + '\t[+]' + bc.ENDC + ' Creating logs folder\n')
         os.system('mkdir logs')
@@ -43,14 +44,19 @@ def firstRun():
         os.system('mkdir tools')
 
 
-
 def currPath():
+    """Getting the current directory path.
+
+    If a module changes directory path, this makes it
+    possible to get back to root directory.
+    """
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     return dname
 
 
 def timeSinceUpdate():
+    """Check when the tools in /tools was last updated using WMDframe."""
     try:
         with open('logs/lasttoolupdate.txt', 'r') as f:
             timeString = f.read()
@@ -64,6 +70,7 @@ def timeSinceUpdate():
 
 
 def updatetools():
+    """Update the tools in /tools."""
     print('')
     gitinstalled = comm.checkInstalled('git')
     print('')
@@ -75,6 +82,7 @@ def updatetools():
 
 
 def installtools():
+    """Install the tools in /tools."""
     print('')
     gitinstalled = comm.checkInstalled('git')
     print('')
@@ -88,6 +96,7 @@ def installtools():
 
 
 def runModule():
+    """Run a module when using the args flag -m/--module without using the WMDframe console."""
     module = cmodules.loadModule(str(args.module))
     try:
         print(' ')
@@ -102,6 +111,7 @@ def runModule():
 
 
 def usemodule(userinput):
+    """Use a module (run) inside the WMDframe."""
     module = cmodules.loadModule(str(userinput[1:2]))
     try:
         print(' ')
@@ -115,32 +125,34 @@ def usemodule(userinput):
 
 
 def welcome():
+    """Welcome message."""
     banner()
     showCommands()
 
 
 def showCommands():
+    """Show the main commands in the WMDframe console."""
     print(
-        "\n"
-        + "   " + bc.OKBLUE + "COMMANDS:" + bc.ENDC
-        + "\n   " + "---------"
-        + "\n   " + ("%-*s ->\t%s" % (15, "fm", "Show info"))
-        + "\n   " + ("%-*s ->\t%s" % (15, "so", "Show options"))
-        + "\n   " + ("%-*s ->\t%s" % (15, "sm", "Show modules"))
-        + "\n   " + ("%-*s ->\t%s" % (15, "www", "Start webserver menu"))
-        + "\n   " + ("%-*s ->\t%s" % (15, "use [module]", "Run the script"))
-        + "\n   " + ("%-*s ->\t%s" % (15, "invoke [module]", "Open module in new xterm"))
-        + "\n   " + ("%-*s ->\t%s" % (15, "updatetools", "Clone/Install and update tools from local repo and git repos"))
-        + "\n   " + ("%-*s ->\t%s" % (15, "installtools", "Clone/Install tools from local repo and git repos"))
-        + "\n   " + ("%-*s ->\t%s" % (15, ":[command]", "Run shell commands from within the WMD"))
-        + "\n   " + ("%-*s ->\t%s" % (15, "exit", "Exit"))
-        + "\n"
-        )
+        '\n' +
+        '   ' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC +
+        '\n   ' + '---------' +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'fm', 'Show info')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'so', 'Show options')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'sm', 'Show modules')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'www', 'Start webserver menu')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'use [module]', 'Run the script')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'invoke [module]', 'Open module in new xterm')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'updatetools', 'Clone/Install and update tools from local repo and git repos')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'installtools', 'Clone/Install tools from local repo and git repos')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, ':[command]', 'Run shell commands from within the WMD')) +
+        '\n   ' + ('%-*s ->\t%s' % (15, 'exit', 'Exit')) +
+        '\n')
 
 
 # CONSOLE
 def console(path):
-    value = input("  " + bc.FAIL + "wmd" + bc.ENDC + "@" + bc.FAIL + "console:" + bc.ENDC + " ")
+    """The main console for interaction with the user."""
+    value = input('  ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'console:' + bc.ENDC + ' ')
     userinput = value.split()
     if 'fm' in userinput[:1]:
         welcome()
@@ -174,8 +186,8 @@ def console(path):
 # END CONSOLE
 
 
-# Capture Ctrl+c and exit
 def sigint_handler(signum, frame):
+    """Capture Ctrl+c from user."""
     try:
         console()
     except:
@@ -184,6 +196,7 @@ def sigint_handler(signum, frame):
 
 
 def main():
+    """Main function to run."""
     firstRun()
     if args.add:
         cmodules.addModule(args.add)
@@ -221,5 +234,7 @@ def main():
     console(path)
 
 
-signal.signal(signal.SIGINT, sigint_handler)    # Capture Ctrl+c and exit
+# Start to monitor users Ctrl+c
+signal.signal(signal.SIGINT, sigint_handler)
+# Run main
 main()
