@@ -146,7 +146,8 @@ def showCommands():
         '\n   ' + ('%-*s ->\t%s' % (15, 'installtools', 'Clone/Install tools from local repo and git repos')) +
         '\n   ' + ('%-*s ->\t%s' % (15, ':[command]', 'Run shell commands from within the WMD')) +
         '\n   ' + ('%-*s ->\t%s' % (15, 'exit', 'Exit')) +
-        '\n')
+        '\n'
+    )
 
 
 # CONSOLE
