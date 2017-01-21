@@ -5,10 +5,10 @@ This is a python tool with a collection of IT security software. The software is
 
 ## Main functions
 
-To use a module, run the command "use [module_call]", e.g. "use apsniff", to activate the module.  
-The modules options can be changed with "set [parameter] [value]".  
-Inside the modules, you always have the possibilty to view the options with the command "so".  
-Your environment settings is in core/config.ini. Please adjust them before running.
+1) To use a module, run the command "use [module_call]", e.g. "use apsniff", to activate the module.  
+2) The modules options can be changed with "set [parameter] [value]".  
+3) Inside the modules, you always have the possibilty to view the options with the command "so".  
+4)Your environment settings is in core/config.ini. Please adjust them before running.
 
 **Screenshot:**
 ![WMD MAIN](screenshots/wmdframe2.png)
@@ -69,6 +69,9 @@ Start a single module:
 
 Start webserver:
 `python3 wmd.py -w`
+
+Start without checking requirements:
+`python3 wmd.py -nc`
 
 ## Requirements
 
