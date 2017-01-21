@@ -77,6 +77,18 @@ def setDeviceMon(interface_mon, channel):
         return command
 
 
+def setDeviceMonOS(interface_mon, channel):
+    """Set device in monitoring mode. Optional: Specify channel."""
+    os.system('ifconfig ' + interface_mon + ' down')
+    os.system('iwconfig ' + interface_mon + ' mode managed')
+    os.system('ifconfig ' + interface_mon + ' up')
+    os.system('iwconfig ' + interface_mon + ' channel 9')
+    os.system('ifconfig ' + interface_mon + ' down')
+    os.system('iwconfig ' + interface_mon + ' mode monitor')
+    os.system('ifconfig ' + interface_mon + ' up')
+    return None
+
+
 def showWifis(interface_mon):
     """Return a command for scanning and show wifis."""
     if comm.checkInstalledS(AIRODUMPNG_SYM) != 'ERROR':

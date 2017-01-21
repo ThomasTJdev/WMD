@@ -144,6 +144,8 @@ Run `python3 wmd.py -a modulePathName.py`
 * Change behavior of install and update tools
 * Add invoke option inside all modules
 * All modules - change options to Options
+* Split files folder up into lists, etc
+* Core network and wifi - merged?
 
 #### core/tools.py
 * Do a run through config.ini and extract names for the updatecommand instead of DRY in two functions
@@ -163,3 +165,5 @@ Run `python3 wmd.py -a modulePathName.py`
 * dns fake
 * grep, sed, awk
 * scapy on all network activity
+* Evil Twin - deauth + info about unmanaging in NetworkManager
+* Admin finder - checkout google/bing search before BF

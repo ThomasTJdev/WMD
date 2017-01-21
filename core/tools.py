@@ -88,6 +88,12 @@ def clonegits(ACTION):
     GITNAME = (config['TOOLS']['CREATEAP_GITNAME'])
     checkStart(SYM, GIT, GITNAME, ACTION)
 
+    # crackmapexec
+    SYM = (config['TOOLS']['CRACKMAPEXEC_SYM'])
+    GIT = (config['TOOLS']['CRACKMAPEXEC_GIT'])
+    GITNAME = (config['TOOLS']['CRACKMAPEXEC_GITNAME'])
+    checkStart(SYM, GIT, GITNAME, ACTION)
+
     # dnsmap
     SYM = (config['TOOLS']['DNSMAP_SYM'])
     GIT = (config['TOOLS']['DNSMAP_GIT'])

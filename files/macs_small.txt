@@ -1,0 +1,90 @@
+00:11:22	Cimsys                 # CIMSYS Inc
+00:11:23	Appointe               # Appointech, Inc.
+00:11:24	Apple                  # Apple, Inc.
+FC:25:3F	Apple                  # Apple, Inc.
+FC:FC:48	Apple                  # Apple, Inc.
+00:11:25	Ibm                    # IBM Corp
+00:21:5E	Ibm                    # IBM Corp
+00:25:03	Ibm                    # IBM Corp
+00:50:76	Ibm                    # IBM Corp
+08:17:F4	Ibm                    # IBM Corp
+F8:5F:2A	Nokia                  # Nokia Corporation
+F8:62:14	Apple                  # Apple, Inc.
+F8:27:93	Apple                  # Apple, Inc.
+F8:1E:DF	Apple                  # Apple, Inc.
+F4:F5:24	Motorola               # Motorola Mobility LLC, a Lenovo Company
+F4:F5:A5	Nokia                  # Nokia Corporation
+F4:F5:D8	Google                 # Google, Inc.
+F4:F5:E8	Google                 # Google, Inc.
+F4:F6:46	Dediprog               # Dediprog Technology Co. Ltd.
+F4:F9:51	Apple                  # Apple, Inc.
+F4:8B:32	XiaomiCo               # Xiaomi Communications Co Ltd
+F4:8C:50	IntelCor               # Intel Corporate
+F4:5C:89	Apple                  # Apple, Inc.
+F0:DB:E2	Apple                  # Apple, Inc.
+F0:DB:F8	Apple                  # Apple, Inc.
+F0:DC:E2	Apple                  # Apple, Inc.
+98:D2:93	Google                 # Google, Inc.
+A4:77:33	Google                 # Google, Inc.
+F4:03:04	Google                 # Google, Inc.
+F4:F5:D8	Google                 # Google, Inc.
+F4:F5:E8	Google                 # Google, Inc.
+F8:8F:CA	Google                 # Google, Inc.
+00:1A:11	Google                 # Google, Inc.
+00:11:20	Cisco                  # Cisco Systems, Inc
+00:11:21	Cisco                  # Cisco Systems, Inc
+00:1A:2F	Cisco                  # Cisco Systems, Inc
+00:1A:30	Cisco                  # Cisco Systems, Inc
+FC:FB:FB	Cisco                  # Cisco Systems, Inc
+00:1A:6C	Cisco                  # Cisco Systems, Inc
+00:1A:6D	Cisco                  # Cisco Systems, Inc
+00:1A:A1	Cisco                  # Cisco Systems, Inc
+00:1A:A2	Cisco                  # Cisco Systems, Inc
+00:1B:2A	Cisco                  # Cisco Systems, Inc
+00:1B:2B	Cisco                  # Cisco Systems, Inc
+00:06:5B	Dell                   # Dell Inc.
+00:08:74	Dell                   # Dell Inc.
+00:12:3F	Dell                   # Dell Inc.
+00:1D:09	Dell                   # Dell Inc.
+00:23:AE	Dell                   # Dell Inc.
+14:FE:B5	Dell                   # Dell Inc.
+18:03:73	Dell                   # Dell Inc.
+90:84:2B	LegoSyst               # LEGO System A/S
+00:16:53	LegoSyst               # LEGO System A/S IE Electronics Division
+00:18:D1	SiemensH               # Siemens Home & Office Comm. Devices
+00:19:28	SiemensT               # Siemens AG, Transportation Systems
+00:1B:1B	Siemens                # Siemens AG
+00:1C:06	SiemensN               # Siemens Numerical Control Ltd., Nanjing
+00:1F:F8	SiemensS               # Siemens AG, Sector Industry, Drive Technologies, Motion Control Systems
+00:30:05	FujitsuS               # Fujitsu Siemens Computers
+00:50:07	SiemensT               # SIEMENS TELECOMMUNICATION SYSTEMS LIMITED
+00:90:40	SiemensN               # Siemens Network Convergence LLC
+00:A0:03	SiemensS               # Siemens Switzerland Ltd., I B T HVP
+20:87:56	Siemens                # SIEMENS AG
+20:E7:91	SiemensH               # Siemens Healthcare Diagnostics, Inc
+28:63:36	Siemens-               # Siemens AG - Industrial Automation - EWA
+40:EC:F8	Siemens                # Siemens AG
+44:86:C1	SiemensL               # Siemens Low Voltage & Products
+68:1F:D8	SiemensI               # Siemens Industry, Inc.
+5C:A8:6A	HuaweiTe               # HUAWEI TECHNOLOGIES CO.,LTD
+5C:B3:95	HuaweiTe               # HUAWEI TECHNOLOGIES CO.,LTD
+60:08:10	HuaweiTe               # HUAWEI TECHNOLOGIES CO.,LTD
+60:E7:01	HuaweiTe               # HUAWEI TECHNOLOGIES CO.,LTD
+64:A6:51	HuaweiTe               # HUAWEI TECHNOLOGIES CO.,LTD
+68:89:C1	HuaweiTe               # HUAWEI TECHNOLOGIES CO.,LTD
+B4:99:BA	HewlettP               # Hewlett Packard
+B4:B5:2F	HewlettP               # Hewlett Packard
+BC:EA:FA	HewlettP               # Hewlett Packard
+C4:34:6B	HewlettP               # Hewlett Packard
+C8:CB:B8	HewlettP               # Hewlett Packard
+C8:B5:AD	HewlettP               # Hewlett Packard Enterprise
+D4:C9:EF	HewlettP               # Hewlett Packard
+00:40:17	XcdXjet-	           # XCd XJet - HP printer server card
+00:50:29	1394Prin               # 1394 PRINTER WORKING GROUP
+D0:AE:EC	AlphaNet               # Alpha Networks Inc.
+D0:DF:B2	GenieNet               # Genie Networks Limited
+E0:26:36	NortelNe               # Nortel Networks
+E0:1C:41	Aerohive               # Aerohive Networks Inc.
+E0:56:F4	Axesnetw               # AxesNetwork Solutions inc.
+B8:50:01	ExtremeN               # Extreme Networks
+B4:39:D6	Procurve               # ProCurve Networking by HP
