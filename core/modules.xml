@@ -248,4 +248,12 @@
 		<category>phishing</category>
 		<description>Create a Evil Twin and redirect user to fake password page.</description>
 	</module>
+	<module name="SPARTA">
+		<call>sparta</call>
+		<modulename>pen_sparta</modulename>
+		<version>0.1</version>
+		<type>niptt</type>
+		<category>pentesting</category>
+		<description>SPARTA is a python GUI application which simplifies network infrastructure penetration testing.</description>
+	</module>
 </data>

@@ -37,6 +37,7 @@ mail            | sin          | mspoofcheck     | Spoofcheck email domain      
 monitor         | arp          | arpmon          | ARP monitor alert              | Monitor ARP table and alert for changes 
 monitor         | ip           | ipmon           | IP monitor alert               | Monitor IP's and alert for changes 
 other           | settings     | settings        | Change settings                | Change your environment settings, e.g. interface 
+pentesting      | niptt        | sparta          | SPARTA                         | SPARTA is a python GUI application which simplifies network infrastructure penetration testing.
 phishing        | ap           | etphis          | Ewil Twin phishing             | Create a Evil Twin and redirect user to fake password page. 
 phishing        | webpage      | webphis         | Webpage phishing               | Run a local flask server with phishing pages. 
 recon           | dns          | dig             | Domain info groper             | Using dig command you can query DNS name servers for your DNS lookup related tasks 
@@ -82,7 +83,7 @@ _**Before you run it, please adjust your environmentsettings in core/config.ini*
 * Python libraries requirements in **requirements.txt**
 
 **Optional tools/software/GIT:**   
-_modules which needs them will inform you about it and crash_
+_modules which needs them will inform you about it and just dont run.._
 * GIT: Admin-Finder
 * Aircrack-ng
 * Airomon-ng
@@ -92,16 +93,19 @@ _modules which needs them will inform you about it and crash_
 * Arpspoof
 * Beef
 * Bettercap
+* CrackMapExec
 * Create_ap
 * Dig
 * Dnsmap
 * GIT: Dnsrecon
 * GIT: Exploitdb
 * GIT: Hashid
+* Hostapd
 * GIT: Instabot
 * John the Ripper
 * Nmap
 * GIT: Routersploit
+* SPARTA
 * GIT: Spoofcheck
 * GIT: XSSER
 
@@ -129,8 +133,8 @@ Run `python3 wmd.py -a modulePathName.py`
 * Only python3 code
 * Code needs to follow pep8 flake8 (no need for linebreak)
 
-### Todo  
-#### Various  
+## Todo  
+### Various  
 * Proxychain
 * Tor
 * Threading on all BF
@@ -150,15 +154,15 @@ Run `python3 wmd.py -a modulePathName.py`
 * Split files folder up into lists, etc
 * Core network and wifi - merged?
 
-#### core/tools.py
+### core/tools.py
 * Do a run through config.ini and extract names for the updatecommand instead of DRY in two functions
 
-#### Internal code
+### Internal code
 * cleanup getLocalIP (local_ip) in functions
 * Comment before and after imports for visual improvement
 * When using sym/gitrun to run external program, change variable from lower to CAPITAL
 
-#### Modules
+### Modules
 * sqlmap
 * ~~http sniff pwd~~ <-- Done
 * monitor network auto
@@ -168,5 +172,9 @@ Run `python3 wmd.py -a modulePathName.py`
 * dns fake
 * grep, sed, awk
 * scapy on all network activity
-* Evil Twin - deauth + info about unmanaging in NetworkManager
+* ~~Evil Twin~~ - deauth + info about unmanaging in NetworkManager
 * Admin finder - checkout google/bing search before BF
+* Changeme - Ztgrace
+* ~~Sparta~~
+* Osint frame
+* Bettercap modules. Implementation in other modules. Excellent performance.
