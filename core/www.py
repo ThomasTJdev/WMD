@@ -57,7 +57,7 @@ def showModules(root):
 
         # Insert module
         html += '\n\t<div class=".col-md-4" style="display: inline-block; width: 29%; vertical-align: top; margin-left: 2%; margin-right: 2%;" id="' + d + '">'
-        html += '\n\t\t<a href="/start?module=' + d + '#' + b.capitalize() + '" class="btn btn-primary btn-lg btn-wide toolboxbtn">' + d + '</a>'
+        html += '\n\t\t<div class="gobtn"><a href="/start?module=' + d + '#' + b.capitalize() + '" class="btn btn-primary btn-lg btn-wide toolboxbtn">' + d + '</a></div>'
         html += '\n\t\t<p><b>' + a + '</b></p>'
         html += '\n\t\t<p>' + e + '</p>'
         html += '\n\t</div>'
