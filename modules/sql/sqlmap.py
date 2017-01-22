@@ -206,7 +206,7 @@ def info():
 # CONSOLE
 def console():
     """The main console for the module."""
-    value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'tmpmod:' + bc.ENDC + ' ')
+    value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'sqlmap:' + bc.ENDC + ' ')
     userinput = value.split()
     # Show options
     if 'so' in userinput[:1]:
@@ -218,7 +218,7 @@ def console():
     elif 'run' in userinput[:1]:
         run()
     elif 'runcom' in userinput[:1]:
-        uservalue = value.split(' ', 1)[1]  # Use all text after "set parameter"
+        uservalue = value.split(' ', 1)[1]
         runcom(uservalue)
     # Set options
     elif 'set' in userinput[:1]:

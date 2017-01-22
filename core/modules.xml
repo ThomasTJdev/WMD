@@ -264,4 +264,12 @@
 		<category>sql</category>
 		<description>Just an activation of SQLmap.</description>
 	</module>
+	<module name="Default creds scan">
+		<call>changeme</call>
+		<modulename>creds_changeme</modulename>
+		<version>0.1</version>
+		<type>creds</type>
+		<category>bruteforce</category>
+		<description>Scan IP's for services and try logging in with default credentials (Arthur: ztgrace)</description>
+	</module>
 </data>

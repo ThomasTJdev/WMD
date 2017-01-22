@@ -23,6 +23,7 @@ Run the command "www" from the console to activate a Flask server showing the mo
 ## Modules
 CAT:            | TYPE:        | CALL:           | NAME:                          | DESCRIPTION: 
 ----------------|--------------|-----------------|--------------------------------|----------------------------------------------
+bruteforce      | creds        | changeme        | Default creds scan             | Scan IP's for services and try logging in with default credentials (Arthur: ztgrace)
 bruteforce      | loginpath    | adminfinder     | Admin Finder                   | A Simple script to find admin-paths for webpages. (Arthur: Spaddex) 
 bruteforce      | rar          | bfrar           | BF RAR                         | Bruteforce a RAR file 
 bruteforce      | ssh          | bfssh           | Bruteforce SSH                 | Bruteforce SSH login 
@@ -152,6 +153,7 @@ Run `python3 wmd.py -a modulePathName.py`
 * All modules - change options to Options
 * Split files folder up into lists, etc
 * Core network and wifi - merged?
+* Original arthurs will be displayed below banner on modules. Todo.
 
 ### core/tools.py
 * Do a run through config.ini and extract names for the updatecommand instead of DRY in two functions

@@ -82,6 +82,12 @@ def clonegits(ACTION):
     GITNAME = (config['TOOLS']['BETTERCAP_GITNAME'])
     checkStart(SYM, GIT, GITNAME, ACTION)
 
+    # changeme
+    SYM = (config['TOOLS']['CHANGEME_SYM'])
+    GIT = (config['TOOLS']['CHANGEME_GIT'])
+    GITNAME = (config['TOOLS']['CHANGEME_GITNAME'])
+    checkStart(SYM, GIT, GITNAME, ACTION)
+
     # create_ap
     SYM = (config['TOOLS']['CREATEAP_SYM'])
     GIT = (config['TOOLS']['CREATEAP_GIT'])

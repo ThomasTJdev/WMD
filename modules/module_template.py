@@ -237,7 +237,7 @@ def console():
         predefinedCommands()
     # Run special command from userinput
     elif 'runcom' in userinput[:1]:
-        runcom(str(userinput[1:]).strip('[]\''))
+        runcom(value.split(' ', 1)[1])
     else:
         command = str(userinput[:1]).strip('[]\'')
         print(bc.WARN + '\n    Error, no options for: ' + command + '\n' + bc.ENDC)
