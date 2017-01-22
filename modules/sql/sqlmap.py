@@ -3,7 +3,7 @@
 # MIT - (c) 2016 ThomasTJ (TTJ)
 #
 # Module for WMDframe
-# This modules is used for XXX
+# This modules is just a simple integration of SQLmap.
 #
 
 

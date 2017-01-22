@@ -10,14 +10,14 @@ This is a python tool with a collection of IT security software. The software is
 3) Inside the modules, you always have the possibilty to view the options with the command "so".  
 4)Your environment settings is in core/config.ini. Please adjust them before running.
 
-**Screenshot:**
+**Screenshot:**  
 ![WMD MAIN](screenshots/wmdframe2.png)
 
 ## Web menu
 
 Run the command "www" from the console to activate a Flask server showing the modules in your browser. Access it from: 127.0.0.1:5000.
 
-**Screenshot:**
+**Screenshot:**  
 ![WMD WWW](screenshots/www.png)
 
 ## Modules
@@ -95,6 +95,7 @@ _modules which needs them will inform you about it and just dont run.._
 * Arpspoof
 * Beef
 * Bettercap
+* GIT: changeme
 * CrackMapExec
 * Create_ap
 * Dig
@@ -154,6 +155,7 @@ Run `python3 wmd.py -a modulePathName.py`
 * Split files folder up into lists, etc
 * Core network and wifi - merged?
 * Original arthurs will be displayed below banner on modules. Todo.
+* When showing modules indicate somehow what they require
 
 ### core/tools.py
 * Do a run through config.ini and extract names for the updatecommand instead of DRY in two functions
