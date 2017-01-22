@@ -28,7 +28,7 @@
 		<call>gdsqli</call>
 		<modulename>gdorksqli</modulename>
 		<version>0.1</version>
-		<type>sin</type>
+		<type>sqli</type>
 		<category>sql</category>
 		<description>Scrape net for urls and check if they are prone to SQL injection</description>
 	</module>
@@ -255,5 +255,13 @@
 		<type>niptt</type>
 		<category>pentesting</category>
 		<description>SPARTA is a python GUI application which simplifies network infrastructure penetration testing.</description>
+	</module>
+	<module name="SQLmap">
+		<call>sqlmap</call>
+		<modulename>sqlmap</modulename>
+		<version>0.1</version>
+		<type>sqli</type>
+		<category>sql</category>
+		<description>Just an activation of SQLmap.</description>
 	</module>
 </data>

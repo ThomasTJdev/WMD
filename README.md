@@ -50,7 +50,8 @@ sniff           | http         | sniffhttp       | Sniff HTTP                   
 sniff           | sin          | bettercap       | Bettercap                      | Bettercap integration for sniffing packets and bypass HSTS and HTTPS 
 socialeng       | instagram    | instabot        | Instagram bot                  | Instagram bot for performing various activities (Arthur: LevPasha) 
 spoof           | arp          | arpspoof        | ARP spoof                      | Spoofing ARP 
-sql             | sin          | gdsqli          | Gdork SQLi                     | Scrape net for urls and check if they are prone to SQL injection 
+sql             | sqli         | gdsqli          | Gdork SQLi                     | Scrape net for urls and check if they are prone to SQL injection 
+sql             | sqli         | sqlmap          | SQLmap                         | Just an activation of SQLmap.
 system          | mac          | macc            | Macchanger                     | Change your MAC address 
 tools           | search       | searchht        | Search hacktools               | Searchengine for hackingtools 
 wifi            | accesspoint  | createap        | Create an Accesspoint          | Create an Accesspoint 
@@ -140,11 +141,9 @@ Run `python3 wmd.py -a modulePathName.py`
 * Threading on all BF
 * Try/except on imports on modules for running with os.system
 * Add run command with : in modules
-* ~~Create extractor for github markdown~~ <-- Manual implemented in modules.py. Uncomment lines when needed.
 * Add info about 'set para value' in modules (missing?!)
 * Regenerate modules.xml (loop through modules)
 * Design modules with core import and parser for design
-* Change checkInstalled to checkInstalledFull for compability
 * Check that there are enough credit to arthurs of tools, repos, etc.
 * Split updatetools into local tools vs git
 * When adding modules strip <> to ensuring XML format
@@ -159,12 +158,14 @@ Run `python3 wmd.py -a modulePathName.py`
 
 ### Internal code
 * cleanup getLocalIP (local_ip) in functions
-* Comment before and after imports for visual improvement
-* When using sym/gitrun to run external program, change variable from lower to CAPITAL
+* PEP8/Flake8 for old modules
 
 ### Modules
-* sqlmap
+* ~~SQLmap~~
+* ~~Sparta~~
 * ~~http sniff pwd~~ <-- Done
+* ~~Evil Twin~~ - deauth + info about unmanaging in NetworkManager
+* ~~Evil Twin - arg parse for landingpage / + logfunction~~
 * monitor network auto
 * xsser
 * target attack website or ip
@@ -172,10 +173,7 @@ Run `python3 wmd.py -a modulePathName.py`
 * dns fake
 * grep, sed, awk
 * scapy on all network activity
-* ~~Evil Twin~~ - deauth + info about unmanaging in NetworkManager
-* ~~Evil Twin - arg parse for landingpage / + logfunction~~
 * Admin finder - checkout google/bing search before BF
 * Changeme - Ztgrace
-* ~~Sparta~~
 * Osint frame
 * Bettercap modules. Implementation in other modules. Excellent performance.
