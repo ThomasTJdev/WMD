@@ -2,7 +2,6 @@ argparse
 beautifulsoup4
 configparser
 datetime
-difflib
 Flask
 http.client
 importlib
