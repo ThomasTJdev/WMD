@@ -2,6 +2,7 @@
 backup
 working
 knowledge
+core/config.ini
 !logs/.gitkeep
 logs/*
 !tmp/.gitkeep

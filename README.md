@@ -62,7 +62,9 @@ wifi            | wifi         | wifiutils       | WiFi utils                   
 
 ## Run
 
-**Before your first run, please adjust your environmentsettings in core/config.ini**
+_**Before your first run, please:**_
+_1. Adjust your environment settings in `core/config.ini.default`_
+_2. Rename `core/config.ini.default` to `core/config.ini`_
 
 Start the console with:
 `python3 wmd.py`
@@ -78,7 +80,9 @@ Start without checking requirements:
 
 ## Requirements
 
-_**Before you run it, please adjust your environmentsettings in core/config.ini**_
+_**Before your first run, please:**_
+_1. Adjust your environment settings in `core/config.ini.default`_
+_2. Rename `core/config.ini.default` to `core/config.ini`_
 
 **Requirements:**  
 * Linux operating system
