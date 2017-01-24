@@ -96,7 +96,7 @@ class options():
             + '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script'))
             + '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information'))
             + '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for 'runcom''))
+            + '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for "runcom"'))
             + '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options'))
             + '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info'))
             + '\n\t' + ('%-*s ->\t%s' % (9, 'exit', 'Exit'))
@@ -146,7 +146,7 @@ def run():
     if sop.beef == 'y':
         comm.runCommand3('beef', 'Start_beef')
         local_ip = comm.getLocalIP(sop.interface_n)
-        print('\t[!]  Check the beef window and insert path to 'hook.js'')
+        print('\t[!]  Check the beef window and insert path to "hook.js"')
         print('\t[!]  Press enter to select: \'http://' + local_ip[0] + ':3000/hook.js\'')
         beef_js_path = input('\t->  ' + bc.WARN + 'wmd' + bc.ENDC + '@' + bc.WARN + 'hook.js path:' + bc.ENDC + ' ')
         if not beef_js_path:
@@ -194,7 +194,7 @@ def run():
         + '\t' + 'Status\t : Running'
         + '\n\t' + 'Stop\t : Manually close X'
         + '\n'
-        + '\n\t' + 'Type 'back' to return to the main menu'
+        + '\n\t' + 'Type "back" to return to the main menu'
         + '\n'
         )
     print('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'APsniff:' + bc.ENDC + ' Module is RUNNING')

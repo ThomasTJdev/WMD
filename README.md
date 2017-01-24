@@ -138,6 +138,11 @@ Run `python3 wmd.py -a modulePathName.py`
 * Code needs to follow pep8 flake8 (no need for linebreak)
 
 ## Todo  
+### First priority
+* More modules
+* Interactive webinterface. Set settings and get results in the browser
+* Rename config.ini to config.ini.default to avoid overriding userspecific config file
+
 ### Various  
 * Proxychain
 * Tor
