@@ -81,6 +81,7 @@ Start without checking requirements:
 _**Before you run it, please adjust your environmentsettings in core/config.ini**_
 
 **Requirements:**  
+* Linux operating system
 * Python3
 * Python libraries requirements in **requirements.txt**
 
