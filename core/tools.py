@@ -161,7 +161,5 @@ def clonegits(ACTION):
     checkStart(SYM, GIT, GITNAME, ACTION)
 
     updatefile = 'logs/lasttoolupdate.txt'
-    if not os.path.isfile(updatefile):
-        os.mknod(updatefile)
     with open(updatefile, 'w') as file:
         file.write(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
