@@ -166,7 +166,7 @@ def console(path):
     elif 'invoke' in userinput[:1]:
         comm.invokeModule(str(userinput[1:2]))
     elif 'www' in userinput[:1]:
-        print('\t[*]  Start WWW - go look and see "127.0.0.1:5000"' + bc.ENDC)
+        print('\t[*]  Starting WWW - go look and see 127.0.0.1:5000' + bc.ENDC)
         cwww.startWWW()
     elif 'updatetools' in userinput[:1]:
         updatetools()
