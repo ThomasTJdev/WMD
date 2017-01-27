@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+<body>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <form action="/sniffhttp_execute" method="post">
+            <div class="form-group">
+                <label for="interface">Interface:</label>
+                <input type="text" class="form-control" id="interface" name="interface" value="{{ interface }}"/>
+    
+                <br>
+    
+                <label for="filter">Filter:</label>
+                <select class="form-control" id="filter" name="filter">
+                    <option>ALL</option>
+                    <option>DNS</option>
+                    <option>FTP</option>
+                    <option>POP</option>
+                    <option>HTTP</option>
+                    <option>MAIL</option>
+                </select>
+    
+                <br>
+    
+                <label for="creds">Only show cred:</label>
+                <label class="radio-inline"><input type="radio" name="creds" value="y" >Yes</label>
+                <label class="radio-inline"><input type="radio" name="creds" value="n" checked="checked">No</label>
+    
+                <br>
+    
+                <label for="empty">Avoid empty:</label>
+                <label class="radio-inline"><input type="radio" name="empty" value="y" checked="checked">Yes</label>
+                <label class="radio-inline"><input type="radio" name="empty" value="n">No</label>
+    
+                <br>
+    
+                <label for="ignore">Ignore js, etc.:</label>
+                <label class="radio-inline"><input type="radio" name="ignore" value="y" checked="checked">Yes</label>
+                <label class="radio-inline"><input type="radio" name="ignore" value="n">No</label>
+    
+                <br>
+                <br>
+
+                <input name="signIn" class="btn btn-default" type="submit" value="RUN MODULE" />
+                
+            </div>
+            </div>
+        </div>
+        <div class="col-md-8" id="output">
+        </div>
+    </div>
+</div>
+</body>
+</html>

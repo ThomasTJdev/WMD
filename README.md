@@ -17,6 +17,8 @@ This is a python tool with a collection of IT security software. The software is
 
 Run the command "www" from the console to activate a Flask server showing the modules in your browser. Access it from: 127.0.0.1:5000.
 
+Modules are loaded directly into a xterm. **DEV:** Try the Sniff HTTP module - define parameters in the browser.
+
 **Screenshot:**  
 ![WMD WWW](screenshots/www.png)
 
@@ -191,3 +193,4 @@ Run `python3 wmd.py -a modulePathName.py`
 * Changeme - Ztgrace
 * Osint frame
 * Bettercap modules. Implementation in other modules. Excellent performance.
+* Create Access Point with hostapd and dnsmasq. Already implemented in Ewil Twin

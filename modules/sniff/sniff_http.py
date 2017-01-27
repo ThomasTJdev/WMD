@@ -31,7 +31,11 @@ except:
 # Parser START
 # ==========================
 parser = argparse.ArgumentParser()
-# parser.add_argument('-ip', '--lanip', help='IP to monitor', metavar='IP') # Example. Use with "args.lanip"
+parser.add_argument('-int', '--interface', help='Interface to monitor')
+parser.add_argument('-f', '--filter', help='Filter to apply')
+parser.add_argument('-c', '--credentials', help='Only show creds', metavar='y/n')
+parser.add_argument('-e', '--empty', help='Avoid empty', metavar='y/n')
+parser.add_argument('-i', '--ignore', help='Ignore js, etc.', metavar='y/n')
 parser.add_argument('-r', '--run', action='store_true', help='Start monitoring')
 args, unknown = parser.parse_known_args()
 # ==========================
@@ -534,7 +538,28 @@ def main():
     # print('')
     global sop
     # The parameters to be passed to the module on run
-    sop = Options(INTERFACE_NET, 'ALL', 'n', 'y', 'y')
+    if args.interface:
+        interface = args.interface
+    else:
+        interface = INTERFACE_NET
+    if args.filter:
+        filter = args.filter
+    else:
+        filter = 'ALL'
+    if args.credentials:
+        creds = args.credentials
+    else:
+        creds = 'n'
+    if args.empty:
+        empty = args.empty
+    else:
+        empty = 'y'
+    if args.ignore:
+        ignore = args.ignore
+    else:
+        ignore = 'y'
+
+    sop = Options(interface, filter, creds, empty, ignore)
     if args.run:
         run()
     else:

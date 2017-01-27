@@ -4,9 +4,21 @@
 #
 
 
-from flask import Flask, render_template, request
+import os
 import subprocess
 import shlex
+import core.core as core
+from flask import Flask, render_template, request
+
+
+# ==========================
+# Core START
+# ==========================
+config = core.config()
+INTERFACE_NET = (config['NETWORK']['INTERFACE_NET'])
+# ==========================
+# Core END
+# ==========================
 
 
 # START Log files, global variables, etc.
@@ -34,9 +46,12 @@ def index():
 @app.route('/start')
 def start():
     module = request.args.get('module')
-    if module:
-        runmodule(module)
-    return render_template('start.html', modules=modules, version=fwVersion)
+    if os.path.isfile('www/templates/modules/' + str(module) + '.html') and module:
+        return render_template('modules/' + module + '.html', interface=INTERFACE_NET)
+    else:
+        if module:
+            runmodule(module)
+        return render_template('start.html', modules=modules, version=fwVersion)
 
 
 def runmodule(module):
@@ -48,18 +63,29 @@ def runmodule(module):
         print('Module does not exists')
 
 
-# @app.route('/alarm/deactivate', methods=['POST'])
-# def alarm_deactivate():
-#    pwd = request.form['submitPWD']
-#
-#    if pwd == "123":
-#        return render_template('alarm.html')
-#
-#    elif fileStatus == 'ringing':
-#        return render_template('alarmCode.html', tries=triesNr)
-# =======================================
-# END - Routing
-# =======================================
+# =====================================
+# INTERACTIVE MODULES
+# =====================================
+@app.route('/sniffhttp_execute', methods=['POST'])
+def execute():
+    interface = request.form['interface']
+    filter = request.form['filter']
+    creds = request.form['creds']
+    empty = request.form['empty']
+    ignore = request.form['ignore']
+    modulename = 'Sniff_HTTP'
+    module = 'modules/sniff/sniff_http.py -r' + ' -int ' + interface + ' -f ' + filter + ' -c ' + creds + ' -e ' + empty + ' -i ' + ignore
+    try:
+        call = ('xterm -hold -T ' + modulename + ' -bg black -fg white -geometry 200x50+1280+0 -e python ./' + module)
+        args = shlex.split(call)
+        subprocess.Popen(args)
+    except:
+        print('Module does not exists')
+
+    return render_template('start.html', modules=modules, version=fwVersion)
+# =====================================
+# INTERACTIVE MODULES
+# =====================================
 
 
 def main(modulesData, versionData):

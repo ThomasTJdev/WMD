@@ -33,7 +33,7 @@ INTERFACE_MON = (config['NETWORK']['INTERFACE_MON'])
 
 
 # OPTIONS
-class options():
+class Options():
     Author = 'Thomas TJ (TTJ)'
     Name = 'Create an Accesspoint'
     Call = 'createap'
@@ -63,50 +63,50 @@ class options():
     # Show options
     def show_opt(self):
         print(
-            ''
-            + '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (15, 'OPTION', 6, 'RQ', 15, 'VALUE', 'DESCRIPTION')) + bc.ENDC
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, '------', 6, '--', 15, '-----', '-----------'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'int_net:', 6, 'y', 15, self.int_net, 'Active interface for net-connection'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'int_mon:', 6, 'y', 15, self.int_mon, 'WIFI device which can goto to monitor mode'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'gateway:', 6, 'y', 15, self.gateway, 'Gateway, e.g. 192.168.1.1'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'mode:', 6, 'n', 15, self.mode, 'Mode empty=auto (bridge/nat)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'name:', 6, 'n', 15, self.name, 'Access Point name'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'daemon:', 6, 'n', 15, self.daemon, 'Run as daemon (y/N)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'logfile:', 6, 'n', 15, self.logfile, 'Logfile for connections'))
-            + '\n'
-            )
+            '' +
+            '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (15, 'OPTION', 6, 'RQ', 15, 'VALUE', 'DESCRIPTION')) + bc.ENDC +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, '------', 6, '--', 15, '-----', '-----------')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'int_net:', 6, 'y', 15, self.int_net, 'Active interface for net-connection')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'int_mon:', 6, 'y', 15, self.int_mon, 'WIFI device which can goto to monitor mode')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'gateway:', 6, 'y', 15, self.gateway, 'Gateway, e.g. 192.168.1.1')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'mode:', 6, 'n', 15, self.mode, 'Mode empty=auto (bridge/nat)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'name:', 6, 'n', 15, self.name, 'Access Point name')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'daemon:', 6, 'n', 15, self.daemon, 'Run as daemon (y/N)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'logfile:', 6, 'n', 15, self.logfile, 'Logfile for connections')) +
+            '\n'
+        )
 
     # Show commands
     def show_commands(self):
         print(
-            ''
-            + '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC
-            + '\n\t' + '---------'
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'ap', 'Show running AP\'s (showing ID\'s)'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'clients [AP id]', 'Show connected clients'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'stop [AP id]', 'Stop daemon'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'exit', 'Exit'))
-            + '\n'
-            )
+            '' +
+            '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC +
+            '\n\t' + '---------' +
+            '\n\t' + ('%-*s ->\t%s' % (17, 'run', 'Run the script')) +
+            '\n\t' + ('%-*s ->\t%s' % (17, 'ap', 'Show running AP\'s (showing ID\'s)')) +
+            '\n\t' + ('%-*s ->\t%s' % (17, 'clients [AP id]', 'Show connected clients')) +
+            '\n\t' + ('%-*s ->\t%s' % (17, 'stop [AP id]', 'Stop daemon')) +
+            '\n\t' + ('%-*s ->\t%s' % (17, 'info', 'Information')) +
+            '\n\t' + ('%-*s ->\t%s' % (17, 'so', 'Show options')) +
+            '\n\t' + ('%-*s ->\t%s' % (17, 'sa', 'Show module info')) +
+            '\n\t' + ('%-*s ->\t%s' % (17, 'exit', 'Exit')) +
+            '\n'
+        )
 
     # Show all info
     def show_all(self):
         cmodules.showModuleData(
-            options.Author,
-            options.Name,
-            options.Call,
-            options.Category,
-            options.Type,
-            options.Version,
-            options.Description,
-            options.License,
-            options.Datecreation,
-            options.Lastmodified
-            )
+            Options.Author,
+            Options.Name,
+            Options.Call,
+            Options.Category,
+            Options.Type,
+            Options.Version,
+            Options.Description,
+            Options.License,
+            Options.Datecreation,
+            Options.Lastmodified
+        )
         self.show_commands()
         self.show_opt()
 # END OPTIONS
@@ -130,12 +130,12 @@ def run():
         command += ' >> ' + sop.logfile
 
     print(
-        '\n'
-        + '\t' + 'Loading     : Create_ap'
-        + '\n\t' + 'Command     : ' + bc.BOLD + command + bc.ENDC
-        + '\n\t' + 'Starting in : 2 seconds'
-        + '\n\t'
-        )
+        '\n' +
+        '\t' + 'Loading     : Create_ap' +
+        '\n\t' + 'Command     : ' + bc.BOLD + command + bc.ENDC +
+        '\n\t' + 'Starting in : 2 seconds' +
+        '\n\t'
+    )
     sleep(2)
 
     if sop.daemon == 'y':
@@ -170,7 +170,7 @@ def info():
 
 # CONSOLE
 def console():
-    value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'APsniff:' + bc.ENDC + ' ')
+    value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'AP:' + bc.ENDC + ' ')
     userinput = value.split()
     if 'so' in userinput[:1]:
         sop.show_opt()
@@ -227,7 +227,7 @@ def main():
     comm.checkInstalled(CREATEAP_SYM)
     comm.checkNetConnectionV()
     print('\n')
-    gateway = comm.getGateway()
+    # gateway = comm.getGateway()
     global sop
-    sop = options(INTERFACE_NET, INTERFACE_MON, '', '', 'FreeWifi', '', '')
+    sop = Options(INTERFACE_NET, INTERFACE_MON, '', '', 'FreeWifi', '', '')
     console()
