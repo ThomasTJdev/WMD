@@ -52,8 +52,8 @@
 
 .row{
     position: absolute;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 20%!important;
+    margin-right: 20%!important;
 }
 
 .toolboxholder{
@@ -196,7 +196,7 @@ a {
 }
 a:hover,
 a:focus {
-    color: #000000;
+    color: #000000!important;
     text-decoration: none;
 }
 a:focus {
@@ -371,13 +371,13 @@ p .btn {
 
 /* Button PRIMARY */
 .btn.btn-primary {
-    background: #1abc9c;
-    box-shadow: 0 2px #16a085;
+    background: #337ab7;
+    box-shadow: 0 2px #515a58;
 }
 
 .btn.btn-primary:hover {
-    background: #ffffff;
-    box-shadow: 0 0px #16a085;
+    background: #286090;
+    box-shadow: 0 0px #515a58;
 }
 
 /* Button WARNING */

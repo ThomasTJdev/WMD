@@ -17,7 +17,8 @@ This is a python tool with a collection of IT security software. The software is
 
 Run the command "www" from the console to activate a Flask server showing the modules in your browser. Access it from: 127.0.0.1:5000.
 
-Modules are loaded directly into a xterm. **DEV:** Try the Sniff HTTP module - define parameters in the browser.
+Modules are loaded directly into a xterm.   
+**DEV:** Try the SniffHTTP and APsniff module - define parameters in the browser.
 
 **Screenshot:**  
 ![WMD WWW](screenshots/www.png)
@@ -146,7 +147,7 @@ Run `python3 wmd.py -a modulePathName.py`
 ## Todo  
 ### First priority
 * More modules
-* Interactive webinterface. Set settings and get results in the browser
+* ~~Interactive webinterface. Set settings and get results in the browser~~ <-- sniffhttp and apsniff done
 * Rename config.ini to config.ini.default to avoid overriding userspecific config file
 
 ### Various  
@@ -168,6 +169,8 @@ Run `python3 wmd.py -a modulePathName.py`
 * Core network and wifi - merged?
 * Original arthurs will be displayed below banner on modules. Todo.
 * When showing modules indicate somehow what they require
+* ~~Set modules parameters in browser dialog~~
+* Add args to all modules and create dialog HTML (automated tool in development)
 
 ### core/tools.py
 * Do a run through config.ini and extract names for the updatecommand instead of DRY in two functions

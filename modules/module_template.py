@@ -27,9 +27,9 @@ except:
 # ==========================
 # Parser START
 # ==========================
-parser = argparse.ArgumentParser()
-# parser.add_argument('-ip', '--lanip', help='IP to monitor', metavar='IP')  # Example. Use with "args.lanip"
-parser.add_argument('-r', '--run', action='store_true', help='Start monitoring')
+parser = argparse.ArgumentParser(description='', prog='modulename.py')
+# parser.add_argument('-ip', '--lanip', help='IP to monitor', metavar='IP')  # Required parameter when metavar is specified.
+parser.add_argument('-r', '--run', action='store_true', help='Run')
 args, unknown = parser.parse_known_args()
 # ==========================
 # Parser END

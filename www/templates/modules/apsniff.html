@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMDframe module</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Loading jquery UI CSS -->
+
+    <!-- Empty CSS-->
+    <link href="static/css/style.css" rel="stylesheet">
+
+    <!-- Loading CSS -->
+    <link href="static/css/style.complete.css" rel="stylesheet">
+</head>
+
+<style>
+/*Hide OK button in dialog*/
+.ui-dialog .ui-dialog-buttonpane {
+    display: none;
+}
+</style>
+
+<body style="background-color: #bfbfbf;">
+    <div class="" style="width:300px; margin: auto;">
+        <form action="/apsniff_execute" method="post">
+        <div class="form-group">
+            <h2>AP sniff</h2>
+            <p>Create an AccessPoint and sniff the data. The data traffic is sniffed with Bettercap to downgrade HTTPS and avoid HSTS. Possibility to inject js hook with BEEF.</p>
+
+            <label for="interface_net">Interface with netconnection:</label>
+            <input type="text" class="form-control" id="interface_net" name="interface_net" value="{{ interfacen }}"/>
+
+            <br>
+
+            <label for="interface_mon">Interface for AP (WIFI):</label>
+            <input type="text" class="form-control" id="interface_mon" name="interface_mon" value="{{ interfacem }}"/>
+
+            <br>
+
+            <label for="gateway">Gateway:</label>
+            <input type="text" class="form-control" id="gateway" name="gateway" value="192.168.1.1"/>
+
+            <br>
+
+            <label for="target">Target:</label>
+            <input type="text" class="form-control" id="target" name="target" value=""/>
+
+            <br>
+
+            <label for="sniff_log">Sniff logfile:</label>
+            <input type="text" class="form-control" id="sniff_log" name="sniff_log" value="logs/sniff_log.txt"/>
+
+            <br>
+
+            <label for="ap_name">AP name:</label>
+            <input type="text" class="form-control" id="ap_name" name="ap_name" value="FreeWIFI"/>
+
+            <br>
+
+            <label for="ap_log">AP logfile:</label>
+            <input type="text" class="form-control" id="ap_log" name="ap_log" value="logs/ap_log.txt"/>
+
+            <br>
+
+            <label for="sniffer">Sniffer:</label>
+            <select class="form-control" id="sniffer" name="sniffer">
+                <option>ARP</option>
+                <option>NONE</option>
+                <option>ICMP</option>
+            </select>
+
+            <br>
+
+            <label for="proxy" style="width: 50%;">Activate proxy:</label>
+            <label class="radio-inline"><input type="radio" name="proxy" value="y" checked="checked">Yes</label>
+            <label class="radio-inline"><input type="radio" name="proxy" value="n">No</label>
+
+            <br>
+
+            <label for="beef" style="width: 50%;">Activated BEEF:</label>
+            <label class="radio-inline"><input type="radio" name="beef" value="y">Yes</label>
+            <label class="radio-inline"><input type="radio" name="beef" value="n" checked="checked">No</label>
+
+            <br>
+            <br>
+
+            <input name="signIn" class="btn btn-primary" style="width: 100%;" type="submit" value="RUN MODULE" />
+            
+        </div>
+        </div>
+    </div>
+
+</body>
+</html>

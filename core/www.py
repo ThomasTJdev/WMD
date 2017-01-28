@@ -5,6 +5,7 @@
 
 
 import configparser
+import os
 from www import wmdflask
 from core.modules import loadXML as cmodulesXML
 
@@ -57,7 +58,12 @@ def showModules(root):
 
         # Insert module
         html += '\n\t<div class=".col-md-4" style="display: inline-block; width: 29%; vertical-align: top; margin-left: 2%; margin-right: 2%;" id="' + d + '">'
-        html += '\n\t\t<div class="gobtn"><a href="/start?module=' + d + '#' + b.capitalize() + '" class="btn btn-primary btn-lg btn-wide toolboxbtn">' + d + '</a></div>'
+        html += '\n\t\t<div class="gobtn">'
+        if os.path.isfile('www/templates/modules/' + d + '.html'):
+            html += '<button onclick="startDialog(this)" id="' + d + '" class="btn btn-primary btn-lg btn-wide toolboxbtn">' + d + '</button>'
+        else:
+            html += '<a href="/start?module=' + d + '#' + b.capitalize() + '" class="btn btn-primary btn-lg btn-wide toolboxbtn">' + d + '</a>'
+        html += '</div>'
         html += '\n\t\t<p><b>' + a + '</b></p>'
         html += '\n\t\t<p>' + e + '</p>'
         html += '\n\t</div>'

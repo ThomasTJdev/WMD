@@ -18,7 +18,7 @@
     </module>
 	<module name="AP sniff">
 		<call>apsniff</call>
-		<modulename>aut_ap_sniff</modulename>
+		<modulename>apsniff</modulename>
 		<version>0.1</version>
 		<type>aut</type>
 		<category>sniff</category>

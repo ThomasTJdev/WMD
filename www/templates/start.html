@@ -2,61 +2,82 @@
 <html><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMDframe</title>
 
-    <!--pageMeta-->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Empty CSS -->
     <link href="static/css/style.css" rel="stylesheet">
 
-    <!-- Loading CSS -->
+    <!-- Loading CSS (backup when no internet is available) -->
     <link href="static/css/style.complete.css" rel="stylesheet">
 
+    <!-- Loading jquery -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+    <!-- Loading custom js -->
+    <script src="/static/js/moduleParameters.js"></script>
 
 </head>
+
 <body>
 
     <div id="page" class="page">
 
-    <!-- /.wrapper -->
-
-    	<!-- /.item --><div class="item header margin-top-0 padding-bottom-0" id="header3">
+        <div class="item header margin-top-0 padding-bottom-0" id="header3">
 
     		<header class="wrapper image image1">
 
     			<div class="bg bg3"></div>
 
-    			<div class="container" style="padding-top: 20px;!important">
+    			<div class="custom_container" style="padding-top: 20px;!important">
 
                     <div class="toolbox blockbox topbox">
 
                         <h1 class="editContent" style="text-align: center; padding-top: 10px;"><b>WEAPON OF MASS DESTRUCTION</b></h1>
 
                         <h2 class="" style="color: white; text-align: center; margin-top: 5px;!important"><b>Choose your weapon</b></h2>
-
+                        
                         <div class="toolboxholder">
+                        
                             <div class="fronttopboxbtn col-md-6 topboxbtn" style="display: inline-block;">
-                                <a href="#" class="btn maintoolboxbtn btn-lg btn-wide toolboxbtn">Version {{ version | safe }}</a>
+                        
+                                  <a href="#" class="btn maintoolboxbtn btn-lg btn-wide toolboxbtn">Version {{ version | safe }}</a>
+                        
                             </div>
+                        
                             <div class="fronttopboxbtn col-md-6 topboxbtn" style="display: inline-block;">
+                        
                                 <a href="https://github.com/ThomasTJdev/WMD" target="_blank" class="btn maintoolboxbtn btn-lg btn-wide toolboxbtn">  Github  </a>
+                        
                             </div>
+                        
                         </div>
 
                     </div>
 
-    				<div class="row banner2">
+        			<div class="row banner2">
 
                         {{ modules | safe }}
 
-    				</div><!-- /.row -->
+        			</div><!-- /.row -->
 
-    			</div><!-- /.container -->
+			    </div><!-- /.custom_container -->
 
-    		</header></div><!-- /.wrapper -->
+    		</header>
 
-    	<!-- /.item --></div><!-- /#page -->
+        </div><!-- /.header3 -->
 
+    </div><!-- /#page -->
 
-    <!-- Load JS here for greater good =============================-->
+<!-- module dialog boks -->
+<div id="dialog" class="parameterform" title="Basic dialog">
+  <p></p>
+</div>
+ 
+</body>
 
+</html>
 
-</body></html>

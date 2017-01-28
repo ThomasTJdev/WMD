@@ -2,62 +2,76 @@
 <html><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMDframe module</title>
 
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+    <!-- Loading jquery UI CSS -->
+
+    <!-- Empty CSS-->
+    <link href="static/css/style.css" rel="stylesheet">
+
+    <!-- Loading CSS -->
+    <link href="static/css/style.complete.css" rel="stylesheet">
 </head>
 
-<body>
-<br>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
-            <form action="/sniffhttp_execute" method="post">
-            <div class="form-group">
-                <label for="interface">Interface:</label>
-                <input type="text" class="form-control" id="interface" name="interface" value="{{ interface }}"/>
-    
-                <br>
-    
-                <label for="filter">Filter:</label>
-                <select class="form-control" id="filter" name="filter">
-                    <option>ALL</option>
-                    <option>DNS</option>
-                    <option>FTP</option>
-                    <option>POP</option>
-                    <option>HTTP</option>
-                    <option>MAIL</option>
-                </select>
-    
-                <br>
-    
-                <label for="creds">Only show cred:</label>
-                <label class="radio-inline"><input type="radio" name="creds" value="y" >Yes</label>
-                <label class="radio-inline"><input type="radio" name="creds" value="n" checked="checked">No</label>
-    
-                <br>
-    
-                <label for="empty">Avoid empty:</label>
-                <label class="radio-inline"><input type="radio" name="empty" value="y" checked="checked">Yes</label>
-                <label class="radio-inline"><input type="radio" name="empty" value="n">No</label>
-    
-                <br>
-    
-                <label for="ignore">Ignore js, etc.:</label>
-                <label class="radio-inline"><input type="radio" name="ignore" value="y" checked="checked">Yes</label>
-                <label class="radio-inline"><input type="radio" name="ignore" value="n">No</label>
-    
-                <br>
-                <br>
+<style>
+/*Hide OK button in dialog*/
+.ui-dialog .ui-dialog-buttonpane {
+    display: none;
+}
+</style>
 
-                <input name="signIn" class="btn btn-default" type="submit" value="RUN MODULE" />
-                
-            </div>
-            </div>
+<body style="background-color: #bfbfbf;">
+    <div class="" style="width:300px; margin: auto;">
+        <form action="/sniffhttp_execute" method="post">
+        <div class="form-group">
+            <h2>Sniff HTTP</h2>
+            <p>This module is used for sniffing data traffic on HTTP connections. Either use it to sniff everything or only credentilations.</p>
+
+            <label for="interface">Interface:</label>
+            <input type="text" class="form-control" id="interface" name="interface" value="{{ interfacen }}"/>
+
+            <br>
+
+            <label for="filter">Filter:</label>
+            <select class="form-control" id="filter" name="filter">
+                <option>ALL</option>
+                <option>DNS</option>
+                <option>FTP</option>
+                <option>POP</option>
+                <option>HTTP</option>
+                <option>MAIL</option>
+            </select>
+
+            <br>
+
+            <label for="creds" style="width: 50%;">Only show cred:</label>
+            <label class="radio-inline"><input type="radio" name="creds" value="y" >Yes</label>
+            <label class="radio-inline"><input type="radio" name="creds" value="n" checked="checked">No</label>
+
+            <br>
+
+            <label for="empty" style="width: 50%;">Avoid empty:</label>
+            <label class="radio-inline"><input type="radio" name="empty" value="y" checked="checked">Yes</label>
+            <label class="radio-inline"><input type="radio" name="empty" value="n">No</label>
+
+            <br>
+
+            <label for="ignore" style="width: 50%;">Ignore js, etc.:</label>
+            <label class="radio-inline"><input type="radio" name="ignore" value="y" checked="checked">Yes</label>
+            <label class="radio-inline"><input type="radio" name="ignore" value="n">No</label>
+
+            <br>
+            <br>
+
+            <input name="signIn" class="btn btn-primary" style="width: 100%;" type="submit" value="RUN MODULE" />
+            
         </div>
-        <div class="col-md-8" id="output">
         </div>
     </div>
-</div>
+
 </body>
 </html>
